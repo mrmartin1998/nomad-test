@@ -12,6 +12,7 @@ module.exports = {
     base: true,
     styled: true,
     utils: true,
+    prefix: "",
     logs: false,
     rtl: false,
   }
