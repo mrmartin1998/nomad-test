@@ -12,14 +12,7 @@ module.exports = {
   },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: [
-      {
-        light: {
-          ...require("daisyui/src/theming/themes")["[data-theme=light]"],
-          "base-100": "#ffffff",
-        },
-      },
-    ],
+    themes: ["light"],
     base: true,
     styled: true,
     utils: true,
