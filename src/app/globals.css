@@ -22,8 +22,8 @@ body {
   box-sizing: border-box;
 }
 
-@layer base {
-  body {
-    @apply min-h-screen bg-base-100;
+@layer components {
+  .app-background {
+    @apply min-h-screen bg-white;
   }
 }

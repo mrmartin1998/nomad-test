@@ -11,7 +11,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
-      <body className="min-h-screen bg-base-100 text-base-content">
+      <body className="app-background text-base-content">
         <main className="relative">
           {children}
         </main>

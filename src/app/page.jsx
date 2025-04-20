@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-base-100">
+    <div className="app-background">
       {/* Hero Section with Gradient */}
       <div className="hero min-h-[60vh] bg-gradient-to-br from-primary/20 to-secondary/20">
         <div className="hero-content text-center">
