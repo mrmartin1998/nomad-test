@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Application from '@/lib/models/Application';
 
+export const dynamic = 'force-static';
+
 export async function POST(request) {
   try {
     // Connect to MongoDB

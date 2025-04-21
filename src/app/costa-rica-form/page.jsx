@@ -95,7 +95,7 @@ export default function CostaRicaForm() {
   };
 
   return (
-    <div className="app-background">
+    <div className="min-h-screen bg-base-100">
       {/* Navigation */}
       <div className="navbar bg-base-200">
         <div className="container mx-auto">
