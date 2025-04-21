@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --foreground: theme('colors.gray.900');
+    --background: theme('colors.white');
+  }
+}
+
+@layer components {
+  .app-background {
+    @apply min-h-screen bg-base-100;
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
