@@ -5,21 +5,24 @@
 2. User Profile Management (#2)
 3. Admin Dashboard (#3)
 
-## Product Management
-4. Product CRUD (#4)
-5. Category Management (#5)
-6. Product Search & Filter (#6)
-7. Product Reviews (#7)
+## Visa Application System
+4. Costa Rica Visa Form (#4)
+5. USA Visa Form (#5)
+6. India Visa Form (#6)
+7. Reino Unido Visa Form (#7)
+8. Cuba Visa Form (#8)
+9. Tailandia Visa Form (#9)
+10. Egipto Visa Form (#10)
 
-## Shopping Features
-8. Cart Management (#8)
-9. Checkout Process (#9)
-10. Order Management (#10)
+## Document Management
+11. Document Upload System (#11)
+12. Document Verification (#12)
+13. Storage Management (#13)
 
 ## Payment System
-11. Stripe Integration (#11)
-12. Payment Processing (#12)
-13. Order Confirmation (#13)
+14. Stripe Integration (#14)
+15. Payment Processing (#15)
+16. Payment Confirmation (#16)
 
 ## Status Legend
 Planning | Ready | In Progress | Complete
@@ -44,8 +47,8 @@ Each issue must include:
 ## Issue Naming Convention
 - Authentication: 1xx
 - User Management: 2xx
-- Product Management: 3xx
-- Shopping System: 4xx
+- Visa Applications: 3xx
+- Document Management: 4xx
 - Payment Integration: 5xx
 
 ## Related Documentation

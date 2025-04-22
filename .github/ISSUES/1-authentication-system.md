@@ -2,7 +2,7 @@
 
 ## Requirements
 ### User Story
-"As a user, I want to securely access my account so that I can use protected features"
+"As a user, I want to securely access my account so that I can manage my visa applications"
 
 ### Acceptance Criteria
 - [ ] Users can register with email verification
@@ -11,6 +11,7 @@
 - [ ] JWT tokens are properly managed
 - [ ] Rate limiting is implemented
 - [ ] Session management is secure
+- [ ] Role-based access (admin/user)
 
 ## Technical Design
 
@@ -18,11 +19,18 @@
 #### Models
 - Update User Model:  ```javascript
   {
+    email: String,
+    password: String,
     email_verified: Boolean,
     verification_token: String,
     reset_token: String,
     reset_token_expiry: Date,
     last_login: Date,
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
+    },
     status: String
   }  ```
 
@@ -32,12 +40,15 @@
   - Password reset
   - Token refresh
   - Session management
+  - Role verification
 
 #### Routes
-- POST /auth/verify-email
-- POST /auth/reset-password
-- POST /auth/refresh-token
-- GET /auth/me
+- POST /api/auth/register
+- POST /api/auth/login
+- POST /api/auth/verify-email
+- POST /api/auth/reset-password
+- POST /api/auth/refresh-token
+- GET /api/auth/me
 
 ### Frontend Changes
 #### Components
@@ -46,14 +57,16 @@
 - RegisterForm
 - ResetPasswordForm
 - EmailVerificationForm
+- ProtectedRoute
 
 #### Services
 - authService:
   - Token management
   - Session handling
+  - Role-based routing
   - API integration
 
 ### Dependencies
-- Basic User Model ✅
-- Email service setup ✅
-- JWT configuration ✅
+- Next.js API Routes setup ✅
+- Email service setup
+- JWT configuration

@@ -2,55 +2,55 @@
 
 ## Core Features Overview
 1. User Management System
-   - [x] Basic User Model ✅
+   - [ ] Basic User Model
    - [ ] Authentication System (Issue #1)
    - [ ] User Profile Management (Issue #2)
    - [ ] Admin Dashboard (Issue #3)
 
-2. Product Management System
-   - [ ] Product Model & CRUD (Issue #4)
-   - [ ] Category Management (Issue #5)
-   - [ ] Product Search & Filter (Issue #6)
-   - [ ] Product Reviews (Issue #7)
+2. Visa Application System
+   - [ ] Costa Rica Visa Form (Issue #4)
+   - [ ] USA Visa Form (Issue #5)
+   - [ ] India Visa Form (Issue #6)
+   - [ ] Reino Unido Visa Form (Issue #7)
+   - [ ] Cuba Visa Form (Issue #8)
+   - [ ] Tailandia Visa Form (Issue #9)
+   - [ ] Egipto Visa Form (Issue #10)
 
-3. Shopping System
-   - [ ] Cart Model & Logic (Issue #8)
-   - [ ] Checkout Process (Issue #9)
-   - [ ] Order Management (Issue #10)
+3. Document Management System
+   - [ ] Document Upload System (Issue #10)
+   - [ ] Document Verification (Issue #11)
+   - [ ] Storage Management (Issue #12)
 
 4. Payment Integration
-   - [ ] Stripe Setup (Issue #11)
-   - [ ] Payment Processing (Issue #12)
-   - [ ] Order Confirmation (Issue #13)
+   - [ ] Stripe Setup (Issue #13)
+   - [ ] Payment Processing (Issue #14)
+   - [ ] Payment Confirmation (Issue #15)
 
 ## Current Sprint Focus: Authentication System (Issue #1)
 Priority: HIGH
 
 ### Technical Tasks
 1. Backend:
-   - [ ] Enhance User Model with:
+   - [ ] User Model with:
      - Email verification fields
-     - Password reset token
+     - Password fields
      - Last login timestamp
      - Account status
-   - [ ] JWT Authentication:
-     - Access token
-     - Refresh token
-     - Token blacklisting
+   - [ ] Next.js API Routes:
+     - Registration
+     - Login
+     - Password reset
    - [ ] Security Implementation:
-     - Rate limiting
      - Input validation
      - Password hashing
-     - CORS configuration
+     - Rate limiting
 
 2. Frontend:
    - [ ] Auth Components:
      - LoginForm
      - RegisterForm
      - ForgotPasswordForm
-     - ResetPasswordForm
    - [ ] Auth Context/Store:
-     - Token management
      - User state
      - Auth status
    - [ ] Protected Routes:
@@ -67,276 +67,289 @@ Priority: HIGH (Required for other features)
 
 #### Acceptance Criteria
 1. User can register with:
-   - Username
    - Email
    - Password (with validation)
 2. User can login with email/password
-3. User receives JWT token
-4. Protected routes require valid token
-5. Password reset functionality
+3. Protected routes require authentication
+4. Password reset functionality
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Update User model with password reset fields
-   - [ ] Implement JWT authentication middleware
-   - [ ] Create password reset endpoints
+   - [ ] Create User model
+   - [ ] Implement auth middleware
+   - [ ] Create auth API routes
    - [ ] Add email verification
 
 2. Frontend:
-   - [ ] Create RegisterForm component
-   - [ ] Create LoginForm component
-   - [ ] Add token storage and management
+   - [ ] Create auth components
    - [ ] Implement protected routes
+   - [ ] Add auth state management
 
 ### 2. User Profile Management (Issue #2)
 Priority: HIGH
 
 #### User Story
-"As a user, I want to manage my profile information"
+"As a user, I want to manage my profile information and view my visa applications"
 
 #### Acceptance Criteria
 1. User can view and edit their profile
-2. User can change their password
-3. User can delete their account
+2. User can see all their visa applications
+3. User can track application status
+4. User can update contact information
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create profile management endpoints
-   - [ ] Implement profile update functionality
-   - [ ] Add password change functionality
-   - [ ] Implement account deletion
+   - [ ] Create profile API routes
+   - [ ] Implement profile update logic
+   - [ ] Create application history endpoints
+   - [ ] Add status tracking functionality
 
 2. Frontend:
-   - [ ] Create ProfileForm component
-   - [ ] Implement profile update
-   - [ ] Add password change
-   - [ ] Implement account deletion
+   - [ ] Create ProfileView component
+   - [ ] Create ProfileEdit component
+   - [ ] Create ApplicationHistory component
+   - [ ] Add status tracking display
 
 ### 3. Admin Dashboard (Issue #3)
 Priority: HIGH
 
 #### User Story
-"As an admin, I want to manage user permissions and system analytics"
+"As an admin, I want to manage visa applications and user accounts"
 
 #### Acceptance Criteria
-1. Admin can view system analytics
-2. Admin can manage user permissions
-3. Admin can access user management interface
+1. Admin can view all applications
+2. Admin can update application status
+3. Admin can manage user accounts
+4. Admin can view application details
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create admin dashboard endpoints
-   - [ ] Implement system analytics
-   - [ ] Add user management interface
+   - [ ] Create admin API routes
+   - [ ] Implement application management logic
+   - [ ] Add user management functionality
+   - [ ] Create admin authorization middleware
 
 2. Frontend:
    - [ ] Create AdminDashboard component
-   - [ ] Implement system analytics
-   - [ ] Add user management interface
+   - [ ] Create ApplicationManagement component
+   - [ ] Create UserManagement component
+   - [ ] Add admin-only routes
 
-### 4. Product Model & CRUD (Issue #4)
+### 4. Costa Rica Visa Form (Issue #4)
 Priority: HIGH
 
 #### User Story
-"As an admin, I want to manage product information"
+"As a user, I want to apply for a Costa Rica tourist visa"
 
 #### Acceptance Criteria
-1. Admin can create, read, update, and delete products
-2. Product information includes:
-   - Name
-   - Description
-   - Price
-   - Category
-   - Image
+1. User can fill out visa application form
+2. User can upload required documents
+3. User can save progress
+4. User can submit and pay
+5. User receives confirmation
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create product CRUD endpoints
-   - [ ] Implement product creation
-   - [ ] Implement product reading
-   - [ ] Implement product updating
-   - [ ] Implement product deletion
+   - [ ] Create visa application model
+   - [ ] Implement form submission API
+   - [ ] Add document upload handling
+   - [ ] Create payment integration
 
 2. Frontend:
-   - [ ] Create ProductForm component
-   - [ ] Implement product creation
-   - [ ] Implement product reading
-   - [ ] Implement product updating
-   - [ ] Implement product deletion
+   - [ ] Create multi-step form
+   - [ ] Add document upload interface
+   - [ ] Implement form validation
+   - [ ] Add payment integration UI
 
-### 5. Category Management (Issue #5)
+### 5. USA Visa Form (Issue #5)
 Priority: HIGH
 
 #### User Story
-"As an admin, I want to manage product categories"
+"As a user, I want to apply for a visa to the USA"
 
 #### Acceptance Criteria
-1. Admin can create, read, update, and delete categories
-2. Category information includes:
-   - Name
-   - Description
+1. User can fill out the visa application form
+2. User can submit the form
+3. User receives confirmation email
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create category CRUD endpoints
-   - [ ] Implement category creation
-   - [ ] Implement category reading
-   - [ ] Implement category updating
-   - [ ] Implement category deletion
+   - [ ] Create visa application form endpoints
+   - [ ] Implement visa application form
 
 2. Frontend:
-   - [ ] Create CategoryForm component
-   - [ ] Implement category creation
-   - [ ] Implement category reading
-   - [ ] Implement category updating
-   - [ ] Implement category deletion
+   - [ ] Create VisaForm component
+   - [ ] Implement visa application form
 
-### 6. Product Search & Filter (Issue #6)
+### 6. India Visa Form (Issue #6)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to search and filter products"
+"As a user, I want to apply for a visa to India"
 
 #### Acceptance Criteria
-1. Display product grid with:
-   - Image
-   - Name
-   - Price
-   - Category
-2. Search functionality
-3. Filter by category
-4. Sort by price/name
+1. User can fill out the visa application form
+2. User can submit the form
+3. User receives confirmation email
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create search and filter endpoints
-   - [ ] Implement search functionality
-   - [ ] Implement filtering logic
+   - [ ] Create visa application form endpoints
+   - [ ] Implement visa application form
 
 2. Frontend:
-   - [ ] Create ProductGrid component
-   - [ ] Implement search bar
-   - [ ] Add filter/sort controls
-   - [ ] Create product cards
+   - [ ] Create VisaForm component
+   - [ ] Implement visa application form
 
-### 7. Product Reviews (Issue #7)
+### 7. Reino Unido Visa Form (Issue #7)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to review products"
+"As a user, I want to apply for a visa to Reino Unido"
 
 #### Acceptance Criteria
-1. User can write a review for a product
-2. Review information includes:
-   - Rating
-   - Comment
-   - Date
+1. User can fill out the visa application form
+2. User can submit the form
+3. User receives confirmation email
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create review CRUD endpoints
-   - [ ] Implement review creation
-   - [ ] Implement review reading
-   - [ ] Implement review updating
-   - [ ] Implement review deletion
+   - [ ] Create visa application form endpoints
+   - [ ] Implement visa application form
 
 2. Frontend:
-   - [ ] Create ReviewForm component
-   - [ ] Implement review creation
-   - [ ] Implement review reading
-   - [ ] Implement review updating
-   - [ ] Implement review deletion
+   - [ ] Create VisaForm component
+   - [ ] Implement visa application form
 
-### 8. Cart Model & Logic (Issue #8)
+### 8. Cuba Visa Form (Issue #8)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to manage my shopping cart"
+"As a user, I want to apply for a visa to Cuba"
 
 #### Acceptance Criteria
-1. User can add products to cart
-2. User can view cart contents
-3. User can update cart quantity
-4. User can remove products from cart
+1. User can fill out the visa application form
+2. User can submit the form
+3. User receives confirmation email
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create cart CRUD endpoints
-   - [ ] Implement cart creation
-   - [ ] Implement cart reading
-   - [ ] Implement cart updating
-   - [ ] Implement cart deletion
+   - [ ] Create visa application form endpoints
+   - [ ] Implement visa application form
 
 2. Frontend:
-   - [ ] Create Cart component
-   - [ ] Implement cart creation
-   - [ ] Implement cart reading
-   - [ ] Implement cart updating
-   - [ ] Implement cart deletion
+   - [ ] Create VisaForm component
+   - [ ] Implement visa application form
 
-### 9. Checkout Process (Issue #9)
+### 9. Egipto Visa Form (Issue #10)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to complete a purchase"
+"As a user, I want to apply for a visa to Egipto"
 
 #### Acceptance Criteria
-1. User can select shipping address
-2. User can select payment method
-3. User can review order summary
-4. User can complete purchase
+1. User can fill out the visa application form
+2. User can submit the form
+3. User receives confirmation email
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create checkout process endpoints
-   - [ ] Implement checkout process
+   - [ ] Create visa application form endpoints
+   - [ ] Implement visa application form
 
 2. Frontend:
-   - [ ] Create Checkout component
-   - [ ] Implement checkout process
+   - [ ] Create VisaForm component
+   - [ ] Implement visa application form
 
-### 10. Order Management (Issue #10)
+### 10. Document Upload System (Issue #10)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to manage my orders"
+"As a user, I want to securely upload and manage my visa documents"
 
 #### Acceptance Criteria
-1. User can view order history
-2. User can track order status
-3. User can cancel order
+1. User can upload multiple document types
+2. User can view uploaded documents
+3. User can replace/update documents
+4. Admin can view and verify documents
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create order CRUD endpoints
-   - [ ] Implement order reading
-   - [ ] Implement order cancellation
+   - [ ] Set up secure file storage
+   - [ ] Create upload API routes
+   - [ ] Implement file validation
+   - [ ] Add file management logic
 
 2. Frontend:
-   - [ ] Create OrderHistory component
-   - [ ] Implement order reading
-   - [ ] Implement order cancellation
+   - [ ] Create FileUpload component
+   - [ ] Add file preview functionality
+   - [ ] Create file management interface
+   - [ ] Implement progress indicators
 
-### 11. Stripe Setup (Issue #11)
+### 11. Document Verification (Issue #11)
 Priority: HIGH
 
 #### User Story
-"As an admin, I want to integrate Stripe for payment processing"
+"As an admin, I want to verify uploaded documents"
 
 #### Acceptance Criteria
-1. Stripe integration setup
-2. Payment processing functionality
+1. Admin can view uploaded documents
+2. Admin can verify documents
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Create Stripe integration setup
-   - [ ] Implement payment processing
+   - [ ] Create document verification endpoints
+   - [ ] Implement document verification
 
 2. Frontend:
-   - [ ] Create Stripe integration component
-   - [ ] Implement payment processing
+   - [ ] Create DocumentVerification component
+   - [ ] Implement document verification
 
-### 12. Payment Processing (Issue #12)
+### 12. Storage Management (Issue #12)
+Priority: HIGH
+
+#### User Story
+"As an admin, I want to manage document storage"
+
+#### Acceptance Criteria
+1. Admin can view document storage usage
+2. Admin can manage document storage
+
+#### Technical Tasks
+1. Backend:
+   - [ ] Create storage management endpoints
+   - [ ] Implement storage management
+
+2. Frontend:
+   - [ ] Create StorageManagement component
+   - [ ] Implement storage management
+
+### 13. Stripe Integration (Issue #13)
+Priority: HIGH
+
+#### User Story
+"As a user, I want to securely pay for my visa application"
+
+#### Acceptance Criteria
+1. User can make secure payments
+2. User receives payment confirmation
+3. Payment status is tracked
+4. Admin can view payment status
+
+#### Technical Tasks
+1. Backend:
+   - [ ] Set up Stripe integration
+   - [ ] Create payment API routes
+   - [ ] Implement webhook handling
+   - [ ] Add payment verification
+
+2. Frontend:
+   - [ ] Create PaymentForm component
+   - [ ] Add payment status display
+   - [ ] Implement error handling
+   - [ ] Add payment confirmation
+
+### 14. Payment Processing (Issue #14)
 Priority: HIGH
 
 #### User Story
@@ -355,47 +368,47 @@ Priority: HIGH
    - [ ] Create PaymentForm component
    - [ ] Implement payment processing
 
-### 13. Order Confirmation (Issue #13)
+### 15. Payment Confirmation (Issue #15)
 Priority: HIGH
 
 #### User Story
-"As a customer, I want to confirm my order"
+"As a customer, I want to confirm my payment"
 
 #### Acceptance Criteria
-1. User receives order confirmation email
-2. User can view order details
+1. User receives payment confirmation email
+2. User can view payment details
 
 #### Technical Tasks
 1. Backend:
-   - [ ] Implement order confirmation email
-   - [ ] Create order confirmation component
+   - [ ] Implement payment confirmation email
+   - [ ] Create payment confirmation component
 
 2. Frontend:
-   - [ ] Create OrderConfirmation component
-   - [ ] Implement order confirmation email
-   - [ ] Implement order confirmation component
+   - [ ] Create PaymentConfirmation component
+   - [ ] Implement payment confirmation email
+   - [ ] Implement payment confirmation component
 
 ## Core Features Issue Templates Status
 
 ### User Management System
-- [x] Authentication System (auth-system.md) ✅
+- [ ] Authentication System (auth-system.md)
 - [ ] User Profile Management
 - [ ] Admin Dashboard
 
-### Product Management System
-- [ ] Product CRUD Operations
-- [ ] Category Management
-- [ ] Product Search & Filter
-- [ ] Product Reviews
+### Visa Application System
+- [ ] Costa Rica Visa Form
+- [ ] USA Visa Form
+- [ ] India Visa Form
+- [ ] Reino Unido Visa Form
+- [ ] Cuba Visa Form
+- [ ] Egipto Visa Form
 
-### Shopping System
-- [ ] Cart Management
-- [ ] Checkout Process
-- [ ] Order Management
+### Document Management System
+- [ ] Document Upload System
+- [ ] Document Verification
+- [ ] Storage Management
 
 ### Payment Integration
 - [ ] Stripe Integration
 - [ ] Payment Processing
-- [ ] Order Confirmation
-
-[Continue with other features...] 
+- [ ] Payment Confirmation

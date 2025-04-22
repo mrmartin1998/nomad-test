@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import PersonalInfo from '@/components/forms/PersonalInfo';
-import ProfessionalInfo from '@/components/forms/ProfessionalInfo';
-import DocumentUpload from '@/components/forms/DocumentUpload';
+import PersonalInfo from '@/components/forms/costa-rica/components/PersonalInfo';
+import ProfessionalInfo from '@/components/forms/costa-rica/components/ProfessionalInfo';
+import DocumentUpload from '@/components/forms/costa-rica/components/DocumentUpload';
 import Link from 'next/link';
 
 export default function CostaRicaForm() {

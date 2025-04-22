@@ -1,5 +1,5 @@
 import React from 'react';
-import FileUpload from '../ui/FileUpload';
+import FileUpload from './FileUpload';
 
 const DocumentUpload = ({ formData, setFormData, errors }) => {
   const handleFileSelect = (file, documentType) => {

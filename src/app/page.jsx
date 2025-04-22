@@ -34,7 +34,7 @@ export default function Home() {
               <h2 className="card-title text-2xl mb-4">Visa Costa Rica</h2>
               <p className="text-base-content/80 mb-6">Solicita tu visa para Costa Rica de manera rápida y sencilla.</p>
               <Link 
-                href="/costa-rica-form" 
+                href="pages/costa-rica-form" 
                 className="btn btn-primary gap-2"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
