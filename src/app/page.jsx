@@ -295,6 +295,102 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Main Form Section */}
+      <div className="py-16 px-4 md:px-8 bg-base-200/50">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4">Empecemos hoy mismo con tu visado</h2>
+            <p className="text-base-content/70 text-lg">Complete el formulario y nos pondremos en contacto con usted</p>
+          </div>
+
+          <div className="card bg-base-100 shadow-xl">
+            <div className="card-body p-8">
+              <form className="space-y-6">
+                {/* Visa Type Selection */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-lg">¿Qué tipo de visa necesitas?</span>
+                  </label>
+                  <select className="select select-bordered w-full">
+                    <option disabled selected>Selecciona el tipo de visa</option>
+                    <option>Visa Turista</option>
+                    <option>Visa Trabajo</option>
+                    <option>Visa Estudiante</option>
+                    <option>Visa Nómada Digital</option>
+                    <option>ESTA (Estados Unidos)</option>
+                  </select>
+                </div>
+
+                {/* Destination Country */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-lg">País de destino</span>
+                  </label>
+                  <select className="select select-bordered w-full">
+                    <option disabled selected>Selecciona el país</option>
+                    <option>Estados Unidos</option>
+                    <option>Costa Rica</option>
+                    <option>Reino Unido</option>
+                    <option>España</option>
+                    <option>Canadá</option>
+                  </select>
+                </div>
+
+                {/* Nationality */}
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text text-lg">Nacionalidad</span>
+                  </label>
+                  <select className="select select-bordered w-full">
+                    <option disabled selected>Selecciona tu nacionalidad</option>
+                    <option>Costa Rica</option>
+                    <option>México</option>
+                    <option>Colombia</option>
+                    <option>Argentina</option>
+                    <option>España</option>
+                  </select>
+                </div>
+
+                {/* Contact Information */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text text-lg">Email</span>
+                    </label>
+                    <input 
+                      type="email" 
+                      placeholder="tu@email.com" 
+                      className="input input-bordered w-full" 
+                    />
+                  </div>
+
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text text-lg">WhatsApp</span>
+                    </label>
+                    <input 
+                      type="tel" 
+                      placeholder="+1 234 567 8900" 
+                      className="input input-bordered w-full" 
+                    />
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <div className="form-control mt-8">
+                  <button className="btn btn-primary btn-lg w-full text-lg">
+                    Solicitar asesoría gratuita
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 ml-2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestro Proceso</h2>
