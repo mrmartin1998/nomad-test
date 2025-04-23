@@ -49,48 +49,48 @@ const Form = () => {
     const newErrors = {};
 
     // Personal Info Validation
-    if (!formData.fullName) newErrors.fullName = 'Full name is required';
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'Date of birth is required';
-    if (!formData.birthCity) newErrors.birthCity = 'City of birth is required';
-    if (!formData.birthCountry) newErrors.birthCountry = 'Country of birth is required';
-    if (!formData.nationality) newErrors.nationality = 'Nationality is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    if (!formData.phone) newErrors.phone = 'Phone number is required';
-    if (!formData.address) newErrors.address = 'Address is required';
-    if (!formData.fatherName) newErrors.fatherName = "Father's name is required";
-    if (!formData.motherName) newErrors.motherName = "Mother's name is required";
-    if (!formData.usAddress) newErrors.usAddress = 'US address is required';
+    if (!formData.fullName) newErrors.fullName = 'El nombre completo es requerido';
+    if (!formData.dateOfBirth) newErrors.dateOfBirth = 'La fecha de nacimiento es requerida';
+    if (!formData.birthCity) newErrors.birthCity = 'La ciudad de nacimiento es requerida';
+    if (!formData.birthCountry) newErrors.birthCountry = 'El país de nacimiento es requerido';
+    if (!formData.nationality) newErrors.nationality = 'La nacionalidad es requerida';
+    if (!formData.email) newErrors.email = 'El correo electrónico es requerido';
+    if (!formData.phone) newErrors.phone = 'El número de teléfono es requerido';
+    if (!formData.address) newErrors.address = 'La dirección es requerida';
+    if (!formData.fatherName) newErrors.fatherName = "El nombre del padre es requerido";
+    if (!formData.motherName) newErrors.motherName = "El nombre de la madre es requerido";
+    if (!formData.usAddress) newErrors.usAddress = 'La dirección en Estados Unidos es requerida';
 
     // Passport Validation
-    if (!formData.passportNumber) newErrors.passportNumber = 'Passport number is required';
-    if (!formData.passportIssueDate) newErrors.passportIssueDate = 'Issue date is required';
-    if (!formData.passportExpiryDate) newErrors.passportExpiryDate = 'Expiry date is required';
-    if (!formData.passportIssuingCountry) newErrors.passportIssuingCountry = 'Issuing country is required';
+    if (!formData.passportNumber) newErrors.passportNumber = 'El número de pasaporte es requerido';
+    if (!formData.passportIssueDate) newErrors.passportIssueDate = 'La fecha de emisión es requerida';
+    if (!formData.passportExpiryDate) newErrors.passportExpiryDate = 'La fecha de vencimiento es requerida';
+    if (!formData.passportIssuingCountry) newErrors.passportIssuingCountry = 'El país emisor es requerido';
 
     // Professional Info Validation
-    if (!formData.companyName) newErrors.companyName = 'Company name is required';
-    if (!formData.position) newErrors.position = 'Position is required';
-    if (!formData.companyAddress.street) newErrors.companyStreet = 'Street address is required';
-    if (!formData.companyAddress.city) newErrors.companyCity = 'City is required';
-    if (!formData.companyAddress.country) newErrors.companyCountry = 'Country is required';
+    if (!formData.companyName) newErrors.companyName = 'El nombre de la empresa es requerido';
+    if (!formData.position) newErrors.position = 'El cargo es requerido';
+    if (!formData.companyAddress.street) newErrors.companyStreet = 'La dirección de la calle es requerida';
+    if (!formData.companyAddress.city) newErrors.companyCity = 'La ciudad es requerida';
+    if (!formData.companyAddress.country) newErrors.companyCountry = 'El país es requerido';
 
     // Document Validation
     if (!formData.documents.passport) {
       newErrors.documents = {
         ...newErrors.documents,
-        passport: 'Passport scan is required'
+        passport: 'El escaneo del pasaporte es requerido'
       };
     }
     if (!formData.documents.photo) {
       newErrors.documents = {
         ...newErrors.documents,
-        photo: 'Passport photo is required'
+        photo: 'La foto de pasaporte es requerida'
       };
     }
     if (!formData.documents.employmentProof) {
       newErrors.documents = {
         ...newErrors.documents,
-        employmentProof: 'Employment proof is required'
+        employmentProof: 'El comprobante de empleo es requerido'
       };
     }
 
@@ -124,11 +124,11 @@ const Form = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit application');
+        throw new Error(data.error || 'Error al enviar la solicitud');
       }
 
       // Success handling
-      alert('Application submitted successfully');
+      alert('Solicitud enviada exitosamente');
       setFormData({
         // Personal Info
         fullName: '',
@@ -221,7 +221,7 @@ const Form = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                 </svg>
               )}
-              {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}
             </button>
           </div>
         </form>

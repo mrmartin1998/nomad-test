@@ -26,8 +26,8 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
           </svg>
         </div>
         <div>
-          <h2 className="text-2xl font-bold">Personal Information</h2>
-          <p className="text-base-content/70">Enter your personal details as they appear in your passport</p>
+          <h2 className="text-2xl font-bold">Información Personal</h2>
+          <p className="text-base-content/70">Ingrese sus datos personales como aparecen en su pasaporte</p>
         </div>
       </div>
       
@@ -35,7 +35,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
         {/* Basic Personal Information */}
         <div className="form-control">
           <label className="label" htmlFor="fullName">
-            <span className="label-text font-medium">Full Name (as in passport)</span>
+            <span className="label-text font-medium">Nombre Completo (como aparece en el pasaporte)</span>
           </label>
           <input
             type="text"
@@ -44,7 +44,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.fullName || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.fullName ? 'input-error' : ''}`}
-            placeholder="Enter your full name"
+            placeholder="Ingrese su nombre completo"
           />
           {errors.fullName && (
             <label className="label">
@@ -60,7 +60,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="dateOfBirth">
-            <span className="label-text font-medium">Date of Birth</span>
+            <span className="label-text font-medium">Fecha de Nacimiento</span>
           </label>
           <input
             type="date"
@@ -84,7 +84,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="birthCity">
-            <span className="label-text font-medium">City of Birth</span>
+            <span className="label-text font-medium">Ciudad de Nacimiento</span>
           </label>
           <input
             type="text"
@@ -93,7 +93,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.birthCity || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.birthCity ? 'input-error' : ''}`}
-            placeholder="Enter your city of birth"
+            placeholder="Ingrese su ciudad de nacimiento"
           />
           {errors.birthCity && (
             <label className="label">
@@ -109,7 +109,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="birthCountry">
-            <span className="label-text font-medium">Country of Birth</span>
+            <span className="label-text font-medium">País de Nacimiento</span>
           </label>
           <input
             type="text"
@@ -118,7 +118,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.birthCountry || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.birthCountry ? 'input-error' : ''}`}
-            placeholder="Enter your country of birth"
+            placeholder="Ingrese su país de nacimiento"
           />
           {errors.birthCountry && (
             <label className="label">
@@ -134,7 +134,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="nationality">
-            <span className="label-text font-medium">Nationality</span>
+            <span className="label-text font-medium">Nacionalidad</span>
           </label>
           <input
             type="text"
@@ -143,7 +143,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.nationality || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.nationality ? 'input-error' : ''}`}
-            placeholder="Enter your nationality"
+            placeholder="Ingrese su nacionalidad"
           />
           {errors.nationality && (
             <label className="label">
@@ -160,7 +160,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
         {/* Parents Information */}
         <div className="form-control">
           <label className="label" htmlFor="fatherName">
-            <span className="label-text font-medium">Father's Name</span>
+            <span className="label-text font-medium">Nombre del Padre</span>
           </label>
           <input
             type="text"
@@ -169,7 +169,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.fatherName || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.fatherName ? 'input-error' : ''}`}
-            placeholder="Enter your father's full name"
+            placeholder="Ingrese el nombre completo de su padre"
           />
           {errors.fatherName && (
             <label className="label">
@@ -185,7 +185,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="motherName">
-            <span className="label-text font-medium">Mother's Name</span>
+            <span className="label-text font-medium">Nombre de la Madre</span>
           </label>
           <input
             type="text"
@@ -194,7 +194,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.motherName || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.motherName ? 'input-error' : ''}`}
-            placeholder="Enter your mother's full name"
+            placeholder="Ingrese el nombre completo de su madre"
           />
           {errors.motherName && (
             <label className="label">
@@ -211,7 +211,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
         {/* Contact Information */}
         <div className="form-control">
           <label className="label" htmlFor="email">
-            <span className="label-text font-medium">Email</span>
+            <span className="label-text font-medium">Correo Electrónico</span>
           </label>
           <input
             type="email"
@@ -236,7 +236,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="phone">
-            <span className="label-text font-medium">Phone Number</span>
+            <span className="label-text font-medium">Número de Teléfono</span>
           </label>
           <input
             type="tel"
@@ -245,7 +245,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.phone || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.phone ? 'input-error' : ''}`}
-            placeholder="Enter your phone number"
+            placeholder="Ingrese su número de teléfono"
           />
           {errors.phone && (
             <label className="label">
@@ -262,7 +262,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
         {/* Passport Information */}
         <div className="form-control">
           <label className="label" htmlFor="passportNumber">
-            <span className="label-text font-medium">Passport Number</span>
+            <span className="label-text font-medium">Número de Pasaporte</span>
           </label>
           <input
             type="text"
@@ -271,7 +271,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.passportNumber || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.passportNumber ? 'input-error' : ''}`}
-            placeholder="Enter your passport number"
+            placeholder="Ingrese su número de pasaporte"
           />
           {errors.passportNumber && (
             <label className="label">
@@ -287,7 +287,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="passportIssueDate">
-            <span className="label-text font-medium">Passport Issue Date</span>
+            <span className="label-text font-medium">Fecha de Emisión del Pasaporte</span>
           </label>
           <input
             type="date"
@@ -311,7 +311,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="passportExpiryDate">
-            <span className="label-text font-medium">Passport Expiry Date</span>
+            <span className="label-text font-medium">Fecha de Vencimiento del Pasaporte</span>
           </label>
           <input
             type="date"
@@ -335,7 +335,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control">
           <label className="label" htmlFor="passportIssuingCountry">
-            <span className="label-text font-medium">Passport Issuing Country</span>
+            <span className="label-text font-medium">País de Emisión del Pasaporte</span>
           </label>
           <input
             type="text"
@@ -344,7 +344,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.passportIssuingCountry || ''}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.passportIssuingCountry ? 'input-error' : ''}`}
-            placeholder="Enter issuing country"
+            placeholder="Ingrese el país de emisión"
           />
           {errors.passportIssuingCountry && (
             <label className="label">
@@ -361,7 +361,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
         {/* Address Information */}
         <div className="form-control md:col-span-2">
           <label className="label" htmlFor="address">
-            <span className="label-text font-medium">Residential Address</span>
+            <span className="label-text font-medium">Dirección Residencial</span>
           </label>
           <textarea
             id="address"
@@ -369,7 +369,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.address || ''}
             onChange={handleChange}
             className={`textarea textarea-bordered w-full h-24 ${errors.address ? 'textarea-error' : ''}`}
-            placeholder="Enter your full residential address"
+            placeholder="Ingrese su dirección residencial completa"
           />
           {errors.address && (
             <label className="label">
@@ -385,7 +385,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control md:col-span-2">
           <label className="label" htmlFor="usAddress">
-            <span className="label-text font-medium">Planned US Address</span>
+            <span className="label-text font-medium">Dirección Planeada en Estados Unidos</span>
           </label>
           <textarea
             id="usAddress"
@@ -393,7 +393,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
             value={formData.usAddress || ''}
             onChange={handleChange}
             className={`textarea textarea-bordered w-full h-24 ${errors.usAddress ? 'textarea-error' : ''}`}
-            placeholder="Enter your planned address in the US (hotel or contact)"
+            placeholder="Ingrese su dirección planeada en Estados Unidos (hotel o contacto)"
           />
           {errors.usAddress && (
             <label className="label">
@@ -417,7 +417,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
               onChange={handleCheckboxChange}
               className="checkbox checkbox-primary"
             />
-            <span className="label-text">Have you previously traveled to the United States?</span>
+            <span className="label-text">¿Ha viajado anteriormente a los Estados Unidos?</span>
           </label>
         </div>
 
@@ -430,7 +430,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
               onChange={handleCheckboxChange}
               className="checkbox checkbox-primary"
             />
-            <span className="label-text">Do you have any criminal records or immigration issues?</span>
+            <span className="label-text">¿Tiene antecedentes penales o problemas de inmigración?</span>
           </label>
           {formData.hasCriminalRecord && (
             <div className="mt-2">
@@ -439,7 +439,7 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
                 value={formData.criminalRecordDetails || ''}
                 onChange={handleChange}
                 className="textarea textarea-bordered w-full"
-                placeholder="Please provide details"
+                placeholder="Por favor proporcione detalles"
               />
             </div>
           )}

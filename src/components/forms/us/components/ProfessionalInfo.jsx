@@ -11,12 +11,12 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Professional Information</h2>
+      <h2 className="text-xl font-semibold">Información Profesional</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="form-control w-full">
           <label className="label">
-            <span className="label-text">Current Occupation</span>
+            <span className="label-text">Ocupación Actual</span>
           </label>
           <input
             type="text"
@@ -24,7 +24,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
             value={formData.occupation}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.occupation ? 'input-error' : ''}`}
-            placeholder="Enter your current occupation"
+            placeholder="Ingrese su ocupación actual"
           />
           {errors.occupation && (
             <label className="label">
@@ -35,7 +35,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control w-full">
           <label className="label">
-            <span className="label-text">Company Name</span>
+            <span className="label-text">Nombre de la Empresa</span>
           </label>
           <input
             type="text"
@@ -43,7 +43,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
             value={formData.companyName}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.companyName ? 'input-error' : ''}`}
-            placeholder="Enter your company name"
+            placeholder="Ingrese el nombre de la empresa"
           />
           {errors.companyName && (
             <label className="label">
@@ -54,14 +54,14 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control w-full md:col-span-2">
           <label className="label">
-            <span className="label-text">Company Address</span>
+            <span className="label-text">Dirección de la Empresa</span>
           </label>
           <textarea
             name="companyAddress"
             value={formData.companyAddress}
             onChange={handleChange}
             className={`textarea textarea-bordered w-full h-24 ${errors.companyAddress ? 'textarea-error' : ''}`}
-            placeholder="Enter your company's address"
+            placeholder="Ingrese la dirección de la empresa"
           />
           {errors.companyAddress && (
             <label className="label">
@@ -72,7 +72,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control w-full">
           <label className="label">
-            <span className="label-text">Position</span>
+            <span className="label-text">Cargo</span>
           </label>
           <input
             type="text"
@@ -80,7 +80,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
             value={formData.position}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.position ? 'input-error' : ''}`}
-            placeholder="Enter your position"
+            placeholder="Ingrese su cargo"
           />
           {errors.position && (
             <label className="label">
@@ -91,7 +91,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
 
         <div className="form-control w-full">
           <label className="label">
-            <span className="label-text">Annual Income</span>
+            <span className="label-text">Ingreso Anual</span>
           </label>
           <input
             type="number"
@@ -99,7 +99,7 @@ const ProfessionalInfo = ({ formData, setFormData, errors }) => {
             value={formData.annualIncome}
             onChange={handleChange}
             className={`input input-bordered w-full ${errors.annualIncome ? 'input-error' : ''}`}
-            placeholder="Enter your annual income"
+            placeholder="Ingrese su ingreso anual"
           />
           {errors.annualIncome && (
             <label className="label">

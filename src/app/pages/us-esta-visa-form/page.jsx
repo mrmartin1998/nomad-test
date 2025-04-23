@@ -15,7 +15,7 @@ export default function USVisaFormPage() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
               </svg>
-              Back
+              Atrás
             </Link>
           </div>
         </div>
@@ -26,19 +26,19 @@ export default function USVisaFormPage() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-primary mb-4">
-              US ESTA Visa Application
+              Solicitud de Visa ESTA para Estados Unidos
             </h1>
             <div className="divider"></div>
             <p className="text-base-content/70">
-              Complete the form with your personal information and required documents
+              Complete el formulario con su información personal y documentos requeridos
             </p>
           </div>
 
           {/* Progress Steps */}
           <ul className="steps steps-horizontal w-full mb-12">
-            <li className="step step-primary">Personal Information</li>
-            <li className="step step-primary">Professional Information</li>
-            <li className="step step-primary">Documents</li>
+            <li className="step step-primary">Información Personal</li>
+            <li className="step step-primary">Información Profesional</li>
+            <li className="step step-primary">Documentos</li>
           </ul>
 
           {/* Form */}
