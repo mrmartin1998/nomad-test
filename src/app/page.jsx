@@ -229,6 +229,72 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Testimonials Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4">Testimonios y casos reales</h2>
+          <p className="text-center text-base-content/70 mb-12 text-lg">
+            Experiencias de personas que confiaron en nosotros
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="Ana Martínez" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">Ana Martínez</h3>
+                <p className="text-base-content/70 italic">
+                  "El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada."
+                </p>
+                <div className="badge badge-primary">Visa Costa Rica</div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="Carlos Ruiz" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">Carlos Ruiz</h3>
+                <p className="text-base-content/70 italic">
+                  "Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas."
+                </p>
+                <div className="badge badge-primary">ESTA EE.UU.</div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="María González" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">María González</h3>
+                <p className="text-base-content/70 italic">
+                  "Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!"
+                </p>
+                <div className="badge badge-primary">Visa Nómada Digital</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestro Proceso</h2>
