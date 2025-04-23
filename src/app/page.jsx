@@ -137,6 +137,98 @@ export default function Home() {
         </div>
       </div>
 
+      {/* New Benefits Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="bg-base-200/50 rounded-3xl py-16 px-4 md:px-8">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-4">Tu tranquilidad, nuestro compromiso</h2>
+            <p className="text-center text-base-content/70 mb-12 text-lg">
+              Descubre por qué somos tu mejor opción para tramitar tu visa
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Worldwide Processing */}
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">🌍</span>
+                  </div>
+                  <h3 className="card-title text-xl">Tramitación 100% Online</h3>
+                  <p className="text-base-content/70">
+                    Gestiona tu visa desde cualquier parte del mundo
+                  </p>
+                </div>
+              </div>
+
+              {/* Expert Network */}
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">👥</span>
+                  </div>
+                  <h3 className="card-title text-xl">Expertos en +20 países</h3>
+                  <p className="text-base-content/70">
+                    Red internacional de especialistas en inmigración
+                  </p>
+                </div>
+              </div>
+
+              {/* Legal Support */}
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">⚖️</span>
+                  </div>
+                  <h3 className="card-title text-xl">Soporte Legal Completo</h3>
+                  <p className="text-base-content/70">
+                    Acompañamiento legal y logístico personalizado
+                  </p>
+                </div>
+              </div>
+
+              {/* Success Rate */}
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">📈</span>
+                  </div>
+                  <h3 className="card-title text-xl">Alta Tasa de Éxito</h3>
+                  <p className="text-base-content/70">
+                    Más del 95% de solicitudes aprobadas
+                  </p>
+                </div>
+              </div>
+
+              {/* Partner Network */}
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">🤝</span>
+                  </div>
+                  <h3 className="card-title text-xl">Red de Partners</h3>
+                  <p className="text-base-content/70">
+                    Seguros, coworkings, escuelas y más servicios
+                  </p>
+                </div>
+              </div>
+
+              {/* Stats Card */}
+              <div className="card bg-primary text-primary-content shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="stats bg-transparent text-primary-content">
+                    <div className="stat">
+                      <div className="stat-title text-primary-content/80">Visas Procesadas</div>
+                      <div className="stat-value text-white">1,000+</div>
+                      <div className="stat-desc text-primary-content/80">En el último año</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Features Section */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestro Proceso</h2>
