@@ -1,20 +1,52 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Home() {
   return (
     <div className="app-background">
-      {/* Hero Section with Gradient */}
-      <div className="hero min-h-[60vh] bg-base-100">
-        <div className="hero-content text-center">
-          <div className="max-w-lg">
-            <h1 className="text-6xl font-bold text-primary">Portal de Visas</h1>
-            <div className="divider"></div>
-            <p className="py-6 text-lg">
-              Bienvenido al portal de solicitud de visas. 
-              Simplificamos el proceso para hacer tu aplicación más fácil y eficiente.
+      {/* New Hero Section */}
+      <div className="min-h-screen bg-base-100 relative overflow-hidden">
+        <div className="container mx-auto px-4 pt-20">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+              Consigue tu visado
+              <span className="block">sin complicaciones, sin estrés,</span>
+              <span className="block italic text-primary">sin papeleos y en 48H</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-base-content/70 mb-12">
+              Tramitamos visados de turismo, nómadas digitales, estudiantes y más. 
+              Servicio rápido, online y con asesoría personalizada.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="btn btn-primary btn-lg">
+                <span className="mr-2">👉</span> Solicita tu visado
+              </button>
+              <button className="btn btn-outline btn-lg">
+                Descubre si cumples los requisitos
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Cards Container */}
+        <div className="relative mt-20 h-[300px] overflow-hidden">
+          <div className="absolute left-1/2 transform -translate-x-1/2 flex justify-center w-full">
+            {[...Array(7)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-64 h-40 bg-base-200 rounded-lg shadow-xl"
+                style={{
+                  transform: `rotate(${(i - 3) * 5}deg) translateX(${(i - 3) * 30}px)`,
+                  zIndex: i
+                }}
+              >
+                <div className="w-full h-full bg-base-100 rounded-lg flex items-center justify-center">
+                  <span className="text-2xl">🌍</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
