@@ -1,0 +1,53 @@
+MVP User Flow and Requirements
+
+1. LANDING PAGE (Current Implementation)
+   - Quick overview of visa types
+   - Main contact form for initial consultation
+   - Benefits and testimonials
+
+2. PRODUCT/VISA PAGES
+   Each visa type (Costa Rica, USA, etc.) would have its own dedicated page with:
+   - Basic requirements
+   - Processing time
+   - Cost (in multiple currencies via Revolut)
+   - Required documents
+   - Clear CTA to start application
+
+3. APPLICATION FLOW (MVP Version)
+   A. Initial Information
+      - Basic personal details
+      - Travel information
+      - Quick eligibility check
+   
+   B. Document Upload
+      - Simple document upload interface
+      - Clear requirements
+      - Progress indicator
+   
+   C. Payment via Revolut
+      - Revolut payment integration
+      - Multi-currency support
+      - Clear pricing breakdown
+      - Secure payment process
+      - Payment status tracking
+
+4. POST-APPLICATION
+   - Confirmation page
+   - Email notification
+   - Basic status tracking
+   - Payment confirmation
+
+Key Benefits of Using Revolut:
+1. Multi-currency support
+2. Lower transaction fees
+3. Faster international transfers
+4. Better exchange rates
+5. Business account features
+
+Technical Requirements:
+- Next.js frontend
+- Serverless architecture
+- Revolut API integration
+- Document storage system
+- Email notification system
+- Basic status tracking 
