@@ -244,7 +244,7 @@ const ESTAVisaPage = () => {
             <div className="card-body items-center text-center">
               <h2 className="text-3xl font-bold mb-4">¿Listo para Viajar a EE.UU.?</h2>
               <p className="text-xl mb-8">Solicite su ESTA ahora y reciba su autorización en 24-48 horas</p>
-              <Link href="/esta/apply" className="btn btn-secondary btn-lg group">
+              <Link href="esta/apply" className="btn btn-secondary btn-lg group">
                 <span className="mr-2 group-hover:translate-x-1 transition-transform">✈️</span>
                 Solicitar ESTA
               </Link>
