@@ -192,7 +192,7 @@ const CubaVisaPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">¿Listo para Solicitar su Visa?</h2>
           <p className="text-xl mb-8 text-base-content/70">Comience su solicitud ahora y reciba su visa en 24-48 horas</p>
-          <Link href="/cuba/apply" className="btn btn-primary btn-lg">
+          <Link href="cuba/apply" className="btn btn-primary btn-lg">
             <span className="mr-2">👉</span> Solicitar Ahora
           </Link>
         </div>
