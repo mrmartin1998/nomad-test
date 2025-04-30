@@ -229,7 +229,7 @@ const IndiaVisaPage = () => {
             <div className="card-body items-center text-center">
               <h2 className="text-3xl font-bold mb-4">¿Listo para Explorar la India?</h2>
               <p className="text-xl mb-8">Solicite su eVisa ahora y reciba su autorización en 72 horas</p>
-              <Link href="/india/apply" className="btn btn-secondary btn-lg group">
+              <Link href="india/apply" className="btn btn-secondary btn-lg group">
                 <span className="mr-2 group-hover:translate-x-1 transition-transform">🛕</span>
                 Solicitar eVisa
               </Link>
