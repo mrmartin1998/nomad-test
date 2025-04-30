@@ -433,6 +433,245 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Available Visas Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">Visas Disponibles</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* ESTA USA */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇺🇸</span>
+                  </div>
+                  <h3 className="card-title">ESTA USA</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Autorización electrónica para viajar a Estados Unidos</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 72h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 2 años</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 90 días</span>
+                  </div>
+                </div>
+                <Link href="pages/esta" className="btn btn-primary w-full">
+                  Solicitar ESTA
+                </Link>
+              </div>
+            </div>
+
+            {/* India eVisa */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇮🇳</span>
+                  </div>
+                  <h3 className="card-title">eVisa India</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Visa electrónica para viajar a la India</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 72h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 30 días</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 30 días</span>
+                  </div>
+                </div>
+                <Link href="pages/india" className="btn btn-primary w-full">
+                  Solicitar eVisa
+                </Link>
+              </div>
+            </div>
+
+            {/* Thailand eVisa */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇹🇭</span>
+                  </div>
+                  <h3 className="card-title">eVisa Tailandia</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Visa electrónica para viajar a Tailandia</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 48h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 60 días</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 30 días</span>
+                  </div>
+                </div>
+                <Link href="pages/thailand" className="btn btn-primary w-full">
+                  Solicitar eVisa
+                </Link>
+              </div>
+            </div>
+
+            {/* UK ETA */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇬🇧</span>
+                  </div>
+                  <h3 className="card-title">ETA Reino Unido</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Autorización electrónica para viajar al Reino Unido</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 48h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 2 años</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 6 meses</span>
+                  </div>
+                </div>
+                <Link href="pages/uk" className="btn btn-primary w-full">
+                  Solicitar ETA
+                </Link>
+              </div>
+            </div>
+
+            {/* Egypt eVisa */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇪🇬</span>
+                  </div>
+                  <h3 className="card-title">eVisa Egipto</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Visa electrónica para viajar a Egipto</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 24h</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 90 días</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 30 días</span>
+                  </div>
+                </div>
+                <Link href="pages/egypt" className="btn btn-primary w-full">
+                  Solicitar eVisa
+                </Link>
+              </div>
+            </div>
+
+            {/* Cuba Visa */}
+            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+              <div className="card-body">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="text-2xl">🇨🇺</span>
+                  </div>
+                  <h3 className="card-title">Visa Cuba</h3>
+                </div>
+                <p className="text-base-content/70 mb-4">Visa para viajar a Cuba</p>
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Procesamiento: 5 días</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Validez: 30 días</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-primary">✓</span>
+                    <span>Estadía: 30 días</span>
+                  </div>
+                </div>
+                <Link href="pages/cuba" className="btn btn-primary w-full">
+                  Solicitar Visa
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-base-200">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-12 text-center">¿Por qué elegirnos?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body items-center text-center">
+                <div className="rounded-full bg-primary/10 p-6 mb-4">
+                  <span className="text-4xl">⚡</span>
+                </div>
+                <h3 className="card-title text-xl">Procesamiento Rápido</h3>
+                <p className="text-base-content/70">Reciba su visa en tiempo récord</p>
+              </div>
+            </div>
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body items-center text-center">
+                <div className="rounded-full bg-primary/10 p-6 mb-4">
+                  <span className="text-4xl">✅</span>
+                </div>
+                <h3 className="card-title text-xl">Aprobación Garantizada</h3>
+                <p className="text-base-content/70">O reembolso completo</p>
+              </div>
+            </div>
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body items-center text-center">
+                <div className="rounded-full bg-primary/10 p-6 mb-4">
+                  <span className="text-4xl">💬</span>
+                </div>
+                <h3 className="card-title text-xl">Soporte 24/7</h3>
+                <p className="text-base-content/70">Asistencia personalizada</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="card bg-primary text-primary-content shadow-xl">
+            <div className="card-body items-center text-center">
+              <h2 className="text-3xl font-bold mb-4">¿Listo para viajar?</h2>
+              <p className="text-xl mb-8">Solicite su visa ahora y reciba su autorización en tiempo récord</p>
+              <Link href="pages/apply" className="btn btn-secondary btn-lg">
+                Solicitar Visa
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
         <div>
