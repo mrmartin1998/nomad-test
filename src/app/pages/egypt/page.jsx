@@ -252,7 +252,7 @@ const EgyptVisaPage = () => {
             <div className="card-body">
               <h2 className="text-3xl font-bold mb-4">¿Listo para Explorar Egipto?</h2>
               <p className="text-xl mb-8">Comience su solicitud ahora y reciba su visa en 24-48 horas</p>
-              <Link href="/egypt/apply" className="btn btn-secondary btn-lg">
+              <Link href="egypt/apply" className="btn btn-secondary btn-lg">
                 <span className="mr-2">✈️</span> Solicitar Ahora
               </Link>
             </div>
