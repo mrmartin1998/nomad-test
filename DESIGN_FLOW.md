@@ -181,3 +181,99 @@
 # Feature Development Guide
 
 ## Feature Planning Template 
+
+# Blog System Design Flow
+
+## Technical Design
+
+### Backend Changes
+
+#### 1. Database Models
+```javascript
+// Post Model
+const postSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  author: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+  tags: [{ type: String }],
+  image: { type: String },
+  status: { type: String, enum: ['draft', 'published'], default: 'draft' },
+  slug: { type: String, unique: true },
+  meta_description: { type: String }
+});
+
+// Category Model
+const categorySchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  slug: { type: String, unique: true },
+  description: { type: String }
+});
+```
+
+#### 2. API Routes Structure
+```
+/api/blog/
+  ├── posts/
+  │   ├── GET: fetch all posts
+  │   ├── POST: create post
+  │   ├── PUT: update post
+  │   └── DELETE: delete post
+  ├── categories/
+  │   ├── GET: fetch all categories
+  │   └── POST: create category
+  └── images/
+      └── POST: upload image
+```
+
+#### 3. File Structure
+```
+src/
+├── models/
+│   ├── Post.js
+│   └── Category.js
+├── controllers/
+│   ├── blog/
+│   │   ├── postController.js
+│   │   ├── categoryController.js
+│   │   └── imageController.js
+│   └── api/
+│       └── blog/
+│           ├── posts/
+│           │   ├── route.js
+│           │   └── [...slug]/
+│           │       └── route.js
+│           ├── categories/
+│           │   └── route.js
+│           └── images/
+│               └── route.js
+```
+
+## Implementation Order
+1. Create database models
+2. Set up API routes
+3. Implement controllers
+4. Add validation middleware
+5. Set up error handling
+
+## Dependencies
+- mongoose
+- multer (for image uploads)
+- slugify (for URL-friendly slugs)
+
+## Testing Requirements
+1. Unit Tests:
+   - Model validation
+   - Slug generation
+   - Image upload handling
+
+2. Integration Tests:
+   - API endpoints
+   - Database operations
+   - File uploads
+
+3. E2E Tests:
+   - Post creation flow
+   - Category management
+   - Image upload process 
