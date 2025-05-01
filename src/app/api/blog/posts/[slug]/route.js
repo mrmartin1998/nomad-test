@@ -40,83 +40,21 @@ const mockPosts = [
   }
 ];
 
-// GET a single post
-export async function GET(request, { params }) {
-  try {
-    await connectDB();
-    const post = await Post.findOne({ slug: params.slug }).populate('category');
-    
-    if (!post) {
-      return NextResponse.json(
-        { error: 'Post no encontrado' },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json(post);
-  } catch (error) {
-    console.error('Error fetching post:', error);
-    return NextResponse.json(
-      { error: 'Error al obtener el post' },
-      { status: 500 }
-    );
-  }
-}
-
-// PUT (update) a post
-export async function PUT(request, { params }) {
-  try {
-    await connectDB();
-    
-    const body = await request.json();
-    
-    // Handle the metaDescription to meta_description conversion
-    const { metaDescription, ...rest } = body;
-    const postData = {
-      ...rest,
-      meta_description: metaDescription
-    };
-
-    // First find the post to ensure it exists
-    const existingPost = await Post.findOne({ slug: params.slug });
-    if (!existingPost) {
-      return NextResponse.json(
-        { error: 'Post no encontrado' },
-        { status: 404 }
-      );
-    }
-
-    // Update the post
-    const updatedPost = await Post.findOneAndUpdate(
-      { slug: params.slug },
-      postData,
-      { 
-        new: true, 
-        runValidators: true 
-      }
-    ).populate('category');
-
-    return NextResponse.json(updatedPost);
-  } catch (error) {
-    console.error('Error updating post:', error);
-    if (error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      );
-    }
-    return NextResponse.json(
-      { error: 'Error al actualizar el post' },
-      { status: 500 }
-    );
-  }
-}
-
-// DELETE a post
+// DELETE post by slug
 export async function DELETE(request, { params }) {
   try {
     await connectDB();
-    const post = await Post.findOneAndDelete({ slug: params.slug });
+    
+    const { slug } = params;
+    
+    if (!slug) {
+      return NextResponse.json(
+        { error: 'Slug no proporcionado' },
+        { status: 400 }
+      );
+    }
+
+    const post = await Post.findOneAndDelete({ slug });
 
     if (!post) {
       return NextResponse.json(
@@ -130,6 +68,75 @@ export async function DELETE(request, { params }) {
     console.error('Error deleting post:', error);
     return NextResponse.json(
       { error: 'Error al eliminar el post' },
+      { status: 500 }
+    );
+  }
+}
+
+// GET single post by slug
+export async function GET(request, { params }) {
+  try {
+    await connectDB();
+    
+    const { slug } = params;
+    
+    const post = await Post.findOne({ slug }).populate('category');
+
+    if (!post) {
+      return NextResponse.json(
+        { error: 'Post no encontrado' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(post);
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    return NextResponse.json(
+      { error: 'Error al cargar el post' },
+      { status: 500 }
+    );
+  }
+}
+
+// PUT update post by slug
+export async function PUT(request, { params }) {
+  try {
+    await connectDB();
+    
+    const { slug } = params;
+    
+    const body = await request.json();
+    const { metaDescription, ...rest } = body;
+    const postData = {
+      ...rest,
+      meta_description: metaDescription
+    };
+
+    const post = await Post.findOneAndUpdate(
+      { slug },
+      postData,
+      { new: true, runValidators: true }
+    ).populate('category');
+
+    if (!post) {
+      return NextResponse.json(
+        { error: 'Post no encontrado' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(post);
+  } catch (error) {
+    console.error('Error updating post:', error);
+    if (error.name === 'ValidationError') {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 400 }
+      );
+    }
+    return NextResponse.json(
+      { error: 'Error al actualizar el post' },
       { status: 500 }
     );
   }

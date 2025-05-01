@@ -36,13 +36,13 @@ const PostList = ({ limit }) => {
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (slug) => {
     if (!confirm('¿Está seguro de que desea eliminar este post?')) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/blog/posts/${id}`, {
+      const response = await fetch(`/api/blog/posts/${slug}`, {
         method: 'DELETE'
       });
 
@@ -137,7 +137,7 @@ const PostList = ({ limit }) => {
                       Editar
                     </Link>
                     <button
-                      onClick={() => handleDelete(post._id)}
+                      onClick={() => handleDelete(post.slug)}
                       className="btn btn-sm btn-error"
                     >
                       Eliminar
