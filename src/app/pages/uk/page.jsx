@@ -209,7 +209,7 @@ const UKVisaPage = () => {
             <div className="card-body items-center text-center">
               <h2 className="text-3xl font-bold mb-4">¿Listo para Explorar el Reino Unido?</h2>
               <p className="text-xl mb-8">Solicite su ETA ahora y reciba su autorización en 24-48 horas</p>
-              <Link href="/uk/apply" className="btn btn-secondary btn-lg">
+              <Link href="uk/apply" className="btn btn-secondary btn-lg">
                 Solicitar ETA
               </Link>
             </div>
