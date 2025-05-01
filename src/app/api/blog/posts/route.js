@@ -21,12 +21,19 @@ export async function GET(request) {
     const totalPosts = await Post.countDocuments(query);
     const totalPages = Math.ceil(totalPosts / limit);
 
-    // Fetch posts with pagination
-    const posts = await Post.find(query)
-      .populate('category')
+    // Fetch posts with pagination and handle population errors gracefully
+    let posts = await Post.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
+
+    // Try to populate categories, but don't fail if it doesn't work
+    try {
+      posts = await Post.populate(posts, { path: 'category' });
+    } catch (populateError) {
+      console.error('Error populating categories:', populateError);
+      // Continue with unpopulated posts
+    }
 
     return NextResponse.json({
       posts,

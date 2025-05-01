@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 
+// Import all models
+import './models/Category';
+import './models/Post';
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
