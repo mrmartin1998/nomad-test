@@ -302,6 +302,93 @@ const ThailandVisaPage = () => {
           })()}
         </div>
       </section>
+      {/* CTA Section (copied from Egypt, adapted for Thailand) */}
+      <section className="py-12">
+        <div className="container mx-auto px-4 text-center">
+          <div className="card bg-primary text-primary-content shadow-xl">
+            <div className="card-body">
+              <h2 className="text-3xl font-bold mb-4">¿Listo para Explorar Tailandia?</h2>
+              <p className="text-xl mb-8">Comience su solicitud ahora y reciba su visa en 24-48 horas</p>
+              <Link href="/thailand/apply" className="btn btn-secondary btn-lg">
+                <span className="mr-2">✈️</span> Solicitar eVisa
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* FAQ Section (copied from ESTA) */}
+      <section className="py-12 bg-base-200/50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8">Preguntas Frecuentes</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="collapse collapse-plus bg-base-100 shadow-xl">
+              <input type="radio" name="faq" />
+              <div className="collapse-title text-xl font-medium">
+                ¿Cuánto tiempo tarda el procesamiento?
+              </div>
+              <div className="collapse-content">
+                <p className="text-base-content/70">El procesamiento típicamente toma entre 24 y 48 horas hábiles.</p>
+              </div>
+            </div>
+            <div className="collapse collapse-plus bg-base-100 shadow-xl">
+              <input type="radio" name="faq" />
+              <div className="collapse-title text-xl font-medium">
+                ¿Qué documentos necesito?
+              </div>
+              <div className="collapse-content">
+                <p className="text-base-content/70">Necesitará un pasaporte válido y una tarjeta de crédito para el pago.</p>
+              </div>
+            </div>
+            <div className="collapse collapse-plus bg-base-100 shadow-xl">
+              <input type="radio" name="faq" />
+              <div className="collapse-title text-xl font-medium">
+                ¿Cuánto tiempo es válido el ESTA?
+              </div>
+              <div className="collapse-content">
+                <p className="text-base-content/70">El ESTA es válido por 2 años o hasta la expiración de su pasaporte.</p>
+              </div>
+            </div>
+            <div className="collapse collapse-plus bg-base-100 shadow-xl">
+              <input type="radio" name="faq" />
+              <div className="collapse-title text-xl font-medium">
+                ¿Puedo viajar con el ESTA?
+              </div>
+              <div className="collapse-content">
+                <p className="text-base-content/70">Sí, el ESTA le permite viajar a EE.UU. por turismo o negocios por hasta 90 días.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Reviews Section (inspired by Web Atlys) */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto bg-base-100 rounded-xl shadow-xl p-8 flex flex-col md:flex-row items-center gap-8">
+            {/* Left: Main Rating */}
+            <div className="flex-1 flex flex-col items-center md:items-start">
+              <h2 className="text-2xl font-bold mb-2 w-full">Reviews</h2>
+              <div className="flex items-center gap-4 mb-2">
+                <span className="text-5xl font-extrabold text-primary">4.86</span>
+                <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full font-semibold text-sm">Outstanding</span>
+              </div>
+              <div className="text-base-content/70 text-sm mb-2">821 Reviews</div>
+            </div>
+            {/* Right: Stats */}
+            <div className="flex-1 flex flex-col gap-4">
+              <div className="flex items-center gap-2 text-base-content/80">
+                <span className="text-lg">⭐</span>
+                <span>Avg rating of recent 10 travellers:</span>
+                <span className="text-success font-semibold">5.00 Stars</span>
+              </div>
+              <div className="flex items-center gap-2 text-base-content/80">
+                <span className="text-lg">👨‍👩‍👧‍👦</span>
+                <span>Most common traveller type:</span>
+                <span className="text-success font-semibold">Family</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Hero Section with Card Overlay */}
       <section className="relative py-24 bg-base-200">
         <div className="container mx-auto px-4">
