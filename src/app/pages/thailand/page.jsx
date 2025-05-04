@@ -389,8 +389,75 @@ const ThailandVisaPage = () => {
           </div>
         </div>
       </section>
+      {/* Testimonials Section (inspired by landing page) */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4">Testimonios y casos reales</h2>
+          <p className="text-center text-base-content/70 mb-12 text-lg">
+            Experiencias de personas que confiaron en nosotros
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Testimonial 1 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="Ana Martínez" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">Ana Martínez</h3>
+                <p className="text-base-content/70 italic">
+                  "El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada."
+                </p>
+                <div className="badge badge-primary">eVisa Tailandia</div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="Carlos Ruiz" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">Carlos Ruiz</h3>
+                <p className="text-base-content/70 italic">
+                  "Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas."
+                </p>
+                <div className="badge badge-primary">eVisa Tailandia</div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 */}
+            <div className="card bg-base-100 shadow-xl">
+              <figure className="px-6 pt-10 pb-6">
+                <div className="avatar">
+                  <div className="w-24 rounded-full ring-4 ring-primary ring-offset-base-100 ring-offset-4">
+                    <img src="https://placehold.co/100x100" alt="María González" />
+                  </div>
+                </div>
+              </figure>
+              <div className="card-body items-center text-center pt-2">
+                <h3 className="card-title text-xl">María González</h3>
+                <p className="text-base-content/70 italic">
+                  "Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!"
+                </p>
+                <div className="badge badge-primary">eVisa Tailandia</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        
+      </div>
       {/* Hero Section with Card Overlay */}
-      <section className="relative py-24 bg-base-200">
+      {/* <section className="relative py-24 bg-base-200">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="card bg-base-100 shadow-2xl">
@@ -433,10 +500,10 @@ const ThailandVisaPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Requirements Section with Cards */}
-      <section className="py-16">
+      {/* <section className="py-16">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Requisitos y Documentos</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -486,10 +553,10 @@ const ThailandVisaPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Process Section with Timeline */}
-      <section className="py-16 bg-base-200">
+      {/* <section className="py-16 bg-base-200">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">Proceso de Solicitud</h2>
           <div className="max-w-4xl mx-auto">
@@ -541,10 +608,10 @@ const ThailandVisaPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
-      <section className="py-16 bg-base-200">
+      {/* <section className="py-16 bg-base-200">
         <div className="container mx-auto px-4">
           <div className="card bg-primary text-primary-content shadow-xl">
             <div className="card-body items-center text-center">
@@ -556,8 +623,10 @@ const ThailandVisaPage = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
+
+     
   );
 };
 
