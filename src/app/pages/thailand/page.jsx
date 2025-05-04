@@ -38,17 +38,17 @@ const ThailandVisaPage = () => {
           </div>
         </div>
       </section>
-      {/* UK Hero/Info Section (copied) */}
+      {/* Thai Hero/Info Section (copied) */}
       <section className="relative py-16">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2">
-              <div className="badge badge-primary mb-4">ETA UK</div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">Autorización Electrónica para el Reino Unido</h1>
-              <p className="text-lg text-base-content/70 mb-8">Explore la rica historia y cultura británica con una autorización electrónica rápida y sencilla</p>
+              <div className="badge badge-primary mb-4">eVisa Tailandia</div>
+              <h1 className="text-4xl md:text-5xl font-bold mb-6">Visa Electrónica para Tailandia</h1>
+              <p className="text-lg text-base-content/70 mb-8">Explore las playas paradisíacas y la rica cultura tailandesa con una visa electrónica rápida y sencilla</p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/uk/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
-                  Solicitar ETA
+                <Link href="/thailand/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
+                  Solicitar eVisa
                 </Link>
                 <Link href="/status" className="btn btn-outline btn-lg w-full sm:w-auto">
                   Verificar Estado
@@ -360,6 +360,7 @@ const ThailandVisaPage = () => {
           </div>
         </div>
       </section>
+      
       {/* Reviews Section (inspired by Web Atlys) */}
       <section className="py-12">
         <div className="container mx-auto px-4">
