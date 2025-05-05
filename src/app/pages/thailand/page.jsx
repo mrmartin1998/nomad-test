@@ -4,11 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 const ThailandVisaPage = () => {
+  // FAQ accordion state (top-level)
+  const [faqOpenIndex, setFaqOpenIndex] = useState(null);
   return (
     <div className="min-h-screen bg-base-100">
       {/* Media Grid Section (New) */}
       <section className="container mx-auto px-4 pt-8 pb-4">
-        <div className="w-full max-w-4xl mx-auto aspect-[2/1] rounded-lg overflow-hidden bg-base-200 flex flex-col md:flex-row gap-0">
+        <div className="w-full aspect-[2/1] rounded-lg overflow-hidden bg-base-200 flex flex-col md:flex-row gap-0">
           {/* Video (left) */}
           <div className="w-full md:w-1/2 h-1/2 md:h-full aspect-[1/1] md:aspect-auto relative">
             <iframe
@@ -316,48 +318,55 @@ const ThailandVisaPage = () => {
           </div>
         </div>
       </section>
-      {/* FAQ Section (copied from ESTA) */}
+      
+      {/* FAQ Section (copied from ESTA, now with accordion state) */}
       <section className="py-12 bg-base-200/50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8">Preguntas Frecuentes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="collapse collapse-plus bg-base-100 shadow-xl">
-              <input type="radio" name="faq" />
-              <div className="collapse-title text-xl font-medium">
-                ¿Cuánto tiempo tarda el procesamiento?
+          {(() => {
+            const faqs = [
+              {
+                question: '¿Cuánto tiempo tarda el procesamiento?',
+                answer: 'El procesamiento típicamente toma entre 24 y 48 horas hábiles.'
+              },
+              {
+                question: '¿Qué documentos necesito?',
+                answer: 'Necesitará un pasaporte válido y una tarjeta de crédito para el pago.'
+              },
+              {
+                question: '¿Cuánto tiempo es válido el ESTA?',
+                answer: 'El ESTA es válido por 2 años o hasta la expiración de su pasaporte.'
+              },
+              {
+                question: '¿Puedo viajar con el ESTA?',
+                answer: 'Sí, el ESTA le permite viajar a EE.UU. por turismo o negocios por hasta 90 días.'
+              }
+            ];
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {faqs.map((faq, idx) => (
+                  <div key={idx} className="collapse collapse-plus bg-base-100 shadow-xl">
+                    <input
+                      type="radio" 
+                      name="faq-accordion"
+                      checked={faqOpenIndex === idx}
+                      onChange={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
+                      className="hidden"
+                    />
+                    <div
+                      className="collapse-title text-xl font-medium cursor-pointer"
+                      onClick={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
+                    >
+                      {faq.question}
+                    </div>
+                    <div className={`collapse-content${faqOpenIndex === idx ? ' block' : ' hidden'}`}>
+                      <p className="text-base-content/70">{faq.answer}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="collapse-content">
-                <p className="text-base-content/70">El procesamiento típicamente toma entre 24 y 48 horas hábiles.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus bg-base-100 shadow-xl">
-              <input type="radio" name="faq" />
-              <div className="collapse-title text-xl font-medium">
-                ¿Qué documentos necesito?
-              </div>
-              <div className="collapse-content">
-                <p className="text-base-content/70">Necesitará un pasaporte válido y una tarjeta de crédito para el pago.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus bg-base-100 shadow-xl">
-              <input type="radio" name="faq" />
-              <div className="collapse-title text-xl font-medium">
-                ¿Cuánto tiempo es válido el ESTA?
-              </div>
-              <div className="collapse-content">
-                <p className="text-base-content/70">El ESTA es válido por 2 años o hasta la expiración de su pasaporte.</p>
-              </div>
-            </div>
-            <div className="collapse collapse-plus bg-base-100 shadow-xl">
-              <input type="radio" name="faq" />
-              <div className="collapse-title text-xl font-medium">
-                ¿Puedo viajar con el ESTA?
-              </div>
-              <div className="collapse-content">
-                <p className="text-base-content/70">Sí, el ESTA le permite viajar a EE.UU. por turismo o negocios por hasta 90 días.</p>
-              </div>
-            </div>
-          </div>
+            );
+          })()}
         </div>
       </section>
       
