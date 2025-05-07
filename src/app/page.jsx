@@ -672,15 +672,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer footer-center p-10 bg-base-200 text-base-content rounded">
-        <div>
-          <p className="font-bold">
-            Visa Costa Rica <br/>Portal Oficial de Solicitud
-          </p>
-          <p>Copyright © 2024 - Todos los derechos reservados</p>
-        </div>
-      </footer>
     </div>
   );
 } 
