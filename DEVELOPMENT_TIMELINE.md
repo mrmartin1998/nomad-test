@@ -73,6 +73,12 @@ Milestone 2: Core UI Development (Sprint 2)
   - Accessibility improvements
   - Estimated: 2-3 days
 
+- [ ] Smart onboarding
+  - (figure out how the fuck to do this)
+
+- [ ] Planificador (visa)
+  - (figure out how the fuck to do this)
+
 Milestone 3: Core Infrastructure (Sprint 3-4)
 ## Phase 3: Core Infrastructure (Sprint 3-4: 2-3 weeks)
 ### Track A: Authentication & User Management (#16 #17 #18 #19 #20)
