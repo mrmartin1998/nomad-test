@@ -27,6 +27,12 @@ This repository follows a modified GitFlow workflow:
 - Merge into: `master` and `develop`
 - Naming: `release/version-number`
 
+## Merge Strategy
+When merging PRs in GitHub:
+- Use "Create a merge commit" (not squash or rebase)
+- This preserves the commit history and makes local branch cleanup easier
+- Ensures Git can properly track merged branches
+
 ## Branch Protection Rules
 
 Set up these branch protection rules in GitHub:
