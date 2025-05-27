@@ -37,24 +37,44 @@ When merging PRs in GitHub:
 
 Set up these branch protection rules in GitHub:
 
-1. `master` branch:
-   - Require pull request reviews
+1. `master` branch (Production):
+   - Require pull request reviews (minimum 1 reviewer)
    - Require status checks to pass
+   - Only allow PRs from `develop` branch
    - No direct pushes
+   - Must be up to date before merging
 
-2. `develop` branch:
-   - Require pull request reviews
+2. `develop` branch (Integration):
    - Require status checks to pass
-   - No direct pushes
+   - No direct pushes (all changes via feature branches)
+   - Must be up to date before merging
+   - Automated tests must pass
+
+## Quality Gates
+
+1. Feature/Bugfix Branches → develop:
+   - All tests must pass
+   - Code follows style guidelines
+   - Changes are properly documented
+   - PR template is fully completed
+
+2. develop → master:
+   - All integration tests pass
+   - Code review completed
+   - Documentation is up to date
+   - No pending/failed tests
+   - Release notes updated if needed
 
 ## Workflow
 
 1. Create feature/bugfix branch from `develop`
 2. Work on your changes
 3. Create PR to merge into `develop`
-4. After review and testing, merge into `develop`
-5. Create release branch when ready
-6. After final testing, merge release into `master` and `develop` 
+4. After tests pass and review, merge into `develop`
+5. Once `develop` is stable and tested:
+   - Create PR from `develop` to `master`
+   - Get final review
+   - Merge to `master` for production
 
 ## Workflow checklist
 
@@ -65,24 +85,29 @@ Set up these branch protection rules in GitHub:
 
 2. Working on Feature:
    - [ ] Make changes
-   - [ ] Commit changes
+   - [ ] Run local tests: `npm run test` (or your test command)
+   - [ ] Commit changes: `git add . && git commit -m "type: description"`
    - [ ] Push to remote: `git push origin feature/name`
 
-3. Creating PR:
-   - [ ] Create PR on GitHub
+3. Creating PR to develop:
+   - [ ] Create PR on GitHub: `gh pr create -B develop` (if using GitHub CLI)
    - [ ] ⚠️ VERIFY target is `develop` branch
    - [ ] Add proper description and link to issue (#number)
+   - [ ] Verify all tests pass: `gh pr checks` (if using GitHub CLI)
+   - [ ] Complete PR template fully
 
-4. After PR Merge:
+4. After Feature PR Merge:
    - [ ] Switch to develop: `git checkout develop`
    - [ ] Pull latest: `git pull origin develop`
    - [ ] Delete local feature branch: `git branch -d feature/name`
    - [ ] Verify remote branch was deleted (should happen automatically)
-   - [ ] git fetch prune
+   - [ ] Clean up: `git fetch --prune`
 
-5. Check that master is up to date:
-   - [ ] git checkout master
-   - [ ] git pull origin master
-   - [ ] git merge develop
-   - [ ] git push origin master
+5. Promoting to Production:
+   - [ ] Switch to develop: `git checkout develop`
+   - [ ] Verify develop is stable: `git pull origin develop`
+   - [ ] Verify tests: `npm run test` (or your test command)
+   - [ ] Create PR to master: `gh pr create -B master -H develop` (if using GitHub CLI)
+   - [ ] Get code review
+   - [ ] Merge via GitHub interface only
 
