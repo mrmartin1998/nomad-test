@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import Post from '@/lib/models/Post';
 import connectDB from '@/lib/mongodb';
 
+// Make route dynamic since content can change
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const db = await connectDB();
