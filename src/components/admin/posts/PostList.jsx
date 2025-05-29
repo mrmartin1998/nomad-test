@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -13,11 +13,7 @@ const PostList = ({ limit }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchPosts();
-  }, [statusFilter, currentPage]);
-
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/blog/posts?status=${statusFilter}&page=${currentPage}&limit=${limit || 10}`);
@@ -34,7 +30,11 @@ const PostList = ({ limit }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, currentPage, limit]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
   const handleDelete = async (slug) => {
     if (!confirm('¿Está seguro de que desea eliminar este post?')) {

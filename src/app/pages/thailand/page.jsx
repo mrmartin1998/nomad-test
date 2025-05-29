@@ -4,8 +4,26 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 const ThailandVisaPage = () => {
-  // FAQ accordion state (top-level)
+  // State declarations at component level
+  const [activeTab, setActiveTab] = useState('Documentos');
   const [faqOpenIndex, setFaqOpenIndex] = useState(null);
+
+  // FAQ data
+  const faqs = [
+    {
+      question: '¿Cuánto tiempo tarda el procesamiento?',
+      answer: 'El procesamiento típicamente toma entre 24 y 48 horas hábiles.'
+    },
+    {
+      question: '¿Qué documentos necesito?',
+      answer: 'Necesitará un pasaporte válido, una foto reciente, comprobante de alojamiento y seguro de viaje.'
+    },
+    {
+      question: '¿Puedo solicitar una extensión?',
+      answer: 'Las extensiones deben solicitarse en Tailandia a través de las autoridades migratorias.'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-base-100">
       {/* Media Grid Section (New) */}
@@ -139,169 +157,162 @@ const ThailandVisaPage = () => {
       <section className="py-12 bg-base-200/50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8">Requisitos y Proceso</h2>
-          {(() => {
-            const [activeTab, setActiveTab] = useState('Documentos');
-            return (
-              <>
-                <div className="tabs tabs-boxed bg-base-100 mb-8">
-                  <button className={`tab${activeTab === 'Documentos' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Documentos')}>Documentos</button>
-                  <button className={`tab${activeTab === 'Proceso' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Proceso')}>Proceso</button>
-                  <button className={`tab${activeTab === 'Preguntas' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Preguntas')}>Preguntas Frecuentes</button>
+          <div className="tabs tabs-boxed bg-base-100 mb-8">
+            <button className={`tab${activeTab === 'Documentos' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Documentos')}>Documentos</button>
+            <button className={`tab${activeTab === 'Proceso' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Proceso')}>Proceso</button>
+            <button className={`tab${activeTab === 'Preguntas' ? ' tab-active' : ''}`} onClick={() => setActiveTab('Preguntas')}>Preguntas Frecuentes</button>
+          </div>
+          {activeTab === 'Documentos' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Documentos Tab Content */}
+              <div className="card bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <h3 className="card-title mb-4">Documentos Requeridos</h3>
+                  <ul className="space-y-3">
+                    <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+                      <span className="text-primary text-xl">📄</span>
+                      <div>
+                        <h4 className="font-semibold">Pasaporte Válido</h4>
+                        <p className="text-sm text-base-content/70">Mínimo 6 meses de validez</p>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+                      <span className="text-primary text-xl">📸</span>
+                      <div>
+                        <h4 className="font-semibold">Foto Reciente</h4>
+                        <p className="text-sm text-base-content/70">Fondo blanco, tamaño pasaporte</p>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+                      <span className="text-primary text-xl">🏨</span>
+                      <div>
+                        <h4 className="font-semibold">Reserva de Hotel</h4>
+                        <p className="text-sm text-base-content/70">Confirmación de alojamiento</p>
+                      </div>
+                    </li>
+                    <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
+                      <span className="text-primary text-xl">✈️</span>
+                      <div>
+                        <h4 className="font-semibold">Billete de Vuelo</h4>
+                        <p className="text-sm text-base-content/70">Itinerario de viaje</p>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-                {activeTab === 'Documentos' && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Documentos Tab Content */}
-                    <div className="card bg-base-100 shadow-xl">
-                      <div className="card-body">
-                        <h3 className="card-title mb-4">Documentos Requeridos</h3>
-                        <ul className="space-y-3">
-                          <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
-                            <span className="text-primary text-xl">📄</span>
-                            <div>
-                              <h4 className="font-semibold">Pasaporte Válido</h4>
-                              <p className="text-sm text-base-content/70">Mínimo 6 meses de validez</p>
-                            </div>
-                          </li>
-                          <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
-                            <span className="text-primary text-xl">📸</span>
-                            <div>
-                              <h4 className="font-semibold">Foto Reciente</h4>
-                              <p className="text-sm text-base-content/70">Fondo blanco, tamaño pasaporte</p>
-                            </div>
-                          </li>
-                          <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
-                            <span className="text-primary text-xl">🏨</span>
-                            <div>
-                              <h4 className="font-semibold">Reserva de Hotel</h4>
-                              <p className="text-sm text-base-content/70">Confirmación de alojamiento</p>
-                            </div>
-                          </li>
-                          <li className="flex items-center gap-3 p-3 bg-base-200 rounded-lg">
-                            <span className="text-primary text-xl">✈️</span>
-                            <div>
-                              <h4 className="font-semibold">Billete de Vuelo</h4>
-                              <p className="text-sm text-base-content/70">Itinerario de viaje</p>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
+              </div>
+              <div className="card bg-base-100 shadow-xl">
+                <div className="card-body">
+                  <h3 className="card-title mb-4">Información Importante</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-base-200 rounded-lg">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <span className="text-primary">⏱️</span>
+                        Tiempo de Procesamiento
+                      </h4>
+                      <p className="text-base-content/70 mt-1">24-48 horas hábiles</p>
                     </div>
-                    <div className="card bg-base-100 shadow-xl">
-                      <div className="card-body">
-                        <h3 className="card-title mb-4">Información Importante</h3>
-                        <div className="space-y-4">
-                          <div className="p-4 bg-base-200 rounded-lg">
-                            <h4 className="font-semibold flex items-center gap-2">
-                              <span className="text-primary">⏱️</span>
-                              Tiempo de Procesamiento
-                            </h4>
-                            <p className="text-base-content/70 mt-1">24-48 horas hábiles</p>
-                          </div>
-                          <div className="p-4 bg-base-200 rounded-lg">
-                            <h4 className="font-semibold flex items-center gap-2">
-                              <span className="text-primary">📅</span>
-                              Validez
-                            </h4>
-                            <p className="text-base-content/70 mt-1">30 días desde la emisión</p>
-                          </div>
-                          <div className="p-4 bg-base-200 rounded-lg">
-                            <h4 className="font-semibold flex items-center gap-2">
-                              <span className="text-primary">💰</span>
-                              Costo
-                            </h4>
-                            <p className="text-base-content/70 mt-1">Desde €50</p>
-                          </div>
-                        </div>
+                    <div className="p-4 bg-base-200 rounded-lg">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <span className="text-primary">📅</span>
+                        Validez
+                      </h4>
+                      <p className="text-base-content/70 mt-1">30 días desde la emisión</p>
+                    </div>
+                    <div className="p-4 bg-base-200 rounded-lg">
+                      <h4 className="font-semibold flex items-center gap-2">
+                        <span className="text-primary">💰</span>
+                        Costo
+                      </h4>
+                      <p className="text-base-content/70 mt-1">Desde €50</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {activeTab === 'Proceso' && (
+            <div className="mt-8">
+              <div className="relative max-w-3xl mx-auto w-full">
+                <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary/20 hidden md:block"></div>
+                <div className="space-y-4">
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
+                      1
+                    </div>
+                    <div className="card bg-base-100 shadow-xl flex-1">
+                      <div className="card-body p-4">
+                        <h3 className="card-title text-lg">Complete el Formulario</h3>
+                        <p className="text-base-content/70 text-sm">Rellene sus datos personales y de viaje</p>
                       </div>
                     </div>
                   </div>
-                )}
-                {activeTab === 'Proceso' && (
-                  <div className="mt-8">
-                    <div className="relative max-w-3xl mx-auto w-full">
-                      <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-primary/20 hidden md:block"></div>
-                      <div className="space-y-4">
-                        <div className="flex flex-col md:flex-row items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
-                            1
-                          </div>
-                          <div className="card bg-base-100 shadow-xl flex-1">
-                            <div className="card-body p-4">
-                              <h3 className="card-title text-lg">Complete el Formulario</h3>
-                              <p className="text-base-content/70 text-sm">Rellene sus datos personales y de viaje</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col md:flex-row items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
-                            2
-                          </div>
-                          <div className="card bg-base-100 shadow-xl flex-1">
-                            <div className="card-body p-4">
-                              <h3 className="card-title text-lg">Suba los Documentos</h3>
-                              <p className="text-base-content/70 text-sm">Adjunte su pasaporte y foto</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col md:flex-row items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
-                            3
-                          </div>
-                          <div className="card bg-base-100 shadow-xl flex-1">
-                            <div className="card-body p-4">
-                              <h3 className="card-title text-lg">Realice el Pago</h3>
-                              <p className="text-base-content/70 text-sm">Pague de forma segura en línea</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex flex-col md:flex-row items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
-                            4
-                          </div>
-                          <div className="card bg-base-100 shadow-xl flex-1">
-                            <div className="card-body p-4">
-                              <h3 className="card-title text-lg">Reciba su Visa</h3>
-                              <p className="text-base-content/70 text-sm">Visa enviada por email</p>
-                            </div>
-                          </div>
-                        </div>
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
+                      2
+                    </div>
+                    <div className="card bg-base-100 shadow-xl flex-1">
+                      <div className="card-body p-4">
+                        <h3 className="card-title text-lg">Suba los Documentos</h3>
+                        <p className="text-base-content/70 text-sm">Adjunte su pasaporte y foto</p>
                       </div>
                     </div>
                   </div>
-                )}
-                {activeTab === 'Preguntas' && (
-                  <div className="mt-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="card bg-base-100 shadow-xl">
-                        <div className="card-body">
-                          <h3 className="card-title">¿Cuánto tiempo tarda el procesamiento?</h3>
-                          <p className="text-base-content/70">El procesamiento típicamente toma 48 horas hábiles.</p>
-                        </div>
-                      </div>
-                      <div className="card bg-base-100 shadow-xl">
-                        <div className="card-body">
-                          <h3 className="card-title">¿Qué documentos necesito?</h3>
-                          <p className="text-base-content/70">Necesitará un pasaporte válido, una foto reciente y comprobante de alojamiento.</p>
-                        </div>
-                      </div>
-                      <div className="card bg-base-100 shadow-xl">
-                        <div className="card-body">
-                          <h3 className="card-title">¿Cuánto tiempo es válida la visa?</h3>
-                          <p className="text-base-content/70">La visa es válida por 60 días desde la entrada a Tailandia.</p>
-                        </div>
-                      </div>
-                      <div className="card bg-base-100 shadow-xl">
-                        <div className="card-body">
-                          <h3 className="card-title">¿Puedo viajar con la eVisa?</h3>
-                          <p className="text-base-content/70">Sí, la eVisa le permite viajar a Tailandia por turismo o negocios.</p>
-                        </div>
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
+                      3
+                    </div>
+                    <div className="card bg-base-100 shadow-xl flex-1">
+                      <div className="card-body p-4">
+                        <h3 className="card-title text-lg">Realice el Pago</h3>
+                        <p className="text-base-content/70 text-sm">Pague de forma segura en línea</p>
                       </div>
                     </div>
                   </div>
-                )}
-              </>
-            );
-          })()}
+                  <div className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-primary text-primary-content flex items-center justify-center text-xl font-bold shrink-0">
+                      4
+                    </div>
+                    <div className="card bg-base-100 shadow-xl flex-1">
+                      <div className="card-body p-4">
+                        <h3 className="card-title text-lg">Reciba su Visa</h3>
+                        <p className="text-base-content/70 text-sm">Visa enviada por email</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          {activeTab === 'Preguntas' && (
+            <div className="mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="card bg-base-100 shadow-xl">
+                  <div className="card-body">
+                    <h3 className="card-title">¿Cuánto tiempo tarda el procesamiento?</h3>
+                    <p className="text-base-content/70">El procesamiento típicamente toma 48 horas hábiles.</p>
+                  </div>
+                </div>
+                <div className="card bg-base-100 shadow-xl">
+                  <div className="card-body">
+                    <h3 className="card-title">¿Qué documentos necesito?</h3>
+                    <p className="text-base-content/70">Necesitará un pasaporte válido, una foto reciente y comprobante de alojamiento.</p>
+                  </div>
+                </div>
+                <div className="card bg-base-100 shadow-xl">
+                  <div className="card-body">
+                    <h3 className="card-title">¿Cuánto tiempo es válida la visa?</h3>
+                    <p className="text-base-content/70">La visa es válida por 60 días desde la entrada a Tailandia.</p>
+                  </div>
+                </div>
+                <div className="card bg-base-100 shadow-xl">
+                  <div className="card-body">
+                    <h3 className="card-title">¿Puedo viajar con la eVisa?</h3>
+                    <p className="text-base-content/70">Sí, la eVisa le permite viajar a Tailandia por turismo o negocios.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
       {/* CTA Section (copied from Egypt, adapted for Thailand) */}
@@ -323,50 +334,28 @@ const ThailandVisaPage = () => {
       <section className="py-12 bg-base-200/50">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-8">Preguntas Frecuentes</h2>
-          {(() => {
-            const faqs = [
-              {
-                question: '¿Cuánto tiempo tarda el procesamiento?',
-                answer: 'El procesamiento típicamente toma entre 24 y 48 horas hábiles.'
-              },
-              {
-                question: '¿Qué documentos necesito?',
-                answer: 'Necesitará un pasaporte válido y una tarjeta de crédito para el pago.'
-              },
-              {
-                question: '¿Cuánto tiempo es válido el ESTA?',
-                answer: 'El ESTA es válido por 2 años o hasta la expiración de su pasaporte.'
-              },
-              {
-                question: '¿Puedo viajar con el ESTA?',
-                answer: 'Sí, el ESTA le permite viajar a EE.UU. por turismo o negocios por hasta 90 días.'
-              }
-            ];
-            return (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {faqs.map((faq, idx) => (
-                  <div key={idx} className="collapse collapse-plus bg-base-100 shadow-xl">
-                    <input
-                      type="radio" 
-                      name="faq-accordion"
-                      checked={faqOpenIndex === idx}
-                      onChange={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
-                      className="hidden"
-                    />
-                    <div
-                      className="collapse-title text-xl font-medium cursor-pointer"
-                      onClick={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
-                    >
-                      {faq.question}
-                    </div>
-                    <div className={`collapse-content${faqOpenIndex === idx ? ' block' : ' hidden'}`}>
-                      <p className="text-base-content/70">{faq.answer}</p>
-                    </div>
-                  </div>
-                ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="collapse collapse-plus bg-base-100 shadow-xl">
+                <input
+                  type="radio"
+                  name="faq-accordion"
+                  checked={faqOpenIndex === idx}
+                  onChange={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
+                  className="hidden"
+                />
+                <div
+                  className="collapse-title text-xl font-medium cursor-pointer"
+                  onClick={() => setFaqOpenIndex(faqOpenIndex === idx ? null : idx)}
+                >
+                  {faq.question}
+                </div>
+                <div className={`collapse-content${faqOpenIndex === idx ? ' block' : ' hidden'}`}>
+                  <p className="text-base-content/70">{faq.answer}</p>
+                </div>
               </div>
-            );
-          })()}
+            ))}
+          </div>
         </div>
       </section>
       
@@ -420,7 +409,7 @@ const ThailandVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Ana Martínez</h3>
                 <p className="text-base-content/70 italic">
-                  "El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada."
+                  &quot;El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada.&quot;
                 </p>
                 <div className="badge badge-primary">eVisa Tailandia</div>
               </div>
@@ -438,7 +427,7 @@ const ThailandVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Carlos Ruiz</h3>
                 <p className="text-base-content/70 italic">
-                  "Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas."
+                  &quot;Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas.&quot;
                 </p>
                 <div className="badge badge-primary">eVisa Tailandia</div>
               </div>
@@ -456,7 +445,7 @@ const ThailandVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">María González</h3>
                 <p className="text-base-content/70 italic">
-                  "Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!"
+                  &quot;Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!&quot;
                 </p>
                 <div className="badge badge-primary">eVisa Tailandia</div>
               </div>

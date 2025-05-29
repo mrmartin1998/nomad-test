@@ -250,7 +250,7 @@ export default function Home() {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Ana Martínez</h3>
                 <p className="text-base-content/70 italic">
-                  "El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada."
+                  &quot;El proceso fue mucho más sencillo de lo que esperaba. En menos de una semana tenía mi visa aprobada.&quot;
                 </p>
                 <div className="badge badge-primary">Visa Costa Rica</div>
               </div>
@@ -268,7 +268,7 @@ export default function Home() {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Carlos Ruiz</h3>
                 <p className="text-base-content/70 italic">
-                  "Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas."
+                  &quot;Excelente asesoramiento durante todo el proceso. El equipo siempre estuvo disponible para resolver mis dudas.&quot;
                 </p>
                 <div className="badge badge-primary">ESTA EE.UU.</div>
               </div>
@@ -286,7 +286,7 @@ export default function Home() {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">María González</h3>
                 <p className="text-base-content/70 italic">
-                  "Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!"
+                  &quot;Como nómada digital, necesitaba un proceso rápido y sin complicaciones. ¡Lo conseguí!&quot;
                 </p>
                 <div className="badge badge-primary">Visa Nómada Digital</div>
               </div>

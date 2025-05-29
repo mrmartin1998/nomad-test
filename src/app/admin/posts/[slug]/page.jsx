@@ -4,20 +4,6 @@ import AdminLayout from '@/components/admin/layout/AdminLayout';
 import Post from '@/lib/models/Post';
 import connectDB from '@/lib/mongodb';
 
-// This is required for static export
-export async function generateStaticParams() {
-  try {
-    await connectDB();
-    const posts = await Post.find({}, 'slug');
-    return posts.map((post) => ({
-      slug: post.slug,
-    }));
-  } catch (error) {
-    console.error('Error generating static params:', error);
-    return [];
-  }
-}
-
 async function getPost(slug) {
   try {
     await connectDB();
