@@ -2,10 +2,8 @@ import { NextResponse } from 'next/server';
 import Post from '@/lib/models/Post';
 import connectDB from '@/lib/mongodb';
 
-// Force route to be dynamic and skip static generation
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
-export const fetchCache = 'force-no-store';
 
 export async function GET() {
   // Base URLs that don't require DB
@@ -23,24 +21,21 @@ export async function GET() {
   let urls = [...baseUrls];
 
   try {
-    // Only try to connect to DB if we're not in build time
-    if (process.env.NODE_ENV !== 'production' || process.env.VERCEL) {
-      const db = await connectDB();
-      
-      if (db) {
-        // Get all published posts
-        const posts = await Post.find({ status: 'published' })
-          .select('slug updatedAt')
-          .lean();
+    const db = await connectDB();
+    
+    if (db) {
+      // Get all published posts
+      const posts = await Post.find({ status: 'published' })
+        .select('slug updatedAt')
+        .lean();
 
-        // Add blog post URLs
-        const postUrls = posts.map(post => ({
-          url: `/blog/${post.slug}`,
-          lastModified: post.updatedAt
-        }));
+      // Add blog post URLs
+      const postUrls = posts.map(post => ({
+        url: `/blog/${post.slug}`,
+        lastModified: post.updatedAt
+      }));
 
-        urls = [...urls, ...postUrls];
-      }
+      urls = [...urls, ...postUrls];
     }
 
     // Generate sitemap XML
