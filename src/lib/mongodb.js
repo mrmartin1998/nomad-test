@@ -6,7 +6,7 @@ import './models/Post';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
+if (!MONGODB_URI && process.env.NODE_ENV !== 'test') {
   throw new Error('Please define the MONGODB_URI environment variable inside .env');
 }
 
@@ -17,6 +17,12 @@ if (!cached) {
 }
 
 async function connectDB() {
+  // Skip DB connection during build
+  if (process.env.NODE_ENV === 'production' && process.env.NEXT_PHASE === 'build') {
+    console.log('Skipping DB connection during build phase');
+    return;
+  }
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -26,9 +32,15 @@ async function connectDB() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
-      return mongoose;
-    });
+    try {
+      cached.promise = mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/nomad_test', opts)
+        .then((mongoose) => {
+          return mongoose;
+        });
+    } catch (e) {
+      cached.promise = null;
+      throw e;
+    }
   }
 
   try {

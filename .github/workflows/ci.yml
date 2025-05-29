@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      MONGODB_URI: mongodb://127.0.0.1:27017/nomad_test
       NODE_ENV: test
+      NEXT_PHASE: build
 
     steps:
     - name: Checkout repository
