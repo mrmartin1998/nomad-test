@@ -1,43 +1,61 @@
-import connectDB from '@/lib/mongodb';
 import Post from '@/lib/models/Post';
+import connectDB from '@/lib/mongodb';
 import Category from '@/lib/models/Category';
 
-export default async function sitemap() {
-  await connectDB();
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-  // Get all posts
-  const posts = await Post.find({ status: 'published' }).select('slug updatedAt').lean();
-  const postEntries = posts.map((post) => ({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`,
-    lastModified: post.updatedAt || new Date(),
+// Base URLs that don't require DB
+const baseUrls = [
+  {
+    url: '/',
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 1,
+  },
+  {
+    url: '/blog',
+    lastModified: new Date(),
+    changeFrequency: 'daily',
+    priority: 0.9,
+  },
+  {
+    url: '/pages/cuba',
+    lastModified: new Date(),
     changeFrequency: 'weekly',
     priority: 0.8,
-  }));
-
-  // Get all categories
-  const categories = await Category.find().select('slug updatedAt').lean();
-  const categoryEntries = categories.map((category) => ({
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog/category/${category.slug}`,
-    lastModified: category.updatedAt || new Date(),
+  },
+  {
+    url: '/pages/egypt',
+    lastModified: new Date(),
     changeFrequency: 'weekly',
-    priority: 0.7,
-  }));
+    priority: 0.8,
+  },
+  {
+    url: '/pages/esta',
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+  {
+    url: '/pages/thailand',
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+  {
+    url: '/pages/uk',
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  },
+  {
+    url: '/pages/india',
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }
+];
 
-  // Add static routes
-  const routes = [
-    {
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${process.env.NEXT_PUBLIC_SITE_URL}/blog`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.9,
-    },
-  ];
-
-  return [...routes, ...postEntries, ...categoryEntries];
-} 
+export default function sitemap() {
+  return baseUrls;
+}

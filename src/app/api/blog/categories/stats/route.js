@@ -4,19 +4,32 @@ import connectDB from '@/lib/mongodb';
 
 export async function GET() {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    // If no DB connection (during build or error), return empty stats
+    if (!db) {
+      return NextResponse.json({
+        total: 0,
+        active: 0
+      });
+    }
     
     // Count total categories
     const total = await Category.countDocuments();
+    
+    // Count active categories
+    const active = await Category.countDocuments({ status: 'active' });
 
     return NextResponse.json({
-      total
+      total,
+      active
     });
   } catch (error) {
     console.error('Error fetching category stats:', error);
-    return NextResponse.json(
-      { error: 'Error al obtener estadísticas' },
-      { status: 500 }
-    );
+    // Return empty stats on error
+    return NextResponse.json({
+      total: 0,
+      active: 0
+    });
   }
 } 

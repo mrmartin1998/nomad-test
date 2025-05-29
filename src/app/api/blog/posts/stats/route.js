@@ -4,7 +4,16 @@ import connectDB from '@/lib/mongodb';
 
 export async function GET() {
   try {
-    await connectDB();
+    const db = await connectDB();
+    
+    // If no DB connection (during build or error), return empty stats
+    if (!db) {
+      return NextResponse.json({
+        published: 0,
+        drafts: 0,
+        total: 0
+      });
+    }
     
     // Count published posts
     const published = await Post.countDocuments({ status: 'published' });
@@ -19,9 +28,11 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error fetching post stats:', error);
-    return NextResponse.json(
-      { error: 'Error al obtener estadísticas' },
-      { status: 500 }
-    );
+    // Return empty stats on error
+    return NextResponse.json({
+      published: 0,
+      drafts: 0,
+      total: 0
+    });
   }
 } 
