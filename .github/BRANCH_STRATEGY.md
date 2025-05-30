@@ -90,24 +90,27 @@ Set up these branch protection rules in GitHub:
    - [ ] Push to remote: `git push origin feature/name`
 
 3. Creating PR to develop:
-   - [ ] Create PR on GitHub: `gh pr create -B develop` (if using GitHub CLI)
+   - [ ] Go to GitHub repository website
+   - [ ] Click "Compare & pull request" or "New pull request"
    - [ ] ⚠️ VERIFY target is `develop` branch
    - [ ] Add proper description and link to issue (#number)
-   - [ ] Verify all tests pass: `gh pr checks` (if using GitHub CLI)
    - [ ] Complete PR template fully
+   - [ ] Wait for all checks to pass
+   - [ ] Request review if required
 
 4. After Feature PR Merge:
    - [ ] Switch to develop: `git checkout develop`
    - [ ] Pull latest: `git pull origin develop`
    - [ ] Delete local feature branch: `git branch -d feature/name`
-   - [ ] Verify remote branch was deleted (should happen automatically)
+   - [ ] Delete remote feature branch: `git push origin --delete feature/name`
+   - [ ] Verify branch deletion: `git branch -r` or check GitHub branches page
    - [ ] Clean up: `git fetch --prune`
 
 5. Promoting to Production:
    - [ ] Switch to develop: `git checkout develop`
    - [ ] Verify develop is stable: `git pull origin develop`
    - [ ] Verify tests: `npm run test` (or your test command)
-   - [ ] Create PR to master: `gh pr create -B master -H develop` (if using GitHub CLI)
+   - [ ] Create PR on GitHub from develop to master
    - [ ] Get code review
    - [ ] Merge via GitHub interface only
 
