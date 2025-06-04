@@ -5,10 +5,12 @@ import Timeline from './components/Timeline';
 
 const Calendar = () => {
   return (
-    <div className="calendar-container">
-      <Header />
-      <Grid />
-      <Timeline />
+    <div className="border rounded-lg p-4 bg-base-200">
+      <div className="space-y-4">
+        <Header />
+        <Grid />
+        <Timeline />
+      </div>
     </div>
   );
 };
