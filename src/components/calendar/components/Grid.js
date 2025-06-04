@@ -1,15 +1,15 @@
 import React from 'react';
+import useCalendar from '../hooks/useCalendar';
 
 const Grid = () => {
-  // This is temporary static data - we'll make it dynamic later
-  const weeks = [
-    [26, 27, 28, 29, 30, 31, 1],
-    [2, 3, 4, 5, 6, 7, 8],
-    [9, 10, 11, 12, 13, 14, 15],
-    [16, 17, 18, 19, 20, 21, 22],
-    [23, 24, 25, 26, 27, 28, 29],
-    [30, 1, 2, 3, 4, 5, 6],
-  ];
+  const {
+    weeks,
+    formatDay,
+    isCurrentMonth,
+    isSelected,
+    isToday,
+    setSelectedDate
+  } = useCalendar();
 
   return (
     <table className="w-full text-center text-sm">
@@ -27,15 +27,18 @@ const Grid = () => {
       <tbody>
         {weeks.map((week, weekIndex) => (
           <tr key={weekIndex}>
-            {week.map((day, dayIndex) => (
+            {week.map((date, dayIndex) => (
               <td 
                 key={dayIndex}
+                onClick={() => setSelectedDate(date)}
                 className={`p-2 hover:bg-base-300 rounded cursor-pointer transition-colors
-                  ${day === 5 ? 'bg-primary text-primary-content' : ''} // Example: highlighting day 5
-                  ${(weekIndex === 0 || weekIndex === 5) && day > 7 ? 'text-base-content/50' : ''} // Dimming days from adjacent months
+                  ${!isCurrentMonth(date) ? 'text-base-content/50' : ''}
+                  ${isSelected(date) ? 'bg-primary text-primary-content' : ''}
+                  ${isToday(date) ? 'border border-primary' : ''}
+                  ${dayIndex === 5 || dayIndex === 6 ? 'text-error' : ''} // Weekend days
                 `}
               >
-                {day}
+                {formatDay(date)}
               </td>
             ))}
           </tr>
