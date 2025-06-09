@@ -54,11 +54,10 @@ const Grid = () => {
                   <div
                     className={`
                       relative w-full py-3 px-2
-                      rounded-lg transition-all cursor-pointer
-                      hover:bg-gray-50
+                      rounded-lg transition-all
                       ${!isCurrentMonth(date) ? 'text-gray-400' : 'text-gray-700'}
-                      ${isVisaArrival(date) ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
-                      ${isWeekendDay(date) ? 'bg-pink-50/50 hover:bg-pink-100/70' : ''}
+                      ${isVisaArrival(date) ? 'bg-blue-600 text-white' : ''}
+                      ${isWeekendDay(date) ? 'bg-pink-50/50' : ''}
                       ${isToday(date) ? 'border border-blue-100' : ''}
                       text-sm font-medium
                     `}

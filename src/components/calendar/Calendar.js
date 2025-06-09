@@ -35,7 +35,7 @@ const Calendar = () => {
           </div>
 
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100">
-            {/* Delivery date and timeline toggle */}
+            {/* Delivery date */}
             <div className="p-4 space-y-3">
               <div className="flex items-center gap-2.5">
                 <div className="p-1.5 rounded bg-blue-600/10">
@@ -47,13 +47,6 @@ const Calendar = () => {
                   {formatFullDate(visaArrivalDate)}
                 </div>
               </div>
-              
-              <button className="flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 transition-colors">
-                <span className="text-blue-600/90">View Timeline</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 text-blue-600/70">
-                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                </svg>
-              </button>
             </div>
 
             {/* Calendar content */}

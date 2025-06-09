@@ -4,7 +4,7 @@ const Timeline = () => {
   return (
     <div className="calendar-timeline">
       {/* Timeline implementation will go here */}
-      <p>Calendar Timeline Component</p>
+      
     </div>
   );
 };
