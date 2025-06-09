@@ -10,12 +10,19 @@ import {
   subMonths,
   isSameMonth,
   isSameDay,
+  isWeekend,
+  addDays,
+  differenceInDays,
+  addBusinessDays,
 } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
+  const today = new Date();
+  
+  // Calculate visa arrival date (today + 6 business days)
+  const visaArrivalDate = addBusinessDays(today, 6);
 
   // Get calendar days for current month view
   const getDaysInMonth = (date) => {
@@ -46,24 +53,34 @@ const useCalendar = () => {
   // Format handlers
   const formatDay = (date) => format(date, 'd');
   const formatMonth = (date) => format(date, 'MMMM yyyy', { locale: es });
+  const formatFullDate = (date) => format(date, "d MMM yyyy 'at' HH:mm aa");
 
   // Date state checkers
   const isCurrentMonth = (date) => isSameMonth(date, currentDate);
-  const isSelected = (date) => selectedDate && isSameDay(date, selectedDate);
-  const isToday = (date) => isSameDay(date, new Date());
+  const isVisaArrival = (date) => isSameDay(date, visaArrivalDate);
+  const isToday = (date) => isSameDay(date, today);
+  const isWeekendDay = (date) => isWeekend(date);
+
+  // Get processing days info
+  const getProcessingDays = () => {
+    return differenceInDays(visaArrivalDate, today);
+  };
 
   return {
     currentDate,
-    selectedDate,
-    setSelectedDate,
+    today,
+    visaArrivalDate,
     weeks: getDaysInMonth(currentDate),
     nextMonth,
     prevMonth,
     formatDay,
     formatMonth,
+    formatFullDate,
     isCurrentMonth,
-    isSelected,
+    isVisaArrival,
     isToday,
+    isWeekendDay,
+    getProcessingDays,
   };
 };
 
