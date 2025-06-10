@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import DestinationSelector from '@/components/destination-selector/DestinationSelector';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -68,6 +69,11 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Destination Selector Section */}
+      <div className="container mx-auto px-4 -mt-20 relative z-10 mb-16">
+        <DestinationSelector />
       </div>
 
       {/* New Visa Categories Section */}
