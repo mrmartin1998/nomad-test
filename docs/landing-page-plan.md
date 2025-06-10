@@ -155,11 +155,11 @@
 ## Application Process Section
 
 ### 1. Section Header
-- [ ] Add main heading "Nuestro proceso de aplicación"
-- [ ] Add subtitle: "Te explicamos cómo solicitar los diferentes documentos de viaje con nosotros."
+- [x] Add main heading "Nuestro proceso de aplicación"
+- [x] Add subtitle: "Te explicamos cómo solicitar los diferentes documentos de viaje con nosotros."
 
 ### 2. Process Steps
-- [ ] Create numbered steps layout:
+- [x] Create numbered steps layout:
   1. Inicia tu solicitud
      - Number: 01
      - Text: "Responde algunas preguntas, realiza el pago y completa los detalles finales."
@@ -173,16 +173,15 @@
      - Text: "Prepárate para mostrar tu pasaporte y tus documentos cuando llegues a tu destino."
 
 ### 3. Visual Elements
-- [ ] Add traveler image on boat in turquoise waters
-- [ ] Add professional woman with phone image
-- [ ] Style step numbers with light background circles
-- [ ] Add "Aplica ahora →" button at the bottom
+- [x] Add professional woman with phone image
+- [x] Style step numbers with light background circles
+- [x] Add "Aplica ahora →" button at the bottom
 
 ### 4. Layout Requirements
-- [ ] Ensure proper spacing between steps
-- [ ] Make layout responsive for mobile devices
-- [ ] Implement smooth transitions between sections
-- [ ] Use consistent typography with other sections
+- [x] Ensure proper spacing between steps
+- [x] Make layout responsive for mobile devices
+- [x] Implement smooth transitions between sections
+- [x] Use consistent typography with other sections
 
 ## Testimonials Section
 

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 import DestinationSelector from '@/components/destination-selector/DestinationSelector';
+import WhyChooseUs from '@/components/why-choose-us/WhyChooseUs';
+import ApplicationProcess from '@/components/application-process/ApplicationProcess';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -158,6 +160,12 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Why Choose Us Section */}
+      <WhyChooseUs />
+
+      {/* Application Process Section */}
+      <ApplicationProcess />
 
       {/* New Benefits Section */}
       <div className="container mx-auto px-4 py-16">
