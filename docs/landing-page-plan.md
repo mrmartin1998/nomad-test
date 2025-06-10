@@ -102,20 +102,20 @@
 ## Destination Selector Section
 
 ### 1. Create Selector Component
-- [ ] Add destination selector with:
+- [x] Add destination selector with:
   ```
   ¿De dónde soy?     ¿A dónde viajo?     [¡Comenzar ahora! →]
   [Australia ↓]      [Viaje a ↓]         [Button]
   ```
-- [ ] Style with light blue background and rounded corners
-- [ ] Add country flag icons for origin selector
-- [ ] Implement dropdown functionality for both selectors
+- [x] Style with light blue background and rounded corners
+- [x] Add country flag icons for origin selector
+- [x] Implement dropdown functionality for both selectors
 
 ### 2. Styling Requirements
-- [ ] Use consistent spacing between elements
-- [ ] Add hover states for dropdowns and button
-- [ ] Ensure mobile responsiveness
-- [ ] Match the turquoise color for the CTA button
+- [x] Use consistent spacing between elements
+- [x] Add hover states for dropdowns and button
+- [x] Ensure mobile responsiveness
+- [x] Match the turquoise color for the CTA button
 
 ## Why Choose Us Section
 
