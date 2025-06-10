@@ -61,7 +61,7 @@
 ## Header Section Updates (`src/app/page.jsx`)
 
 ### 1. Update Hero Section
-- [ ] Modify existing hero section layout:
+- [x] Modify existing hero section layout:
   ```jsx
   <div className="min-h-screen bg-base-100 relative overflow-hidden">
     <div className="container mx-auto px-4 pt-20">
@@ -69,35 +69,35 @@
   ```
 
 ### 2. Update Title and Subtitle
-- [ ] Update main heading text and styling:
+- [x] Update main heading text and styling:
   ```
   Consigue tu visado
   sin complicaciones, sin estrés,
   sin papeleos y en 48H
   ```
-- [ ] Style "sin papeleos y en 48H" in blue (text-primary) and italics
-- [ ] Update subtitle text and styling:
+- [x] Style "sin papeleos y en 48H" in blue (text-primary) and italics
+- [x] Update subtitle text and styling:
   ```
   Tramitamos visados de turismo, nómadas digitales, estudiantes y más.
   Servicio rápido, online y con asesoría personalizada.
   ```
 
 ### 3. Add Trust Indicators Grid
-- [ ] Create statistics grid with:
-  - 1.2M clientes satisfechos
-  - 24/7 asistencia disponible
-  - Trustpilot rating (62,000+ reseñas)
-  - 10 años de experiencia
-  - 99% índice de aprobación
+- [x] Create statistics grid with:
+  - 1000+ clientes atendidos
+  - Soporte rápido y personalizado
+  - Valoración media: 4.8/5
+  - Compromiso total
+  - 99% visados aprobados
 
 ### 4. Add Expandable Trust Points
-- [ ] Create collapsible section with:
+- [x] Create collapsible section with:
   - 1000+ clientes atendidos (🔒)
   - Soporte rápido y personalizado (💬)
   - Valoración media: 4.8/5 (⭐)
   - Compromiso total (🤝)
   - 99% de visados aprobados (✅)
-- [ ] Add supporting text under each point
+- [x] Add supporting text under each point
 
 ## Destination Selector Section
 
