@@ -9,26 +9,42 @@ export default function Home() {
 
   return (
     <div className="app-background">
-      {/* New Hero Section */}
-      <div className="min-h-screen bg-base-100 relative overflow-hidden">
+      {/* Hero Section */}
+      <div className="min-h-[90vh] bg-base-100 relative overflow-hidden">
         <div className="container mx-auto px-4 pt-20">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               Consigue tu visado
-              <span className="block">sin complicaciones, sin estrés,</span>
-              <span className="block italic text-primary">sin papeleos y en 48H</span>
+              <span className="block mt-2">sin complicaciones, sin estrés,</span>
+              <span className="block mt-2 text-primary italic">sin papeleos y en 48H</span>
             </h1>
-            <p className="text-xl md:text-2xl text-base-content/70 mb-12">
+            <p className="text-xl text-base-content/70 mb-12 max-w-3xl mx-auto">
               Tramitamos visados de turismo, nómadas digitales, estudiantes y más. 
               Servicio rápido, online y con asesoría personalizada.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn btn-primary btn-lg">
-                <span className="mr-2">👉</span> Solicita tu visado
-              </button>
-              <button className="btn btn-outline btn-lg">
-                Descubre si cumples los requisitos
-              </button>
+
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mt-16 text-center max-w-5xl mx-auto">
+              <div>
+                <div className="text-xl font-bold mb-1">1000+</div>
+                <div className="text-sm text-base-content/70">clientes atendidos</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold mb-1">Soporte rápido y personalizado</div>
+                <div className="text-sm text-base-content/70">Resolvermos dudas en menos de 24h</div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Image src="/assets/trustpilot.svg" alt="Trustpilot" width={100} height={20} className="mb-1" />
+                <div className="text-sm">Valoración media: 4.8/5</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold mb-1">Compromiso total</div>
+                <div className="text-sm text-base-content/70">Acompañamiento durante todo el proceso</div>
+              </div>
+              <div>
+                <div className="text-xl font-bold mb-1">99%</div>
+                <div className="text-sm text-base-content/70">visados aprobados</div>
+              </div>
             </div>
           </div>
         </div>
