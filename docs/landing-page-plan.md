@@ -120,16 +120,16 @@
 ## Why Choose Us Section
 
 ### 1. Section Layout
-- [ ] Add "Por qué elegirnos" heading
-- [ ] Add descriptive subtext:
+- [x] Add "Por qué elegirnos" heading
+- [x] Add descriptive subtext:
   ```
   Estos son los motivos por los cuales iVisa es la mejor opción
   para ti y por qué deberías probar nuestros servicios.
   ```
-- [ ] Add featured image of traveler boarding plane
+- [x] Add featured image of traveler boarding plane
 
 ### 2. Feature Cards
-- [ ] Create 4-card grid with:
+- [x] Create 4-card grid with:
   1. Sencillez
      - Icon: ⌛
      - Text: "Nuestro proceso es mucho más sencillo y ágil que el del gobierno."
@@ -147,10 +147,10 @@
      - Text: "Estamos aquí para ayudarte 24/7."
 
 ### 3. Card Styling
-- [ ] Use light blue background for cards
-- [ ] Add subtle hover effects
-- [ ] Ensure consistent spacing and alignment
-- [ ] Make cards responsive on mobile
+- [x] Use light blue background for cards
+- [x] Add subtle hover effects
+- [x] Ensure consistent spacing and alignment
+- [x] Make cards responsive on mobile
 
 ## Application Process Section
 
