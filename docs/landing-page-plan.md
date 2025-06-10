@@ -4,17 +4,18 @@
 
 ### 1. Update Existing Navbar (`src/components/Navbar.jsx`)
 - [x] Replace current menu items with new structure
-- [x] Update logo to iVisa logo
+- [x] Update logo to Visapass logo
 - [x] Modify container styling to match design
 
 ### 2. Navigation Items to Add
-- [ ] Implement "Obtener mi visa" dropdown with:
-  - Visa US
-  - ESTA EAU
-  - Visa de turista de India
-  - Registro de Autorización Electrónica de Viaje de los Estados Unidos
-  - Autorización electrónica de viaje de Canadá
-  - Visa electrónica para Turquía
+- [x] Implement "Obtener mi visa" dropdown with:
+  - [x] ESTA Estados Unidos
+  - [x] Visa Costa Rica
+  - [x] Visa de turista de India
+  - [x] Visa para Cuba
+  - [x] Visa Reino Unido
+  - [x] Visa Tailandia
+  - [x] Visa Egipto
 
 - [x] Add language selector (ES)
 - [x] Add currency selector (€ EUR)
@@ -34,9 +35,9 @@
    - [x] Implement flex layout for items
 
 3. Navigation Items:
-   - [ ] Create "Obtener mi visa" dropdown component
-   - [ ] Style dropdown menu with proper spacing
-   - [ ] Add hover effects and transitions
+   - [x] Create "Obtener mi visa" dropdown component
+   - [x] Style dropdown menu with proper spacing
+   - [x] Add hover effects and transitions
    - [x] Implement "Viaje con seguridad" link (disabled for now)
 
 4. Right Side Elements:
