@@ -7,6 +7,7 @@ import DestinationSelector from '@/components/destination-selector/DestinationSe
 import WhyChooseUs from '@/components/why-choose-us/WhyChooseUs';
 import ApplicationProcess from '@/components/application-process/ApplicationProcess';
 import PopularDestinations from '@/components/popular-destinations';
+import Newsletter from '@/components/newsletter';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -690,6 +691,9 @@ export default function Home() {
 
       {/* Popular Destinations Section */}
       <PopularDestinations />
+
+      {/* Newsletter Section */}
+      <Newsletter />
 
       {/* CTA Section */}
       <section className="py-16">

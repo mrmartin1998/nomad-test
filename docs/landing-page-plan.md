@@ -275,21 +275,21 @@
 ## Newsletter Section
 
 ### 1. Design Elements
-- [ ] Add heading "¡Más viajes, menos dudas!"
-- [ ] Add descriptive text: "Consejos prácticos, novedades y ofertas para que tu próximo viaje sea increíble"
-- [ ] Create dark teal background section
+- [x] Add heading "¡Más viajes, menos dudas!"
+- [x] Add descriptive text: "Consejos prácticos, novedades y ofertas para que tu próximo viaje sea increíble"
+- [x] Create dark background section using our theme colors
 
 ### 2. Form Components
-- [ ] Add email input field with placeholder
-- [ ] Add "Quiero estar informado" button with plus icon
-- [ ] Style input field with white background
-- [ ] Style button with turquoise color
+- [x] Add email input field with placeholder
+- [x] Add "Quiero estar informado >" button with arrow icon
+- [x] Style input field with white background
+- [x] Style button with our primary accent color
 
 ### 3. Layout Requirements
-- [ ] Center content in container
-- [ ] Proper spacing between elements
-- [ ] Responsive design for mobile
-- [ ] Ensure proper form validation
+- [x] Center content in container
+- [x] Proper spacing between elements
+- [x] Responsive design for mobile
+- [x] Ensure proper form validation
 
 ## Additional Elements
 
