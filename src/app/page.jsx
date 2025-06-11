@@ -6,6 +6,7 @@ import { useState } from 'react';
 import DestinationSelector from '@/components/destination-selector/DestinationSelector';
 import WhyChooseUs from '@/components/why-choose-us/WhyChooseUs';
 import ApplicationProcess from '@/components/application-process/ApplicationProcess';
+import PopularDestinations from '@/components/popular-destinations';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -686,6 +687,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Popular Destinations Section */}
+      <PopularDestinations />
 
       {/* CTA Section */}
       <section className="py-16">
