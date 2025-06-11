@@ -221,11 +221,11 @@
 ## Popular Destinations Section
 
 ### 1. Section Header
-- [ ] Add main heading "Viaja por el mundo con Visapass"
-- [ ] Add subtitle: "Descubre qué necesitas para viajar a nuestros destinos más populares."
+- [x] Add main heading "Viaja por el mundo con Visapass"
+- [x] Add subtitle: "Descubre qué necesitas para viajar a nuestros destinos más populares."
 
 ### 2. Destination Cards
-- [ ] Create grid of destination cards:
+- [x] Create grid of destination cards:
   1. Estados Unidos (ESTA)
      - Background: Estatua de la Libertad o skyline de Nueva York
      - Stats: "Procesamiento en 72h"
@@ -242,35 +242,35 @@
      - Feature: "Asistencia personalizada"
 
 ### 3. Card Design
-- [ ] Implement card layout with:
+- [x] Implement card layout with:
   - Full-width background images with proper overlay
   - Country name prominently displayed
   - Processing time with clock icon
   - Validity period or key feature
   - "Solicitar ahora" button
-- [ ] Add hover effects with slight zoom
-- [ ] Ensure proper image sizing and cropping
-- [ ] Maintain consistent card dimensions
+- [x] Add hover effects with slight zoom
+- [x] Ensure proper image sizing and cropping
+- [x] Maintain consistent card dimensions
 
 ### 4. Responsive Layout
-- [ ] Grid layout adjusts based on screen size:
+- [x] Grid layout adjusts based on screen size:
   - Desktop: 3 columns
   - Tablet: 2 columns
   - Mobile: 1 column
-- [ ] Images remain crisp on all devices
-- [ ] Text remains readable on all backgrounds
-- [ ] Proper spacing between cards
-- [ ] Hover effects work on touch devices
+- [x] Images remain crisp on all devices
+- [x] Text remains readable on all backgrounds
+- [x] Proper spacing between cards
+- [x] Hover effects work on touch devices
 
 ### 5. Card Features
-- [ ] Each card should include:
+- [x] Each card should include:
   - Country flag icon
   - Processing time badge
   - Key benefit or feature
   - Clear call-to-action button
-- [ ] Consistent styling across all cards
-- [ ] Accessible color contrast
-- [ ] Loading state for images
+- [x] Consistent styling across all cards
+- [x] Accessible color contrast
+- [x] Loading state for images
 
 ## Newsletter Section
 
