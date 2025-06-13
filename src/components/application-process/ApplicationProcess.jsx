@@ -76,8 +76,8 @@ const ApplicationProcess = () => {
             {/* Image Column */}
             <div className="relative aspect-[3/4] rounded-2xl overflow-hidden">
               <Image
-                src="/assets/professional-woman.jpg"
-                alt="Profesional usando su teléfono"
+                src="/assets/airplane-window-view.jpg"
+                alt="Vista desde la ventana del avión durante el atardecer"
                 fill
                 className="object-cover"
                 priority
