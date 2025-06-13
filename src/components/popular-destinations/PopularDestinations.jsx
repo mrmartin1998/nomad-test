@@ -53,8 +53,8 @@ const PopularDestinations = () => {
       image: '/assets/destinations/usa.jpg',
       processingTime: 'Procesamiento en 72h',
       feature: 'Válido por 2 años',
-      flag: '🇺🇸',
-      link: '/esta'
+      flag: '��🇸',
+      link: '/pages/us-esta-visa-form'
     },
     {
       country: 'Tailandia',
@@ -62,7 +62,7 @@ const PopularDestinations = () => {
       processingTime: 'Procesamiento en 48h',
       feature: 'Válido por 60 días',
       flag: '🇹🇭',
-      link: '/thailand'
+      link: '/pages/thailand'
     },
     {
       country: 'Egipto',
@@ -70,7 +70,7 @@ const PopularDestinations = () => {
       processingTime: 'Procesamiento en 48h',
       feature: 'Asistencia personalizada',
       flag: '🇪🇬',
-      link: '/egypt'
+      link: '/pages/egypt'
     }
   ];
 
