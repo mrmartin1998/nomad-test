@@ -163,13 +163,13 @@ export default function Home() {
       {/* New Visa Categories Section */}
 
       
-      <div className="container mx-auto px-4 py-16">
+      {/* <div className="container mx-auto px-4 py-16">
 
         <h2 className="text-4xl font-bold text-center mb-12">¿Qué tipo de visado necesitas?</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {/* Tourism */}
-          <div 
+          {/* <div 
             className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
             onMouseEnter={() => setActiveCategory('tourism')}
             onMouseLeave={() => setActiveCategory(null)}
@@ -193,10 +193,10 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Digital Nomad */}
-          <div 
+          {/* <div 
             className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
             onMouseEnter={() => setActiveCategory('nomad')}
             onMouseLeave={() => setActiveCategory(null)}
@@ -217,10 +217,10 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Student */}
-          <div 
+          {/* <div 
             className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
             onMouseEnter={() => setActiveCategory('student')}
             onMouseLeave={() => setActiveCategory(null)}
@@ -241,13 +241,13 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </div> */}
+        {/* </div>
+      </div> */}
 
 
       {/* New Benefits Section */}
-      <div className="container mx-auto px-4 py-16">
+      {/* <div className="container mx-auto px-4 py-16">
         <div className="bg-base-200/50 rounded-3xl py-16 px-4 md:px-8">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-4xl font-bold text-center mb-4">Tu tranquilidad, nuestro compromiso</h2>
@@ -256,7 +256,6 @@ export default function Home() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Worldwide Processing */}
               <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="rounded-full bg-primary/10 p-6 mb-4">
@@ -269,7 +268,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Expert Network */}
               <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="rounded-full bg-primary/10 p-6 mb-4">
@@ -282,7 +280,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Legal Support */}
               <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="rounded-full bg-primary/10 p-6 mb-4">
@@ -295,7 +292,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Success Rate */}
               <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="rounded-full bg-primary/10 p-6 mb-4">
@@ -308,7 +304,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Partner Network */}
               <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="rounded-full bg-primary/10 p-6 mb-4">
@@ -321,7 +316,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Stats Card */}
               <div className="card bg-primary text-primary-content shadow-xl hover:shadow-2xl transition-all duration-300">
                 <div className="card-body items-center text-center">
                   <div className="stats bg-transparent text-primary-content">
@@ -336,11 +330,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
 
       {/* Main Form Section */}
-      <div className="py-16 px-4 md:px-8 bg-base-200/50">
+      {/* <div className="py-16 px-4 md:px-8 bg-base-200/50">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Empecemos hoy mismo con tu visado</h2>
@@ -351,7 +345,7 @@ export default function Home() {
             <div className="card-body p-8">
               <form className="space-y-6">
                 {/* Visa Type Selection */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">¿Qué tipo de visa necesitas?</span>
                   </label>
@@ -363,10 +357,10 @@ export default function Home() {
                     <option>Visa Nómada Digital</option>
                     <option>ESTA (Estados Unidos)</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Destination Country */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">País de destino</span>
                   </label>
@@ -378,10 +372,10 @@ export default function Home() {
                     <option>España</option>
                     <option>Canadá</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Nationality */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">Nacionalidad</span>
                   </label>
@@ -393,10 +387,10 @@ export default function Home() {
                     <option>Argentina</option>
                     <option>España</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Contact Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text text-lg">Email</span>
@@ -418,25 +412,25 @@ export default function Home() {
                       className="input input-bordered w-full" 
                     />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Submit Button */}
-                <div className="form-control mt-8">
+                {/* <div className="form-control mt-8">
                   <button className="btn btn-primary btn-lg w-full text-lg">
                     Solicitar asesoría gratuita
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 ml-2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
+                    </svg>
                   </button>
-                </div>
-              </form>
+                </div> */}
+              {/* </form>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-16">
+      {/* <div className="container mx-auto px-4 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestro Proceso</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-200">
@@ -475,15 +469,15 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Available Visas Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">Visas Disponibles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* <section className="py-16"> */}
+        {/* <div className="container mx-auto px-4"> */}
+          {/* <h2 className="text-3xl font-bold mb-12 text-center">Visas Disponibles</h2> */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> */}
             {/* ESTA USA */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -510,10 +504,10 @@ export default function Home() {
                   Solicitar ESTA
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* India eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -540,10 +534,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Thailand eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -570,10 +564,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* UK ETA */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -600,10 +594,10 @@ export default function Home() {
                   Solicitar ETA
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Egypt eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -630,10 +624,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Cuba Visa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -660,13 +654,13 @@ export default function Home() {
                   Solicitar Visa
                 </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </div> */}
+          {/* </div> */}
+        {/* </div> */}
+      {/* </section> */}
 
       {/* Features Section */}
-      <section className="py-16 bg-base-200">
+      {/* <section className="py-16 bg-base-200">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">¿Por qué elegirnos?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -699,11 +693,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
 
       {/* CTA Section */}
-      <section className="py-16">
+      {/* <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="card bg-primary text-primary-content shadow-xl">
             <div className="card-body items-center text-center">
@@ -715,7 +709,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );
