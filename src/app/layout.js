@@ -1,6 +1,7 @@
 import './globals.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import WhatsAppButton from '../components/whatsapp-button';
 
 export const metadata = {
   title: 'Portal de Visas',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+        <WhatsAppButton />
       </body>
     </html>
   );
