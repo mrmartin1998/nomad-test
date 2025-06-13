@@ -9,7 +9,7 @@ const DestinationSelector = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-base-200 rounded-xl p-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
         {/* Origin Country Selector */}
         <div className="form-control">
           <label className="label">
@@ -21,7 +21,7 @@ const DestinationSelector = () => {
             onChange={(e) => setOriginCountry(e.target.value)}
           >
             <option value="" disabled>Selecciona tu país</option>
-            <option value="australia">🇦🇺 Australia</option>
+            <option value="spain">🇪🇸 España</option>
             {/* We'll add more countries later */}
           </select>
         </div>
@@ -37,14 +37,25 @@ const DestinationSelector = () => {
             onChange={(e) => setDestinationCountry(e.target.value)}
           >
             <option value="" disabled>Viaje a</option>
-            {/* We'll add destinations based on origin country */}
+            <option value="us">🇺🇸 ESTA Estados Unidos</option>
+            <option value="cr">🇨🇷 Visa Costa Rica</option>
+            <option value="in">🇮🇳 Visa de turista de India</option>
+            <option value="cu">🇨🇺 Visa para Cuba</option>
+            <option value="gb">🇬🇧 Visa Reino Unido</option>
+            <option value="th">🇹🇭 Visa Tailandia</option>
+            <option value="eg">🇪🇬 Visa Egipto</option>
           </select>
         </div>
 
         {/* CTA Button */}
-        <button className="btn btn-primary">
-          ¡Comenzar ahora! →
-        </button>
+        <div className="form-control">
+          <label className="label opacity-0">
+            <span className="label-text">Spacer</span>
+          </label>
+          <button className="btn btn-primary w-full">
+            ¡Comenzar ahora! →
+          </button>
+        </div>
       </div>
     </div>
   );
