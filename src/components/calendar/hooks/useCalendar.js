@@ -19,10 +19,11 @@ import { es } from 'date-fns/locale';
 
 const useCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const today = new Date();
   
-  // Calculate visa arrival date (today + 6 business days)
-  const visaArrivalDate = addBusinessDays(today, 6);
+  // Calculate visa arrival date (today + 5 business days)
+  const visaArrivalDate = addBusinessDays(today, 5);
 
   // Get calendar days for current month view
   const getDaysInMonth = (date) => {
