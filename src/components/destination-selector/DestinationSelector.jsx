@@ -1,11 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const DestinationSelector = () => {
   const [originCountry, setOriginCountry] = useState('');
   const [destinationCountry, setDestinationCountry] = useState('');
+  const router = useRouter();
+
+  // Map destination values to their corresponding routes
+  const destinationRoutes = {
+    us: '/pages/us-esta-visa-form',
+    cr: '/pages/costa-rica-form',
+    in: '/pages/india/apply',
+    cu: '/pages/cuba/apply',
+    gb: '/pages/uk/apply',
+    th: '/pages/thailand/apply',
+    eg: '/pages/egypt/apply'
+  };
+
+  const handleSubmit = () => {
+    console.log('Submit clicked:', { originCountry, destinationCountry });
+    
+    if (!originCountry || !destinationCountry) {
+      console.log('Missing required selections');
+      return;
+    }
+
+    const route = destinationRoutes[destinationCountry];
+    console.log('Navigating to:', route);
+    
+    if (route) {
+      router.push(route);
+    }
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto bg-base-200 rounded-xl p-6">
@@ -18,7 +46,10 @@ const DestinationSelector = () => {
           <select 
             className="select select-bordered w-full"
             value={originCountry}
-            onChange={(e) => setOriginCountry(e.target.value)}
+            onChange={(e) => {
+              console.log('Origin selected:', e.target.value);
+              setOriginCountry(e.target.value);
+            }}
           >
             <option value="" disabled>Selecciona tu país</option>
             <option value="spain">🇪🇸 España</option>
@@ -34,7 +65,10 @@ const DestinationSelector = () => {
           <select 
             className="select select-bordered w-full"
             value={destinationCountry}
-            onChange={(e) => setDestinationCountry(e.target.value)}
+            onChange={(e) => {
+              console.log('Destination selected:', e.target.value);
+              setDestinationCountry(e.target.value);
+            }}
           >
             <option value="" disabled>Viaje a</option>
             <option value="us">🇺🇸 ESTA Estados Unidos</option>
@@ -52,7 +86,12 @@ const DestinationSelector = () => {
           <label className="label opacity-0">
             <span className="label-text">Spacer</span>
           </label>
-          <button className="btn btn-primary w-full">
+          <button 
+            className="btn btn-primary w-full"
+            onClick={handleSubmit}
+            disabled={!originCountry || !destinationCountry}
+            type="button"
+          >
             ¡Comenzar ahora! →
           </button>
         </div>
