@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const AdminLayout = ({ children }) => {
   return (
@@ -8,8 +9,15 @@ const AdminLayout = ({ children }) => {
       <header className="bg-base-100 shadow-md">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <Link href="/admin" className="text-2xl font-bold">
-              Panel de Administración
+            <Link href="/admin" className="flex items-center gap-3">
+              <Image
+                src="/assets/brand/nomad-icon-dark.png"
+                alt="Nomad Admin"
+                width={32}
+                height={32}
+                priority
+              />
+              <span className="text-2xl font-bold">Panel de Administración</span>
             </Link>
             <nav className="flex gap-4">
               <Link href="/admin/posts" className="btn btn-ghost">
