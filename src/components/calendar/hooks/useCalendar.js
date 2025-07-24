@@ -27,8 +27,9 @@ const useCalendar = () => {
 
   // Get calendar days for current month view
   const getDaysInMonth = (date) => {
-    const start = startOfWeek(startOfMonth(date));
-    const end = endOfWeek(endOfMonth(date));
+    // Start the week on Monday (1) instead of Sunday (0)
+    const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
+    const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
     
     const days = eachDayOfInterval({ start, end });
     
@@ -54,13 +55,16 @@ const useCalendar = () => {
   // Format handlers
   const formatDay = (date) => format(date, 'd');
   const formatMonth = (date) => format(date, 'MMMM yyyy', { locale: es });
-  const formatFullDate = (date) => format(date, "d MMM yyyy 'at' HH:mm aa");
+  const formatFullDate = (date) => format(date, "d MMM yyyy", { locale: es });
 
   // Date state checkers
   const isCurrentMonth = (date) => isSameMonth(date, currentDate);
   const isVisaArrival = (date) => isSameDay(date, visaArrivalDate);
   const isToday = (date) => isSameDay(date, today);
-  const isWeekendDay = (date) => isWeekend(date);
+  const isWeekendDay = (date) => {
+    const day = date.getDay();
+    return day === 6 || day === 0; // 6 is Saturday, 0 is Sunday
+  };
 
   // Get processing days info
   const getProcessingDays = () => {

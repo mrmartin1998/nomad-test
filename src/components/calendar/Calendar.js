@@ -9,14 +9,11 @@ const Calendar = () => {
 
   return (
     <div className="max-w-2xl">
-      {/* Title with blue dot */}
+      {/* Title section */}
       <div className="flex flex-col gap-1 mb-6">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold mb-2">Get a Guaranteed Visa on</h2>
           in {getProcessingDays()} days
-        </div>
-        <div className="text-blue-600 text-sm ml-4">
-          {formatFullDate(new Date())}
         </div>
       </div>
 
