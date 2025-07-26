@@ -8,6 +8,7 @@ import WhyChooseUs from '@/components/why-choose-us/WhyChooseUs';
 import ApplicationProcess from '@/components/application-process/ApplicationProcess';
 import PopularDestinations from '@/components/popular-destinations';
 import Newsletter from '@/components/newsletter';
+import ExpandingCard from '@/components/ExpandingCard';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
@@ -710,6 +711,11 @@ export default function Home() {
           </div>
         </div>
       </section> */}
+
+      {/* Add the ExpandingCard component in a centered container */}
+      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
+        <ExpandingCard />
+      </div>
 
     </div>
   );
