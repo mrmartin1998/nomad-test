@@ -7,22 +7,22 @@ const ExpandingCard = () => {
   // Image cards data with exact positioning from Figma
   const imageCards = [
     {
-      src: '/assets/destinations/thailand.jpg',
+      src: '/assets/visa-folder/dusk-over-emerging-metropolis.png',
       initialStyle: { top: '-15px', left: '-10px', rotate: '-10deg', scale: 0.98 },
       expandedStyle: { top: '-30px', left: '-60px', rotate: '-15deg', scale: 1 }
     },
     {
-      src: '/assets/destinations/egypt.jpg',
+      src: '/assets/visa-folder/serene-thai-longtail-boat-at-karst-cliff-beach.png',
       initialStyle: { top: '-10px', left: '-5px', rotate: '-5deg', scale: 0.98 },
       expandedStyle: { top: '-20px', left: '-30px', rotate: '-8deg', scale: 1 }
     },
     {
-      src: '/assets/destinations/usa.jpg',
+      src: '/assets/visa-folder/visa-doc-3.jpg',
       initialStyle: { top: '-5px', left: '5px', rotate: '5deg', scale: 0.98 },
       expandedStyle: { top: '-20px', left: '30px', rotate: '8deg', scale: 1 }
     },
     {
-      src: '/assets/airplane-window-view.jpg',
+      src: '/assets/visa-folder/visa-doc-4.jpg',
       initialStyle: { top: '-10px', left: '10px', rotate: '10deg', scale: 0.98 },
       expandedStyle: { top: '-30px', left: '60px', rotate: '15deg', scale: 1 }
     }
