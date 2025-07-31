@@ -3,32 +3,54 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import DestinationSelector from '@/components/destination-selector/DestinationSelector';
+import WhyChooseUs from '@/components/why-choose-us/WhyChooseUs';
+import ApplicationProcess from '@/components/application-process/ApplicationProcess';
+import PopularDestinations from '@/components/popular-destinations';
+import Newsletter from '@/components/newsletter';
+import ExpandingCard from '@/components/ExpandingCard';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState(null);
 
   return (
     <div className="app-background">
-      {/* New Hero Section */}
-      <div className="min-h-screen bg-base-100 relative overflow-hidden">
+      {/* Hero Section */}
+      <div className="min-h-[90vh] bg-base-100 relative overflow-hidden">
         <div className="container mx-auto px-4 pt-20">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               Consigue tu visado
-              <span className="block">sin complicaciones, sin estrés,</span>
-              <span className="block italic text-primary">sin papeleos y en 48H</span>
+              <span className="block mt-2">sin complicaciones, sin estrés,</span>
+              <span className="block mt-2 text-primary italic">sin papeleos y en 48H</span>
             </h1>
-            <p className="text-xl md:text-2xl text-base-content/70 mb-12">
+            <p className="text-xl text-base-content/70 mb-12 max-w-3xl mx-auto">
               Tramitamos visados de turismo, nómadas digitales, estudiantes y más. 
               Servicio rápido, online y con asesoría personalizada.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn btn-primary btn-lg">
-                <span className="mr-2">👉</span> Solicita tu visado
-              </button>
-              <button className="btn btn-outline btn-lg">
-                Descubre si cumples los requisitos
-              </button>
+
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mt-16 text-center max-w-5xl mx-auto">
+              <div>
+                <div className="text-xl font-bold mb-1">1000+</div>
+                <div className="text-sm text-base-content/70">clientes atendidos</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold mb-1">Soporte rápido y personalizado</div>
+                <div className="text-sm text-base-content/70">Resolvermos dudas en menos de 24h</div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Image src="/assets/trustpilot.svg" alt="Trustpilot" width={100} height={20} className="mb-1" />
+                <div className="text-sm">Valoración media: 4.8/5</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold mb-1">Compromiso total</div>
+                <div className="text-sm text-base-content/70">Acompañamiento durante todo el proceso</div>
+              </div>
+              <div>
+                <div className="text-xl font-bold mb-1">99%</div>
+                <div className="text-sm text-base-content/70">visados aprobados</div>
+              </div>
             </div>
           </div>
         </div>
@@ -54,180 +76,17 @@ export default function Home() {
         </div>
       </div>
 
-      {/* New Visa Categories Section */}
-      <div className="container mx-auto px-4 py-16">
-
-        <h2 className="text-4xl font-bold text-center mb-12">¿Qué tipo de visado necesitas?</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          {/* Tourism */}
-          <div 
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
-            onMouseEnter={() => setActiveCategory('tourism')}
-            onMouseLeave={() => setActiveCategory(null)}
-          >
-            <div className="card-body items-center text-center">
-              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="text-4xl">✈️</span>
-              </div>
-              <h3 className="card-title text-2xl mb-4">Turismo</h3>
-              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
-                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
-                ${activeCategory === 'tourism' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                <p className="text-sm">Visados para viajes de turismo, visitas familiares o estancias cortas.</p>
-              </div>
-              <div className="space-y-2 w-full">
-                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
-                  <span>🇨🇷</span> Costa Rica
-                </Link>
-                <Link href="/pages/us-esta-visa-form" className="btn btn-outline w-full gap-2">
-                  <span>🇺🇸</span> ESTA (EE.UU.)
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Digital Nomad */}
-          <div 
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
-            onMouseEnter={() => setActiveCategory('nomad')}
-            onMouseLeave={() => setActiveCategory(null)}
-          >
-            <div className="card-body items-center text-center">
-              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="text-4xl">💻</span>
-              </div>
-              <h3 className="card-title text-2xl mb-4">Nómada Digital</h3>
-              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
-                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
-                ${activeCategory === 'nomad' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                <p className="text-sm">Visados especiales para profesionales que trabajan de forma remota.</p>
-              </div>
-              <div className="space-y-2 w-full">
-                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
-                  <span>🇨🇷</span> Costa Rica
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Student */}
-          <div 
-            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
-            onMouseEnter={() => setActiveCategory('student')}
-            onMouseLeave={() => setActiveCategory(null)}
-          >
-            <div className="card-body items-center text-center">
-              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
-                <span className="text-4xl">🎓</span>
-              </div>
-              <h3 className="card-title text-2xl mb-4">Estudiante</h3>
-              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
-                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
-                ${activeCategory === 'student' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                <p className="text-sm">Visados para estudios, intercambios académicos y programas educativos.</p>
-              </div>
-              <div className="space-y-2 w-full">
-                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
-                  <span>🇨🇷</span> Costa Rica
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Destination Selector Section */}
+      <div className="container mx-auto px-4 -mt-20 relative z-10 mb-16">
+        <DestinationSelector />
       </div>
 
-      {/* New Benefits Section */}
-      <div className="container mx-auto px-4 py-16">
-        <div className="bg-base-200/50 rounded-3xl py-16 px-4 md:px-8">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-4xl font-bold text-center mb-4">Tu tranquilidad, nuestro compromiso</h2>
-            <p className="text-center text-base-content/70 mb-12 text-lg">
-              Descubre por qué somos tu mejor opción para tramitar tu visa
-            </p>
+      {/* Why Choose Us Section */}
+      <WhyChooseUs />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Worldwide Processing */}
-              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="rounded-full bg-primary/10 p-6 mb-4">
-                    <span className="text-4xl">🌍</span>
-                  </div>
-                  <h3 className="card-title text-xl">Tramitación 100% Online</h3>
-                  <p className="text-base-content/70">
-                    Gestiona tu visa desde cualquier parte del mundo
-                  </p>
-                </div>
-              </div>
 
-              {/* Expert Network */}
-              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="rounded-full bg-primary/10 p-6 mb-4">
-                    <span className="text-4xl">👥</span>
-                  </div>
-                  <h3 className="card-title text-xl">Expertos en +20 países</h3>
-                  <p className="text-base-content/70">
-                    Red internacional de especialistas en inmigración
-                  </p>
-                </div>
-              </div>
-
-              {/* Legal Support */}
-              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="rounded-full bg-primary/10 p-6 mb-4">
-                    <span className="text-4xl">⚖️</span>
-                  </div>
-                  <h3 className="card-title text-xl">Soporte Legal Completo</h3>
-                  <p className="text-base-content/70">
-                    Acompañamiento legal y logístico personalizado
-                  </p>
-                </div>
-              </div>
-
-              {/* Success Rate */}
-              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="rounded-full bg-primary/10 p-6 mb-4">
-                    <span className="text-4xl">📈</span>
-                  </div>
-                  <h3 className="card-title text-xl">Alta Tasa de Éxito</h3>
-                  <p className="text-base-content/70">
-                    Más del 95% de solicitudes aprobadas
-                  </p>
-                </div>
-              </div>
-
-              {/* Partner Network */}
-              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="rounded-full bg-primary/10 p-6 mb-4">
-                    <span className="text-4xl">🤝</span>
-                  </div>
-                  <h3 className="card-title text-xl">Red de Partners</h3>
-                  <p className="text-base-content/70">
-                    Seguros, coworkings, escuelas y más servicios
-                  </p>
-                </div>
-              </div>
-
-              {/* Stats Card */}
-              <div className="card bg-primary text-primary-content shadow-xl hover:shadow-2xl transition-all duration-300">
-                <div className="card-body items-center text-center">
-                  <div className="stats bg-transparent text-primary-content">
-                    <div className="stat">
-                      <div className="stat-title text-primary-content/80">Visas Procesadas</div>
-                      <div className="stat-value text-white">1,000+</div>
-                      <div className="stat-desc text-primary-content/80">En el último año</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Application Process Section */}
+      <ApplicationProcess />
 
       {/* Testimonials Section */}
       <div className="container mx-auto px-4 py-16">
@@ -295,8 +154,188 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Popular Destinations Section */}
+      <PopularDestinations />
+
+      {/* Newsletter Section */}
+      <Newsletter />
+
+
+      {/* New Visa Categories Section */}
+
+      
+      {/* <div className="container mx-auto px-4 py-16">
+
+        <h2 className="text-4xl font-bold text-center mb-12">¿Qué tipo de visado necesitas?</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Tourism */}
+          {/* <div 
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
+            onMouseEnter={() => setActiveCategory('tourism')}
+            onMouseLeave={() => setActiveCategory(null)}
+          >
+            <div className="card-body items-center text-center">
+              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="text-4xl">✈️</span>
+              </div>
+              <h3 className="card-title text-2xl mb-4">Turismo</h3>
+              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
+                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
+                ${activeCategory === 'tourism' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+                <p className="text-sm">Visados para viajes de turismo, visitas familiares o estancias cortas.</p>
+              </div>
+              <div className="space-y-2 w-full">
+                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
+                  <span>🇨🇷</span> Costa Rica
+                </Link>
+                <Link href="/pages/us-esta-visa-form" className="btn btn-outline w-full gap-2">
+                  <span>🇺🇸</span> ESTA (EE.UU.)
+                </Link>
+              </div>
+            </div>
+          </div> */}
+
+          {/* Digital Nomad */}
+          {/* <div 
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
+            onMouseEnter={() => setActiveCategory('nomad')}
+            onMouseLeave={() => setActiveCategory(null)}
+          >
+            <div className="card-body items-center text-center">
+              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="text-4xl">💻</span>
+              </div>
+              <h3 className="card-title text-2xl mb-4">Nómada Digital</h3>
+              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
+                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
+                ${activeCategory === 'nomad' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+                <p className="text-sm">Visados especiales para profesionales que trabajan de forma remota.</p>
+              </div>
+              <div className="space-y-2 w-full">
+                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
+                  <span>🇨🇷</span> Costa Rica
+                </Link>
+              </div>
+            </div>
+          </div> */}
+
+          {/* Student */}
+          {/* <div 
+            className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 group relative"
+            onMouseEnter={() => setActiveCategory('student')}
+            onMouseLeave={() => setActiveCategory(null)}
+          >
+            <div className="card-body items-center text-center">
+              <div className="rounded-full bg-primary/10 p-6 mb-4 group-hover:bg-primary/20 transition-colors">
+                <span className="text-4xl">🎓</span>
+              </div>
+              <h3 className="card-title text-2xl mb-4">Estudiante</h3>
+              <div className={`absolute -top-2 left-1/2 transform -translate-x-1/2 -translate-y-full 
+                bg-base-300 p-4 rounded-lg shadow-lg w-72 transition-all duration-300 z-10
+                ${activeCategory === 'student' ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
+                <p className="text-sm">Visados para estudios, intercambios académicos y programas educativos.</p>
+              </div>
+              <div className="space-y-2 w-full">
+                <Link href="/pages/costa-rica-form" className="btn btn-primary w-full gap-2">
+                  <span>🇨🇷</span> Costa Rica
+                </Link>
+              </div>
+            </div>
+          </div> */}
+        {/* </div>
+      </div> */}
+
+
+      {/* New Benefits Section */}
+      {/* <div className="container mx-auto px-4 py-16">
+        <div className="bg-base-200/50 rounded-3xl py-16 px-4 md:px-8">
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-4">Tu tranquilidad, nuestro compromiso</h2>
+            <p className="text-center text-base-content/70 mb-12 text-lg">
+              Descubre por qué somos tu mejor opción para tramitar tu visa
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">🌍</span>
+                  </div>
+                  <h3 className="card-title text-xl">Tramitación 100% Online</h3>
+                  <p className="text-base-content/70">
+                    Gestiona tu visa desde cualquier parte del mundo
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">👥</span>
+                  </div>
+                  <h3 className="card-title text-xl">Expertos en +20 países</h3>
+                  <p className="text-base-content/70">
+                    Red internacional de especialistas en inmigración
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">⚖️</span>
+                  </div>
+                  <h3 className="card-title text-xl">Soporte Legal Completo</h3>
+                  <p className="text-base-content/70">
+                    Acompañamiento legal y logístico personalizado
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">📈</span>
+                  </div>
+                  <h3 className="card-title text-xl">Alta Tasa de Éxito</h3>
+                  <p className="text-base-content/70">
+                    Más del 95% de solicitudes aprobadas
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="rounded-full bg-primary/10 p-6 mb-4">
+                    <span className="text-4xl">🤝</span>
+                  </div>
+                  <h3 className="card-title text-xl">Red de Partners</h3>
+                  <p className="text-base-content/70">
+                    Seguros, coworkings, escuelas y más servicios
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-primary text-primary-content shadow-xl hover:shadow-2xl transition-all duration-300">
+                <div className="card-body items-center text-center">
+                  <div className="stats bg-transparent text-primary-content">
+                    <div className="stat">
+                      <div className="stat-title text-primary-content/80">Visas Procesadas</div>
+                      <div className="stat-value text-white">1,000+</div>
+                      <div className="stat-desc text-primary-content/80">En el último año</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+
+
       {/* Main Form Section */}
-      <div className="py-16 px-4 md:px-8 bg-base-200/50">
+      {/* <div className="py-16 px-4 md:px-8 bg-base-200/50">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">Empecemos hoy mismo con tu visado</h2>
@@ -307,7 +346,7 @@ export default function Home() {
             <div className="card-body p-8">
               <form className="space-y-6">
                 {/* Visa Type Selection */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">¿Qué tipo de visa necesitas?</span>
                   </label>
@@ -319,10 +358,10 @@ export default function Home() {
                     <option>Visa Nómada Digital</option>
                     <option>ESTA (Estados Unidos)</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Destination Country */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">País de destino</span>
                   </label>
@@ -334,10 +373,10 @@ export default function Home() {
                     <option>España</option>
                     <option>Canadá</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Nationality */}
-                <div className="form-control">
+                {/* <div className="form-control">
                   <label className="label">
                     <span className="label-text text-lg">Nacionalidad</span>
                   </label>
@@ -349,10 +388,10 @@ export default function Home() {
                     <option>Argentina</option>
                     <option>España</option>
                   </select>
-                </div>
+                </div> */}
 
                 {/* Contact Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text text-lg">Email</span>
@@ -374,25 +413,25 @@ export default function Home() {
                       className="input input-bordered w-full" 
                     />
                   </div>
-                </div>
+                </div> */}
 
                 {/* Submit Button */}
-                <div className="form-control mt-8">
+                {/* <div className="form-control mt-8">
                   <button className="btn btn-primary btn-lg w-full text-lg">
                     Solicitar asesoría gratuita
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 ml-2">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-              </svg>
+                    </svg>
                   </button>
-                </div>
-              </form>
+                </div> */}
+              {/* </form>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-16">
+      {/* <div className="container mx-auto px-4 py-16">
         <h2 className="text-4xl font-bold text-center mb-12">Nuestro Proceso</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-all duration-200">
@@ -431,15 +470,15 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Available Visas Section */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-12 text-center">Visas Disponibles</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {/* <section className="py-16"> */}
+        {/* <div className="container mx-auto px-4"> */}
+          {/* <h2 className="text-3xl font-bold mb-12 text-center">Visas Disponibles</h2> */}
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> */}
             {/* ESTA USA */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -466,10 +505,10 @@ export default function Home() {
                   Solicitar ESTA
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* India eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -496,10 +535,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Thailand eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -526,10 +565,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* UK ETA */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -556,10 +595,10 @@ export default function Home() {
                   Solicitar ETA
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Egypt eVisa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -586,10 +625,10 @@ export default function Home() {
                   Solicitar eVisa
                 </Link>
               </div>
-            </div>
+            </div> */}
 
             {/* Cuba Visa */}
-            <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
+            {/* <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
               <div className="card-body">
                 <div className="flex items-center gap-4 mb-4">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
@@ -616,13 +655,13 @@ export default function Home() {
                   Solicitar Visa
                 </Link>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
+            </div> */}
+          {/* </div> */}
+        {/* </div> */}
+      {/* </section> */}
 
       {/* Features Section */}
-      <section className="py-16 bg-base-200">
+      {/* <section className="py-16 bg-base-200">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-12 text-center">¿Por qué elegirnos?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -655,10 +694,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
 
       {/* CTA Section */}
-      <section className="py-16">
+      {/* <section className="py-16">
         <div className="container mx-auto px-4">
           <div className="card bg-primary text-primary-content shadow-xl">
             <div className="card-body items-center text-center">
@@ -670,7 +710,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
+      {/* Add the ExpandingCard component in a centered container */}
+      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
+        <ExpandingCard />
+      </div>
 
     </div>
   );

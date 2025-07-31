@@ -1,8 +1,23 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Footer = () => (
   <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10">
+    {/* Logo Section */}
+    <div className="flex flex-col items-center md:items-start gap-4 mb-8 md:mb-0">
+      <Image
+        src="/assets/brand/nomad-logo-full.svg"
+        alt="Nomad"
+        width={150}
+        height={40}
+        priority
+      />
+      <p className="text-sm text-base-content/70">
+        Making visa applications simple and efficient
+      </p>
+    </div>
+
     <nav>
       <h6 className="footer-title">Services</h6>
       <Link href="#" className="link link-hover">Branding</Link>
