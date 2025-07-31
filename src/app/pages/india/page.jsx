@@ -1,5 +1,8 @@
-import React from 'react';
+'use client'
+
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Calendar from '@/components/calendar';
 
 const IndiaVisaPage = () => {
   return (
@@ -127,6 +130,18 @@ const IndiaVisaPage = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Calendar Section */}
+      <section className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto bg-base-100 rounded-xl shadow p-6 flex flex-col md:flex-row gap-8">
+            {/* Calendar/Info */}
+            <div className="flex-1">
+              <Calendar />
             </div>
           </div>
         </div>
