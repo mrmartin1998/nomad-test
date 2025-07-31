@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Calendar from '@/components/calendar';
 
 const EgyptVisaPage = () => {
   // State declarations at component level
@@ -114,41 +115,13 @@ const EgyptVisaPage = () => {
           </div>
         </div>
       </section>
-      {/* Calendar Section (static placeholder) */}
+      {/* Calendar Section */}
       <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto bg-base-100 rounded-xl shadow p-6 flex flex-col md:flex-row gap-8">
             {/* Calendar/Info */}
             <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-2">Get a Guaranteed Visa on</h2>
-              <div className="text-primary font-semibold mb-4">5 May 2025 at 01:34 PM</div>
-              {/* Simple Calendar Table */}
-              <div className="border rounded-lg p-4 bg-base-200">
-                <div className="font-semibold mb-2">mayo 2025</div>
-                <table className="w-full text-center text-sm">
-                  <thead>
-                    <tr className="text-base-content/70">
-                      <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>28</td><td>29</td><td>30</td><td className="bg-primary text-white rounded">1</td><td>2</td><td>3</td><td>4</td></tr>
-                    <tr><td className="bg-primary text-white rounded">5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
-                    <tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td></tr>
-                    <tr><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td></tr>
-                    <tr><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td><td>1</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            {/* Good to Know Sidebar */}
-            <div className="flex-1 bg-base-50 rounded-lg p-4 border">
-              <div className="font-semibold mb-4">GOOD TO KNOW</div>
-              <ul className="space-y-3 text-sm">
-                <li><span className="font-bold">Nomad on your Visa!</span> Nomad works with the authorities to get your visa on time!</li>
-                <li><span className="font-bold">Public Holidays</span> We take into account public holidays observed in the country you are traveling to.</li>
-                <li><span className="font-bold">Weekends</span> Embassies are shut on Saturday & Sunday. Your visa cannot be processed then.</li>
-              </ul>
+              <Calendar />
             </div>
           </div>
         </div>
