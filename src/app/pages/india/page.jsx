@@ -352,7 +352,7 @@ const IndiaVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Rajesh Kumar</h3>
                 <p className="text-base-content/70 italic">
-                  "El proceso fue muy eficiente. Obtuve mi eVisa en menos tiempo del esperado."
+                  &quot;El proceso fue muy eficiente. Obtuve mi eVisa en menos tiempo del esperado.&quot;
                 </p>
                 <div className="badge badge-primary">eVisa India</div>
               </div>
@@ -370,7 +370,7 @@ const IndiaVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Priya Sharma</h3>
                 <p className="text-base-content/70 italic">
-                  "Excelente servicio y atención personalizada durante todo el proceso."
+                  &quot;Excelente servicio y atención personalizada durante todo el proceso.&quot;
                 </p>
                 <div className="badge badge-primary">eVisa India</div>
               </div>
@@ -388,7 +388,7 @@ const IndiaVisaPage = () => {
               <div className="card-body items-center text-center pt-2">
                 <h3 className="card-title text-xl">Amit Patel</h3>
                 <p className="text-base-content/70 italic">
-                  "Como viajero frecuente, aprecio la rapidez y eficiencia del servicio."
+                  &quot;Como viajero frecuente, aprecio la rapidez y eficiencia del servicio.&quot;
                 </p>
                 <div className="badge badge-primary">eVisa India</div>
               </div>
