@@ -66,7 +66,7 @@ const Navbar = () => {
           {/* Mobile Logo */}
           <div className="block md:hidden">
             <Image
-              src="/assets/brand/nomad-icon-light.png"
+              src="/assets/brand/nomad-icon-dark.png"
               alt="Nomad"
               width={32}
               height={32}
