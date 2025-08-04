@@ -49,10 +49,8 @@
 
 ### 5. Dynamic Navigation
 - [x] Implement active state indicators
-- [ ] Add breadcrumb navigation
 - [x] Create dynamic menu structure
 - [x] Add route-based highlighting
-- [ ] Implement nested navigation
 - [x] Add context-aware menu items
 
 ### 6. Loading States

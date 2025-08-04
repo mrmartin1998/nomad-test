@@ -7,13 +7,11 @@ import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   // Close dropdown when route changes
   useEffect(() => {
     setIsDropdownOpen(false);
-    setIsMobileMenuOpen(false);
   }, [pathname]);
 
   const visaOptions = [
@@ -24,11 +22,6 @@ const Navbar = () => {
     { icon: "🇬🇧", text: "Visa Reino Unido", href: "/pages/uk" },
     { icon: "🇹🇭", text: "Visa Tailandia", href: "/pages/thailand" },
     { icon: "🇪🇬", text: "Visa Egipto", href: "/pages/egypt" },
-  ];
-
-  const mainNavItems = [
-    { text: "Obtener mi visa", href: "#", hasDropdown: true },
-    { text: "Viaje con seguridad", href: "/seguridad", hasDropdown: false },
   ];
 
   const isActive = (href) => {
@@ -74,6 +67,7 @@ const Navbar = () => {
               }`}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+              style={{ outline: 'none' }}
             >
               Obtener mi visa
               <svg
@@ -101,6 +95,7 @@ const Navbar = () => {
                       ? 'text-primary bg-primary/5 pl-6'
                       : 'text-gray-700 hover:text-primary'
                   }`}
+                  style={{ outline: 'none' }}
                 >
                   <span className={`text-xl transform transition-transform duration-200 ${isActive(option.href) ? 'scale-110' : 'group-hover:scale-110'}`}>
                     {option.icon}
@@ -120,6 +115,7 @@ const Navbar = () => {
                 ? 'text-primary font-medium'
                 : 'text-gray-700 hover:text-primary'
             }`}
+            style={{ outline: 'none' }}
           >
             Viaje con seguridad
           </Link>
@@ -127,8 +123,18 @@ const Navbar = () => {
         
         {/* Language and Currency (desktop) */}
         <div className="hidden lg:flex items-center gap-2">
-          <button className="btn btn-ghost btn-sm hover:bg-primary/10 transition-colors duration-200">ES</button>
-          <button className="btn btn-ghost btn-sm hover:bg-primary/10 transition-colors duration-200">€ EUR</button>
+          <button 
+            className="btn btn-ghost btn-sm hover:bg-primary/10 transition-colors duration-200"
+            style={{ outline: 'none' }}
+          >
+            ES
+          </button>
+          <button 
+            className="btn btn-ghost btn-sm hover:bg-primary/10 transition-colors duration-200"
+            style={{ outline: 'none' }}
+          >
+            € EUR
+          </button>
         </div>
 
         {/* Login button (desktop) */}
@@ -137,29 +143,19 @@ const Navbar = () => {
           className={`hidden lg:inline-flex btn btn-sm transition-all duration-200 hover:scale-105 ${
             isActive('/login') ? 'btn-primary' : 'btn-outline'
           }`}
+          style={{ outline: 'none' }}
         >
           Iniciar sesión
         </Link>
 
         {/* Mobile menu button */}
-        <div className="dropdown dropdown-end lg:hidden">
-          <label 
-            tabIndex={0} 
-            className={`btn btn-ghost btn-square transition-colors duration-200 ${isMobileMenuOpen ? 'bg-primary/10' : ''}`}
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
+        <details className="dropdown dropdown-end lg:hidden">
+          <summary className="btn btn-ghost btn-square transition-colors duration-200" style={{ outline: 'none' }}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-          </label>
-          <ul 
-            tabIndex={0} 
-            className={`menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 transform transition-all duration-200 ease-in-out ${
-              isMobileMenuOpen 
-                ? 'opacity-100 translate-y-0 scale-100' 
-                : 'opacity-0 translate-y-2 scale-95 pointer-events-none'
-            }`}
-          >
+          </summary>
+          <ul className="dropdown-content menu menu-sm bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
             {/* Mobile Visa Options */}
             {visaOptions.map((option, index) => (
               <li key={index}>
@@ -170,7 +166,7 @@ const Navbar = () => {
                       ? 'bg-primary/10 text-primary font-medium'
                       : 'hover:bg-primary/5'
                   }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{ outline: 'none' }}
                 >
                   <span className={`transform transition-transform duration-200 ${isActive(option.href) ? 'scale-110' : 'group-hover:scale-110'}`}>
                     {option.icon}
@@ -191,17 +187,27 @@ const Navbar = () => {
                     ? 'bg-primary/10 text-primary font-medium'
                     : 'hover:bg-primary/5'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                style={{ outline: 'none' }}
               >
                 Viaje con seguridad
               </Link>
             </li>
             <li><hr className="my-2" /></li>
             <li>
-              <button className="text-left hover:bg-primary/5 transition-all duration-200">ES</button>
+              <button 
+                className="text-left hover:bg-primary/5 transition-all duration-200"
+                style={{ outline: 'none' }}
+              >
+                ES
+              </button>
             </li>
             <li>
-              <button className="text-left hover:bg-primary/5 transition-all duration-200">€ EUR</button>
+              <button 
+                className="text-left hover:bg-primary/5 transition-all duration-200"
+                style={{ outline: 'none' }}
+              >
+                € EUR
+              </button>
             </li>
             <li><hr className="my-2" /></li>
             <li>
@@ -212,13 +218,13 @@ const Navbar = () => {
                     ? 'bg-primary/10 text-primary font-medium'
                     : 'hover:bg-primary/5'
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
+                style={{ outline: 'none' }}
               >
                 Iniciar sesión
               </Link>
             </li>
           </ul>
-        </div>
+        </details>
       </div>
     </div>
   );
