@@ -1,18 +1,37 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
   const pathname = usePathname();
 
   // Close dropdown when route changes
   useEffect(() => {
     setIsDropdownOpen(false);
+    // Close mobile menu when route changes
+    if (mobileMenuRef.current) {
+      mobileMenuRef.current.removeAttribute('open');
+    }
   }, [pathname]);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        mobileMenuRef.current.removeAttribute('open');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const visaOptions = [
     { icon: "🇺🇸", text: "ESTA Estados Unidos", href: "/pages/us-esta-visa-form" },
@@ -149,7 +168,7 @@ const Navbar = () => {
         </Link>
 
         {/* Mobile menu button */}
-        <details className="dropdown dropdown-end lg:hidden">
+        <details ref={mobileMenuRef} className="dropdown dropdown-end lg:hidden">
           <summary className="btn btn-ghost btn-square transition-colors duration-200" style={{ outline: 'none' }}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
