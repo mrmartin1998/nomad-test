@@ -52,7 +52,7 @@ const USAUpload = ({
             <div>
               <p className="font-medium">Valid Passport</p>
               <p className="text-sm text-base-content/70">
-                Clear, high-quality scan or photo of your passport's main page. 
+                Clear, high-quality scan or photo of your passport&apos;s main page. 
                 Must be valid for at least 6 months from your travel date.
               </p>
             </div>
