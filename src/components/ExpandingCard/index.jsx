@@ -1,220 +1,153 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const CARD_CONFIG = [
+  {
+    src: '/assets/visa-folder/dusk-over-emerging-metropolis.png',
+    x: -80,
+    y: 24,
+    rotate: -8,
+    scale: 0.95,
+    z: 1,
+  },
+  {
+    src: '/assets/visa-folder/serene-thai-longtail-boat-at-karst-cliff-beach.png',
+    x: 0,
+    y: 0,
+    rotate: 0,
+    scale: 1,
+    z: 2,
+  },
+  {
+    src: '/assets/visa-folder/timeless-desert-expedition-to-the-great-pyramids.png',
+    x: 80,
+    y: 24,
+    rotate: 8,
+    scale: 0.95,
+    z: 1,
+  },
+];
+
+const FOLDER_SIZE = { width: 360, height: 220 };
 
 const ExpandingCard = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Card configuration for initial state
-  const cards = [
-    {
-      src: '/assets/visa-folder/dusk-over-emerging-metropolis.png',
-      initialStyle: { x: -2, y: -1, rotate: '-0.8deg', scale: 0.998, opacity: 0.7 },
-      expandedStyle: { x: -32, y: 4, rotate: '-2.25deg', scale: 0.985, opacity: 1 }
-    },
-    {
-      src: '/assets/visa-folder/serene-thai-longtail-boat-at-karst-cliff-beach.png',
-      initialStyle: { x: 2, y: -0.5, rotate: '0.5deg', scale: 0.999, opacity: 0.85 },
-      expandedStyle: { x: -8, y: 0, rotate: '-0.5deg', scale: 0.995, opacity: 1 }
-    },
-    {
-      src: '/assets/visa-folder/timeless-desert-expedition-to-the-great-pyramids.png',
-      initialStyle: { x: -1, y: 0, rotate: '-0.3deg', scale: 1, opacity: 1 },
-      expandedStyle: { x: 24, y: 4, rotate: '2.25deg', scale: 0.985, opacity: 1 }
-    }
-  ];
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
-      <div className="relative w-[260px]">
-        {/* Background Cards */}
-        {cards.map((card, i) => (
-          <motion.div
+    <div className="relative w-full h-[80vh] flex items-center justify-center bg-[#f7f8f9]">
+      {/* Top bubble */}
+      <motion.div
+        initial={false}
+        animate={{
+          y: expanded ? -120 : -30,
+          opacity: 1,
+        }}
+        transition={{ type: "spring", stiffness: 140, damping: 18 }}
+        className="absolute left-1/2 z-30"
+        style={{
+          top: "40%",
+          transform: "translate(-50%, 0)",
+          pointerEvents: "none",
+        }}
+      >
+        <div className="bg-white shadow-md rounded-full px-6 py-2 text-sm flex items-center gap-1 font-medium border border-gray-200">
+          <span>✓</span> Visa Tailandia <span className="text-blue-500">lista</span>
+        </div>
+      </motion.div>
+
+      {/* Cards */}
+      <div className="relative z-10" style={{ width: FOLDER_SIZE.width, height: FOLDER_SIZE.height }}>
+        {CARD_CONFIG.map((card, i) => (
+          <motion.img
             key={i}
-            className="absolute top-0 left-1/2 rounded-[20px] overflow-hidden"
+            src={card.src}
+            alt=""
+            className="absolute rounded-2xl shadow-2xl object-cover"
             style={{
-              width: '260px',
-              height: '175px',
-              zIndex: i,
-              transformOrigin: 'center bottom',
-              pointerEvents: 'none',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+              width: FOLDER_SIZE.width,
+              height: FOLDER_SIZE.height,
+              top: 0,
+              left: 0,
+              zIndex: card.z,
             }}
-            initial={card.initialStyle}
-            animate={isExpanded ? card.expandedStyle : card.initialStyle}
+            initial={false}
+            animate={
+              expanded
+                ? {
+                    x: card.x,
+                    y: card.y,
+                    rotate: card.rotate,
+                    scale: card.scale,
+                    filter: "brightness(1)",
+                  }
+                : {
+                    x: 0,
+                    y: 0,
+                    rotate: 0,
+                    scale: 1,
+                    filter: i === 1 ? "brightness(1)" : "brightness(0.96)",
+                  }
+            }
             transition={{
-              type: 'spring',
-              stiffness: 200,
-              damping: 24,
-              mass: 0.8,
-              delay: i * 0.08
+              type: "spring",
+              stiffness: 160,
+              damping: 22,
+              mass: 0.6,
             }}
-          >
-            <img 
-              src={card.src}
-              alt=""
-              className="w-full h-full object-cover"
-              style={{
-                transform: 'translateX(-50%)',
-                opacity: card.initialStyle.opacity
-              }}
-            />
-          </motion.div>
+          />
         ))}
 
-        {/* Main Folder Card */}
+        {/* Folder (top card) */}
         <motion.div
-          className="absolute top-0 left-1/2 z-10 bg-white rounded-[20px] cursor-pointer"
+          className="absolute left-0 top-0 w-full h-full rounded-2xl bg-white shadow-xl flex items-center justify-center"
           style={{
-            width: '260px',
-            height: '175px',
-            transform: 'translateX(-50%)',
-            transformOrigin: 'center bottom',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+            zIndex: 20,
+            borderRadius: 24,
           }}
-          initial={{ scale: 1 }}
+          initial={false}
           animate={{
-            scale: isExpanded ? 1 : 1,
-            y: isExpanded ? -8 : 0
+            scale: expanded ? 1.02 : 1,
+            boxShadow: expanded
+              ? "0 8px 32px 0 rgba(36, 39, 58, 0.10), 0 1.5px 6px 0 rgba(36,39,58,0.06)"
+              : "0 6px 32px 0 rgba(36, 39, 58, 0.10), 0 1.5px 6px 0 rgba(36,39,58,0.06)",
           }}
-          onClick={() => setIsExpanded(!isExpanded)}
-          whileHover={{ 
-            scale: 1.02,
-            boxShadow: '0 12px 48px rgba(0, 0, 0, 0.12)',
-            transition: { duration: 0.2 }
+          transition={{
+            type: "spring",
+            stiffness: 120,
+            damping: 15,
           }}
         >
-          {/* Folder Tab */}
-          <div 
-            className="absolute bg-white" 
-            style={{ 
-              width: '46px',
-              height: '12px',
-              top: '-12px',
-              left: '18px',
-              borderRadius: '10px 10px 0 0',
-              zIndex: 11,
-              boxShadow: '0 -1px 6px rgba(0,0,0,0.06)'
-            }} 
-          />
-          
-          {/* Title at bottom */}
-          <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center">
-            <h2 
-              className="text-[20px] text-gray-800"
-              style={{
-                fontFamily: 'Product Sans, Inter, sans-serif',
-                fontWeight: '450',
-                letterSpacing: '-0.2px'
-              }}
-            >
-              Solicitudes de visa
-            </h2>
-          </div>
+          <span className="text-lg font-medium text-[#232b3b]">Solicitudes de visa</span>
         </motion.div>
-
-        {/* Overlays - Only show when expanded */}
-        <AnimatePresence>
-          {isExpanded && (
-            <>
-              {/* Thai Visa Document */}
-              <motion.img
-                src="/assets/visa-folder/thai-visa-doc.png"
-                className="absolute w-[92px] z-20"
-                style={{
-                  bottom: '28px',
-                  right: '24px',
-                  transform: 'rotate(6deg)'
-                }}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{
-                  type: 'tween',
-                  duration: 0.3,
-                  delay: 0.35
-                }}
-              />
-
-              {/* Thai Stamp */}
-              <motion.img
-                src="/assets/visa-folder/thai-stamp.png"
-                className="absolute w-[42px] z-20"
-                style={{
-                  bottom: '18px',
-                  left: '12px',
-                  transform: 'rotate(-8deg)'
-                }}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{
-                  type: 'tween',
-                  duration: 0.3,
-                  delay: 0.4
-                }}
-              />
-
-              {/* Status Labels */}
-              <motion.div
-                className="absolute left-1/2 z-30 bg-white/70 backdrop-blur-sm shadow-sm"
-                style={{
-                  top: '-36px',
-                  transform: 'translateX(-50%)',
-                  padding: '5px 14px',
-                  borderRadius: '9999px',
-                  fontSize: '15px',
-                  fontFamily: 'Product Sans, Inter, sans-serif',
-                  fontWeight: '400'
-                }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 24,
-                  delay: 0.45
-                }}
-              >
-                <span>
-                  ✓ Visa Tailandia <span className="text-blue-600">lista</span>
-                </span>
-                <div
-                  className="absolute w-0 h-0 border-l-[5px] border-r-[5px] border-b-[6px] border-transparent border-b-white/70"
-                  style={{
-                    bottom: '-5px',
-                    left: '50%',
-                    transform: 'translateX(-50%)'
-                  }}
-                />
-              </motion.div>
-
-              <motion.div
-                className="absolute z-30"
-                style={{
-                  bottom: '-32px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  fontSize: '13px',
-                  fontFamily: 'Product Sans, Inter, sans-serif'
-                }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                whileHover={{ y: -2 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 24,
-                  delay: 0.5
-                }}
-              >
-                <span className="text-blue-600">✓ Completadas</span>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
       </div>
+
+      {/* Bottom bubble */}
+      <motion.div
+        initial={false}
+        animate={{
+          y: expanded ? 80 : 40,
+          opacity: 1,
+        }}
+        transition={{ type: "spring", stiffness: 140, damping: 18 }}
+        className="absolute left-1/2 z-30"
+        style={{
+          top: "60%",
+          transform: "translate(-50%, 0)",
+          pointerEvents: "none",
+        }}
+      >
+        <div className="bg-white shadow-md rounded-full px-6 py-2 text-sm flex items-center gap-1 font-medium border border-gray-200">
+          <span>✓</span> Completadas
+        </div>
+      </motion.div>
+
+      {/* Toggle Button */}
+      <button
+        onClick={() => setExpanded((v) => !v)}
+        className="absolute right-[20%] top-[30%] bg-white shadow border border-gray-200 px-6 py-2 rounded-full font-medium text-sm z-50"
+      >
+        {expanded ? "Contraer" : "Expandir"}
+      </button>
     </div>
   );
 };
