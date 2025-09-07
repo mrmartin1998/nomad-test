@@ -15,39 +15,49 @@ const MIDDLE_CARD_SRC = "/assets/visa-folder/card-middle-boat.png";
 const LEFT_CARD_SRC   = "/assets/visa-folder/card-left-city.png";
 const BACK_SRC        = "/assets/visa-folder/card-bg-light.png";
 
-/* -------------------- FRAME 1 (your locked pixel-perfect state) -------------------- */
+/* -------------------- FRAME 1 (locked baseline) -------------------- */
 const RIGHT_F1  = { size: 206, x: 127,  y: -57, rotate: 0,  z: 6 };
 const MIDDLE_F1 = { size: 206, x: -30,  y: -98, rotate: 0,  z: 5 };
 const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
-const BACK_F1   = { size: 321, x: -1,  y: -56, rotate: 0,  z: 3 }; // your latest tweak
+const BACK_F1   = { size: 321, x: -1,   y: -56, rotate: 0,  z: 3 };
 
-/* -------------------- FRAME 2 (target pose – good starting guess) -------------------- */
-/* We'll fan the photos out, lift them slightly, and fade the front folder */
-const RIGHT_F2  = { size: 206, x: 152,  y: -32, rotate: 12,  z: 6 };
-const MIDDLE_F2 = { size: 206, x:   0,  y: -60, rotate:  0,  z: 7 }; // a touch forward
+/* -------------------- FRAME 2 (animated pose defaults) -------------------- */
+const RIGHT_F2  = { size: 206, x: 152,  y: -32, rotate:  12, z: 6 };
+const MIDDLE_F2 = { size: 206, x:   0,  y: -60, rotate:   0, z: 7 };
 const LEFT_F2   = { size: 206, x: -168, y: -32, rotate: -12, z: 5 };
-const BACK_F2   = { size: 300, x:   0,  y: -66, rotate:  0,  z: 3 };
-const FRONT_F2  = { opacity: 0, translateY: 6 };   // fade/slide the front away
+const BACK_F2   = { size: 300, x:   0,  y: -66, rotate:   0, z: 3 };
 const FRONT_F1  = { opacity: 1, translateY: 0 };
+// Keep folder visible on frame2 as well (slight lift if you like)
+const FRONT_F2  = { opacity: 1, translateY: 0 };
 
-/** timing to mimic Figma: Smart animate, ease in/out, 200ms */
+// If you want cards to appear ABOVE the folder on frame2, set this to 2.
+// If you want the folder on top on both frames, keep it 10.
+const FRONT_Z_F1 = 10;
+const FRONT_Z_F2 = 10; // change to 2 to put folder behind cards on frame2
+
+/** timing like Figma "Smart animate / ease in-out / 200ms" */
 const MS = 200;
 const EASE = "cubic-bezier(.4,0,.2,1)";
 
-const ENABLE_HOTKEYS = true;      // keep your tweak keys for Frame 1
+const ENABLE_HOTKEYS = true;
 const SHOW_HUD_DEFAULT = false;
 
 export default function VisaFolder_Intro() {
   const anchorRef = useRef(null);
 
-  // Which pose are we showing?
+  /** which pose is shown right now */
   const [pose, setPose] = useState("frame1");
 
-  // Keep your tweakable Frame 1 values intact
-  const [right,  setRight]  = useState(RIGHT_F1);
-  const [middle, setMiddle] = useState(MIDDLE_F1);
-  const [left,   setLeft]   = useState(LEFT_F1);
-  const [back,   setBack]   = useState(BACK_F1);
+  /** editable state for BOTH frames (independent) */
+  const [right1,  setRight1]  = useState(RIGHT_F1);
+  const [middle1, setMiddle1] = useState(MIDDLE_F1);
+  const [left1,   setLeft1]   = useState(LEFT_F1);
+  const [back1,   setBack1]   = useState(BACK_F1);
+
+  const [right2,  setRight2]  = useState(RIGHT_F2);
+  const [middle2, setMiddle2] = useState(MIDDLE_F2);
+  const [left2,   setLeft2]   = useState(LEFT_F2);
+  const [back2,   setBack2]   = useState(BACK_F2);
 
   const [active, setActive] = useState("back");
   const [showHUD, setShowHUD] = useState(SHOW_HUD_DEFAULT);
@@ -76,27 +86,40 @@ export default function VisaFolder_Intro() {
     }
   }, []);
 
-  // Hotkeys (edit Frame 1 only, like before) + quick toggle between poses
+  // Hotkeys — NOW edit whichever frame is active
   useEffect(() => {
     if (!ENABLE_HOTKEYS) return;
 
     const onKey = (e) => {
       if (e.key === "g") { setShowHUD(v => !v); return; }
-      if (e.key === "t") { setPose(p => p === "frame1" ? "frame2" : "frame1"); return; } // toggle pose
+      if (e.key === "t") { setPose(p => (p === "frame1" ? "frame2" : "frame1")); return; } // toggle
+
       if (e.key === "1") { setActive("right");  return; }
       if (e.key === "2") { setActive("middle"); return; }
       if (e.key === "3") { setActive("left");   return; }
       if (e.key === "4") { setActive("back");   return; }
 
-      // If we're not on frame1, ignore edit keys (keeps things simple)
-      if (pose !== "frame1") return;
-
       const step = e.shiftKey ? 5 : 1;
       const rot  = e.shiftKey ? 0.5 : 0.1;
       const keys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","[","]",";","'","0"];
-      if (keys.includes(e.key)) e.preventDefault();
+      if (!keys.includes(e.key)) return;
+      e.preventDefault();
 
-      const apply = (setter, defaults) => setter((s) => {
+      // choose setters/defaults for the CURRENT pose
+      const sets = pose === "frame1"
+        ? { right: [setRight1, RIGHT_F1], middle: [setMiddle1, MIDDLE_F1], left: [setLeft1, LEFT_F1], back: [setBack1, BACK_F1] }
+        : { right: [setRight2, RIGHT_F2], middle: [setMiddle2, MIDDLE_F2], left: [setLeft2, LEFT_F2], back: [setBack2, BACK_F2] };
+
+      const [setter, defaults] = sets[active];
+
+      if (e.key === "0" && e.shiftKey) {
+        // reset ALL layers for the *current* frame
+        Object.entries(sets).forEach(([key, [s, d]]) => s(d));
+        return;
+      }
+
+      // edit only the active layer in the current frame
+      setter((s) => {
         switch (e.key) {
           case "ArrowLeft":  return { ...s, x: s.x - step };
           case "ArrowRight": return { ...s, x: s.x + step };
@@ -106,20 +129,10 @@ export default function VisaFolder_Intro() {
           case "]":          return { ...s, size: s.size + step };
           case ";":          return { ...s, rotate: s.rotate - rot };
           case "'":          return { ...s, rotate: s.rotate + rot };
-          case "0":          return defaults; // reset current layer
+          case "0":          return defaults; // reset current layer (current frame)
           default:           return s;
         }
       });
-
-      if (e.key === "0" && e.shiftKey) { // reset all frame1 layers
-        setRight(RIGHT_F1); setMiddle(MIDDLE_F1); setLeft(LEFT_F1); setBack(BACK_F1);
-        return;
-      }
-
-      if (active === "right")  apply(setRight,  RIGHT_F1);
-      if (active === "middle") apply(setMiddle, MIDDLE_F1);
-      if (active === "left")   apply(setLeft,   LEFT_F1);
-      if (active === "back")   apply(setBack,   BACK_F1);
     };
 
     window.addEventListener("keydown", onKey);
@@ -130,17 +143,15 @@ export default function VisaFolder_Intro() {
   const CARD_CENTER_LEFT = (W - 206) / 2;     // 77 when size=206
   const CARD_CENTER_TOP  = (H - 206) / 2 - 8; // -7 when size=206
 
-  // helpers to pick values based on pose
-  const pick = (a, b) => (pose === "frame1" ? a : b);
+  // values for the current pose (these animate between frames)
+  const R = pose === "frame1" ? right1  : right2;
+  const M = pose === "frame1" ? middle1 : middle2;
+  const L = pose === "frame1" ? left1   : left2;
+  const B = pose === "frame1" ? back1   : back2;
+  const FRONT = pose === "frame1" ? FRONT_F1 : FRONT_F2;
+
   const tr = reduced ? "none" :
     `left ${MS}ms ${EASE}, top ${MS}ms ${EASE}, width ${MS}ms ${EASE}, transform ${MS}ms ${EASE}, opacity ${MS}ms ${EASE}`;
-
-  // computed (animated) styles
-  const R = pick(right,  RIGHT_F2);
-  const M = pick(middle, MIDDLE_F2);
-  const L = pick(left,   LEFT_F2);
-  const B = pick(back,   BACK_F2);
-  const FRONT = pick(FRONT_F1, FRONT_F2);
 
   const backLeft = (W - B.size) / 2 + B.x;
 
@@ -160,7 +171,7 @@ export default function VisaFolder_Intro() {
             margin: "0 auto",
             outline: showHUD ? "1px dashed rgba(0,0,0,.12)" : "none",
           }}
-          title="Hover to fan out (t to toggle)"
+          title="Hover to fan out (press 't' to lock/unlock frame)"
         >
           {/* BACK (light panel) */}
           <img
@@ -246,7 +257,7 @@ export default function VisaFolder_Intro() {
             decoding="sync"
           />
 
-          {/* Folder — front (fade/slide out on Frame 2) */}
+          {/* Folder — front */}
           <img
             src={FRONT_SRC}
             alt="folder"
@@ -257,7 +268,7 @@ export default function VisaFolder_Intro() {
               bottom: 0,
               width: W,
               height: "auto",
-              zIndex: 10,
+              zIndex: pose === "frame1" ? FRONT_Z_F1 : FRONT_Z_F2,
               opacity: FRONT.opacity,
               transform: `translateY(${FRONT.translateY}px)`,
               transition: tr,
@@ -283,15 +294,15 @@ export default function VisaFolder_Intro() {
                 lineHeight: 1.35,
               }}
             >
-              <div style={{marginBottom:4}}>
-                <strong>POSE</strong>: {pose} · hover/t
+              <div style={{ marginBottom: 4 }}>
+                <strong>POSE</strong>: {pose} (hover / t) — editing this pose
               </div>
-              <div><strong style={{opacity: active==="right"?1:.6}}>RIGHT</strong>  size:{right.size}px  x:{right.x}  y:{right.y}  rot:{right.rotate}°</div>
-              <div><strong style={{opacity: active==="middle"?1:.6}}>MIDDLE</strong> size:{middle.size}px x:{middle.x} y:{middle.y} rot:{middle.rotate}°</div>
-              <div><strong style={{opacity: active==="left"?1:.6}}>LEFT</strong>   size:{left.size}px   x:{left.x}   y:{left.y}   rot:{left.rotate}°</div>
-              <div><strong style={{opacity: active==="back"?1:.6}}>BACK</strong>   size:{back.size}px   x:{back.x}   y:{back.y}   rot:{back.rotate}°</div>
+              <div><strong style={{opacity: active==="right"?1:.6}}>RIGHT</strong>  size:{R.size}px  x:{R.x}  y:{R.y}  rot:{R.rotate}°</div>
+              <div><strong style={{opacity: active==="middle"?1:.6}}>MIDDLE</strong> size:{M.size}px x:{M.x} y:{M.y} rot:{M.rotate}°</div>
+              <div><strong style={{opacity: active==="left"?1:.6}}>LEFT</strong>   size:{L.size}px   x:{L.x}   y:{L.y}   rot:{L.rotate}°</div>
+              <div><strong style={{opacity: active==="back"?1:.6}}>BACK</strong>   size:{B.size}px   x:{B.x}   y:{B.y}   rot:{B.rotate}°</div>
               <div style={{opacity:.9, marginTop:4}}>
-                1/2/3/4 select · ← → / ↑ ↓ move · [ / ] size · ; / ' rotate · 0 reset layer · ⇧0 reset all · g HUD
+                1/2/3/4 select · ←→/↑↓ move · [ / ] size · ; / ' rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
               </div>
             </div>
           )}
