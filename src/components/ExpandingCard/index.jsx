@@ -15,17 +15,25 @@ const MIDDLE_CARD_SRC = "/assets/visa-folder/card-middle-boat.png";
 const LEFT_CARD_SRC   = "/assets/visa-folder/card-left-city.png";
 const BACK_SRC        = "/assets/visa-folder/card-bg-light.png";
 
+/* NEW (adjust these paths) */
+const DOC_SRC   = "/assets/visa-folder/paper-visa.png";
+const STAMP_SRC = "/assets/visa-folder/stamp-round.svg";
+
 /* -------------------- FRAME 1 (locked baseline) -------------------- */
 const RIGHT_F1  = { size: 206, x: 127,  y: -57, rotate: 0,  z: 6 };
 const MIDDLE_F1 = { size: 206, x: -30,  y: -98, rotate: 0,  z: 5 };
 const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
 const BACK_F1   = { size: 321, x: -1,   y: -56, rotate: 0,  z: 3 };
 
-/* -------------------- FRAME 2 (final from your tweaks) -------------------- */
-const RIGHT_F2  = { size: 206, x: 215,  y: -64, rotate: -2.5, z: 6 };
+/* -------------------- FRAME 2 (your latest manual tweaks) -------------------- */
+const RIGHT_F2  = { size: 206, x: 215,  y: -64,  rotate: -2.5, z: 6 };
 const MIDDLE_F2 = { size: 206, x: -23,  y: -206, rotate: -2.5, z: 7 };
-const LEFT_F2   = { size: 206, x: -224, y: -73, rotate:  3.5, z: 5 };
-const BACK_F2   = { size: 300, x:   0,  y: -66, rotate:  0,   z: 3 };
+const LEFT_F2   = { size: 206, x: -224, y: -73,  rotate:  3.5, z: 5 };
+const BACK_F2   = { size: 300, x:   0,  y: -66,  rotate:  0,   z: 3 };
+
+/* NEW: Frame 2–only extras (starting guesses you can tweak) */
+const PAPER_F2  = { size: 300, x:  18, y: -110, rotate: -9, z: 8 };  // visa doc
+const STAMP_F2  = { size: 150, x: -56, y: -140, rotate:  9, z: 9 };  // round stamp
 const FRONT_F1  = { opacity: 1, translateY: 0 };
 // Keep folder visible on frame2 as well (slight lift if you like)
 const FRONT_F2  = { opacity: 1, translateY: 0 };
@@ -58,6 +66,10 @@ export default function VisaFolder_Intro() {
   const [middle2, setMiddle2] = useState(MIDDLE_F2);
   const [left2,   setLeft2]   = useState(LEFT_F2);
   const [back2,   setBack2]   = useState(BACK_F2);
+
+  /* NEW: frame2-only elements */
+  const [paper2, setPaper2]   = useState(PAPER_F2);
+  const [stamp2, setStamp2]   = useState(STAMP_F2);
 
   const [active, setActive] = useState("back");
   const [showHUD, setShowHUD] = useState(SHOW_HUD_DEFAULT);
@@ -108,6 +120,8 @@ export default function VisaFolder_Intro() {
       if (k === "2") { setActive("middle"); return; }
       if (k === "3") { setActive("left");   return; }
       if (k === "4") { setActive("back");   return; }
+      if (k === "5") { setPose("frame2"); setActive("paper"); return; } // NEW
+      if (k === "6") { setPose("frame2"); setActive("stamp"); return; } // NEW
 
       const step = e.shiftKey ? 5 : 1;
       const rot  = e.shiftKey ? 0.5 : 0.1;
@@ -117,9 +131,26 @@ export default function VisaFolder_Intro() {
       e.preventDefault();
 
       // choose setters/defaults for the CURRENT pose
-      const sets = pose === "frame1"
-        ? { right: [setRight1, RIGHT_F1], middle: [setMiddle1, MIDDLE_F1], left: [setLeft1, LEFT_F1], back: [setBack1, BACK_F1] }
-        : { right: [setRight2, RIGHT_F2], middle: [setMiddle2, MIDDLE_F2], left: [setLeft2, LEFT_F2], back: [setBack2, BACK_F2] };
+      const sets =
+        pose === "frame1"
+          ? {
+              right: [setRight1, RIGHT_F1],
+              middle: [setMiddle1, MIDDLE_F1],
+              left: [setLeft1, LEFT_F1],
+              back: [setBack1, BACK_F1],
+              // paper/stamp not editable on frame1
+            }
+          : {
+              right: [setRight2, RIGHT_F2],
+              middle: [setMiddle2, MIDDLE_F2],
+              left: [setLeft2, LEFT_F2],
+              back: [setBack2, BACK_F2],
+              paper: [setPaper2, PAPER_F2],
+              stamp: [setStamp2, STAMP_F2],
+            };
+
+      // If user picked paper/stamp on frame1, bail safely
+      if (!(active in sets)) return;
 
       const [setter, defaults] = sets[active];
 
@@ -163,6 +194,10 @@ export default function VisaFolder_Intro() {
   const L = pose === "frame1" ? left1   : left2;
   const B = pose === "frame1" ? back1   : back2;
   const FRONT = pose === "frame1" ? FRONT_F1 : FRONT_F2;
+
+  // frame2-only elements use their frame2 state; opacity 0 on frame1
+  const PAPER = paper2;
+  const STAMP = stamp2;
 
   const tr = reduced ? "none" :
     `left ${MS}ms ${EASE}, top ${MS}ms ${EASE}, width ${MS}ms ${EASE}, transform ${MS}ms ${EASE}, opacity ${MS}ms ${EASE}`;
@@ -235,7 +270,7 @@ export default function VisaFolder_Intro() {
             alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-              style={{
+            style={{ 
               left: CARD_CENTER_LEFT + M.x,
               top:  CARD_CENTER_TOP  + M.y,
               width: M.size,
@@ -256,7 +291,7 @@ export default function VisaFolder_Intro() {
             alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-                style={{
+              style={{
               left: CARD_CENTER_LEFT + R.x,
               top:  CARD_CENTER_TOP  + R.y,
               width: R.size,
@@ -267,6 +302,48 @@ export default function VisaFolder_Intro() {
               filter: "drop-shadow(0 10px 26px rgba(0,0,0,.22))",
               willChange: "transform",
               transition: tr,
+            }}
+            decoding="sync"
+          />
+
+          {/* NEW: VISA DOCUMENT (Frame 2 only; fades in) */}
+          <img
+            src={DOC_SRC}
+            alt="visa document"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+                style={{
+              left: CARD_CENTER_LEFT + PAPER.x,
+              top:  CARD_CENTER_TOP  + PAPER.y,
+              width: PAPER.size,
+              height: "auto",
+              transform: `rotate(${PAPER.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: PAPER.z,
+              opacity: pose === "frame2" ? 1 : 0,
+              transition: tr,
+              filter: "drop-shadow(0 8px 20px rgba(0,0,0,.18))",
+            }}
+            decoding="sync"
+          />
+
+          {/* NEW: ROUND STAMP (Frame 2 only; fades in) */}
+          <img
+            src={STAMP_SRC}
+            alt="visa stamp"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+                style={{
+              left: CARD_CENTER_LEFT + STAMP.x,
+              top:  CARD_CENTER_TOP  + STAMP.y,
+              width: STAMP.size,
+              height: "auto",
+              transform: `rotate(${STAMP.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: STAMP.z,
+              opacity: pose === "frame2" ? 1 : 0,
+              transition: tr,
+              filter: "drop-shadow(0 6px 16px rgba(0,0,0,.16))",
             }}
             decoding="sync"
           />
@@ -295,7 +372,7 @@ export default function VisaFolder_Intro() {
           {/* HUD */}
           {showHUD && (
             <div
-                  style={{
+                style={{
                 position: "absolute",
                 left: 8,
                 top: 8,
@@ -315,10 +392,15 @@ export default function VisaFolder_Intro() {
               <div><strong style={{opacity: active==="middle"?1:.6}}>MIDDLE</strong> size:{M.size}px x:{M.x} y:{M.y} rot:{M.rotate}°</div>
               <div><strong style={{opacity: active==="left"?1:.6}}>LEFT</strong>   size:{L.size}px   x:{L.x}   y:{L.y}   rot:{L.rotate}°</div>
               <div><strong style={{opacity: active==="back"?1:.6}}>BACK</strong>   size:{B.size}px   x:{B.x}   y:{B.y}   rot:{B.rotate}°</div>
+              {pose === "frame2" && (
+                <>
+                  <div><strong style={{opacity: active==="paper"?1:.6}}>PAPER</strong>  size:{PAPER.size}px x:{PAPER.x} y:{PAPER.y} rot:{PAPER.rotate}°</div>
+                  <div><strong style={{opacity: active==="stamp"?1:.6}}>STAMP</strong>  size:{STAMP.size}px x:{STAMP.x} y:{STAMP.y} rot:{STAMP.rotate}°</div>
+            </>
+          )}
               <div style={{opacity:.9, marginTop:4}}>
-                1/2/3/4 select · ←→/↑↓ move · [ / ] size ·
-                ; / ' **or** , / . **or** A / D rotate ·
-                0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
+                1/2/3/4 select · 5 paper · 6 stamp · ←→/↑↓ move · [ / ] size ·
+                ; / ' or , / . or A / D rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
               </div>
             </div>
           )}
