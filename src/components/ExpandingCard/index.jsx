@@ -21,11 +21,11 @@ const MIDDLE_F1 = { size: 206, x: -30,  y: -98, rotate: 0,  z: 5 };
 const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
 const BACK_F1   = { size: 321, x: -1,   y: -56, rotate: 0,  z: 3 };
 
-/* -------------------- FRAME 2 (animated pose defaults) -------------------- */
-const RIGHT_F2  = { size: 206, x: 152,  y: -32, rotate:  12, z: 6 };
-const MIDDLE_F2 = { size: 206, x:   0,  y: -60, rotate:   0, z: 7 };
-const LEFT_F2   = { size: 206, x: -168, y: -32, rotate: -12, z: 5 };
-const BACK_F2   = { size: 300, x:   0,  y: -66, rotate:   0, z: 3 };
+/* -------------------- FRAME 2 (final from your tweaks) -------------------- */
+const RIGHT_F2  = { size: 206, x: 215,  y: -64, rotate: -2.5, z: 6 };
+const MIDDLE_F2 = { size: 206, x: -23,  y: -206, rotate: -2.5, z: 7 };
+const LEFT_F2   = { size: 206, x: -224, y: -73, rotate:  3.5, z: 5 };
+const BACK_F2   = { size: 300, x:   0,  y: -66, rotate:  0,   z: 3 };
 const FRONT_F1  = { opacity: 1, translateY: 0 };
 // Keep folder visible on frame2 as well (slight lift if you like)
 const FRONT_F2  = { opacity: 1, translateY: 0 };
@@ -86,23 +86,34 @@ export default function VisaFolder_Intro() {
     }
   }, []);
 
-  // Hotkeys — NOW edit whichever frame is active
+  // Normalize keys for international layouts (e.g., quotes as Dead key)
+  const normKey = (e) => {
+    if (e.key !== "Dead") return e.key;
+    if (e.code === "Quote") return "'";
+    if (e.code === "Semicolon") return ";";
+    return "Dead";
+  };
+
+  // Hotkeys — edit whichever frame is active
   useEffect(() => {
     if (!ENABLE_HOTKEYS) return;
 
     const onKey = (e) => {
-      if (e.key === "g") { setShowHUD(v => !v); return; }
-      if (e.key === "t") { setPose(p => (p === "frame1" ? "frame2" : "frame1")); return; } // toggle
+      const k = normKey(e);
 
-      if (e.key === "1") { setActive("right");  return; }
-      if (e.key === "2") { setActive("middle"); return; }
-      if (e.key === "3") { setActive("left");   return; }
-      if (e.key === "4") { setActive("back");   return; }
+      if (k === "g") { setShowHUD(v => !v); return; }
+      if (k === "t") { setPose(p => (p === "frame1" ? "frame2" : "frame1")); return; } // toggle
+
+      if (k === "1") { setActive("right");  return; }
+      if (k === "2") { setActive("middle"); return; }
+      if (k === "3") { setActive("left");   return; }
+      if (k === "4") { setActive("back");   return; }
 
       const step = e.shiftKey ? 5 : 1;
       const rot  = e.shiftKey ? 0.5 : 0.1;
-      const keys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","[","]",";","'","0"];
-      if (!keys.includes(e.key)) return;
+
+      const editKeys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","[","]",";","'",",",".","a","A","d","D","0"];
+      if (!editKeys.includes(k)) return;
       e.preventDefault();
 
       // choose setters/defaults for the CURRENT pose
@@ -112,25 +123,28 @@ export default function VisaFolder_Intro() {
 
       const [setter, defaults] = sets[active];
 
-      if (e.key === "0" && e.shiftKey) {
+      if (k === "0" && e.shiftKey) {
         // reset ALL layers for the *current* frame
-        Object.entries(sets).forEach(([key, [s, d]]) => s(d));
+        Object.values(sets).forEach(([s, d]) => s(d));
         return;
       }
 
-      // edit only the active layer in the current frame
+      // rotate keys (multiple aliases for intl keyboards)
+      const rotLeft  = k === ";" || k === "," || k === "a" || k === "A";
+      const rotRight = k === "'" || k === "." || k === "d" || k === "D";
+
       setter((s) => {
-        switch (e.key) {
-          case "ArrowLeft":  return { ...s, x: s.x - step };
-          case "ArrowRight": return { ...s, x: s.x + step };
-          case "ArrowUp":    return { ...s, y: s.y - step };
-          case "ArrowDown":  return { ...s, y: s.y + step };
-          case "[":          return { ...s, size: s.size - step };
-          case "]":          return { ...s, size: s.size + step };
-          case ";":          return { ...s, rotate: s.rotate - rot };
-          case "'":          return { ...s, rotate: s.rotate + rot };
-          case "0":          return defaults; // reset current layer (current frame)
-          default:           return s;
+        switch (true) {
+          case k === "ArrowLeft":  return { ...s, x: s.x - step };
+          case k === "ArrowRight": return { ...s, x: s.x + step };
+          case k === "ArrowUp":    return { ...s, y: s.y - step };
+          case k === "ArrowDown":  return { ...s, y: s.y + step };
+          case k === "[":          return { ...s, size: s.size - step };
+          case k === "]":          return { ...s, size: s.size + step };
+          case rotLeft:            return { ...s, rotate: s.rotate - rot };
+          case rotRight:           return { ...s, rotate: s.rotate + rot };
+          case k === "0":          return defaults; // reset current layer (current frame)
+          default:                 return s;
         }
       });
     };
@@ -164,7 +178,7 @@ export default function VisaFolder_Intro() {
           ref={anchorRef}
           onMouseEnter={() => setPose("frame2")}
           onMouseLeave={() => setPose("frame1")}
-          style={{
+            style={{
             position: "relative",
             width: W,
             height: H,
@@ -176,10 +190,10 @@ export default function VisaFolder_Intro() {
           {/* BACK (light panel) */}
           <img
             src={BACK_SRC}
-            alt=""
+              alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-            style={{
+              style={{
               left: backLeft,
               top:  B.y,
               width: B.size,
@@ -200,7 +214,7 @@ export default function VisaFolder_Intro() {
             alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-            style={{
+          style={{
               left: CARD_CENTER_LEFT + L.x,
               top:  CARD_CENTER_TOP  + L.y,
               width: L.size,
@@ -221,7 +235,7 @@ export default function VisaFolder_Intro() {
             alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-            style={{
+              style={{
               left: CARD_CENTER_LEFT + M.x,
               top:  CARD_CENTER_TOP  + M.y,
               width: M.size,
@@ -242,7 +256,7 @@ export default function VisaFolder_Intro() {
             alt=""
             draggable={false}
             className="absolute pointer-events-none select-none"
-            style={{
+                style={{
               left: CARD_CENTER_LEFT + R.x,
               top:  CARD_CENTER_TOP  + R.y,
               width: R.size,
@@ -263,7 +277,7 @@ export default function VisaFolder_Intro() {
             alt="folder"
             draggable={false}
             className="absolute pointer-events-none select-none"
-            style={{
+                style={{
               left: 0,
               bottom: 0,
               width: W,
@@ -281,7 +295,7 @@ export default function VisaFolder_Intro() {
           {/* HUD */}
           {showHUD && (
             <div
-              style={{
+                  style={{
                 position: "absolute",
                 left: 8,
                 top: 8,
@@ -302,7 +316,9 @@ export default function VisaFolder_Intro() {
               <div><strong style={{opacity: active==="left"?1:.6}}>LEFT</strong>   size:{L.size}px   x:{L.x}   y:{L.y}   rot:{L.rotate}°</div>
               <div><strong style={{opacity: active==="back"?1:.6}}>BACK</strong>   size:{B.size}px   x:{B.x}   y:{B.y}   rot:{B.rotate}°</div>
               <div style={{opacity:.9, marginTop:4}}>
-                1/2/3/4 select · ←→/↑↓ move · [ / ] size · ; / ' rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
+                1/2/3/4 select · ←→/↑↓ move · [ / ] size ·
+                ; / ' **or** , / . **or** A / D rotate ·
+                0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
               </div>
             </div>
           )}
