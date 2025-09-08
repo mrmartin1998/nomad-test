@@ -17,23 +17,24 @@ const BACK_SRC        = "/assets/visa-folder/card-bg-light.png";
 
 /* NEW (adjust these paths) */
 const DOC_SRC   = "/assets/visa-folder/paper-visa.png";
-const STAMP_SRC = "/assets/visa-folder/stamp-round.svg";
+const STAMP_SRC = "/assets/visa-folder/stamp-round.png";
 
 /* -------------------- FRAME 1 (locked baseline) -------------------- */
 const RIGHT_F1  = { size: 206, x: 127,  y: -57, rotate: 0,  z: 6 };
 const MIDDLE_F1 = { size: 206, x: -30,  y: -98, rotate: 0,  z: 5 };
 const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
-const BACK_F1   = { size: 321, x: -1,   y: -56, rotate: 0,  z: 3 };
+const BACK_F1   = { size: 321, x: 0,   y: -56, rotate: 0,  z: 3 };
 
 /* -------------------- FRAME 2 (your latest manual tweaks) -------------------- */
 const RIGHT_F2  = { size: 206, x: 215,  y: -64,  rotate: -2.5, z: 6 };
 const MIDDLE_F2 = { size: 206, x: -23,  y: -206, rotate: -2.5, z: 7 };
 const LEFT_F2   = { size: 206, x: -224, y: -73,  rotate:  3.5, z: 5 };
-const BACK_F2   = { size: 300, x:   0,  y: -66,  rotate:  0,   z: 3 };
+const BACK_F2   = { size: 321, x:   0,  y: -56,  rotate:  0,   z: 3 };
 
 /* NEW: Frame 2–only extras (starting guesses you can tweak) */
-const PAPER_F2  = { size: 300, x:  18, y: -110, rotate: -9, z: 8 };  // visa doc
-const STAMP_F2  = { size: 150, x: -56, y: -140, rotate:  9, z: 9 };  // round stamp
+const PAPER_F2  = { size: 200, x:  104, y: -150, rotate: -3.987, z: 8 };  // visa doc 
+const STAMP_F2  = { size: 100, x: -71, y: -163, rotate:  3.2017, z: 9 };  // round stamp 
+
 const FRONT_F1  = { opacity: 1, translateY: 0 };
 // Keep folder visible on frame2 as well (slight lift if you like)
 const FRONT_F2  = { opacity: 1, translateY: 0 };
@@ -306,13 +307,13 @@ export default function VisaFolder_Intro() {
             decoding="sync"
           />
 
-          {/* NEW: VISA DOCUMENT (Frame 2 only; fades in) */}
+          {/* NEW: VISA DOCUMENT (Frame 2 only) */}
           <img
             src={DOC_SRC}
             alt="visa document"
             draggable={false}
             className="absolute pointer-events-none select-none"
-                style={{
+            style={{
               left: CARD_CENTER_LEFT + PAPER.x,
               top:  CARD_CENTER_TOP  + PAPER.y,
               width: PAPER.size,
@@ -320,20 +321,20 @@ export default function VisaFolder_Intro() {
               transform: `rotate(${PAPER.rotate}deg)`,
               transformOrigin: "50% 50%",
               zIndex: PAPER.z,
-              opacity: pose === "frame2" ? 1 : 0,
+              opacity: pose === "frame2" ? 1 : 0,     // ← only used to show/hide per frame
               transition: tr,
               filter: "drop-shadow(0 8px 20px rgba(0,0,0,.18))",
             }}
             decoding="sync"
           />
 
-          {/* NEW: ROUND STAMP (Frame 2 only; fades in) */}
+          {/* NEW: ROUND STAMP (Frame 2 only) */}
           <img
             src={STAMP_SRC}
             alt="visa stamp"
             draggable={false}
             className="absolute pointer-events-none select-none"
-                style={{
+            style={{
               left: CARD_CENTER_LEFT + STAMP.x,
               top:  CARD_CENTER_TOP  + STAMP.y,
               width: STAMP.size,
@@ -341,7 +342,7 @@ export default function VisaFolder_Intro() {
               transform: `rotate(${STAMP.rotate}deg)`,
               transformOrigin: "50% 50%",
               zIndex: STAMP.z,
-              opacity: pose === "frame2" ? 1 : 0,
+              opacity: pose === "frame2" ? 1 : 0,     // ← full opaque on frame2
               transition: tr,
               filter: "drop-shadow(0 6px 16px rgba(0,0,0,.16))",
             }}
