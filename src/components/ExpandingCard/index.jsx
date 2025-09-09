@@ -406,7 +406,7 @@ export default function VisaFolder_Intro() {
           )}
               <div style={{opacity:.9, marginTop:4}}>
                 1/2/3/4 select · 5 paper · 6 stamp · ←→/↑↓ move · [ / ] size ·
-                ; / ' or , / . or A / D rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
+                ; / &apos; or , / . or A / D rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
               </div>
             </div>
           )}
