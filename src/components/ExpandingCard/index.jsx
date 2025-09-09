@@ -9,7 +9,8 @@ const BLEED_TOP = 64;
 const BLEED_BOTTOM = 12;
 
 /** Assets */
-const FRONT_SRC       = "/assets/visa-folder/folder-white-blur.png";
+const FOLDER_F1_SRC = "/assets/visa-folder/folder-white-blur.png";
+const FOLDER_F2_SRC = "/assets/visa-folder/folder-white-blur-f2.png"; // ← your new frame-2 folder
 const RIGHT_CARD_SRC  = "/assets/visa-folder/card-left-dessert.png";
 const MIDDLE_CARD_SRC = "/assets/visa-folder/card-middle-boat.png";
 const LEFT_CARD_SRC   = "/assets/visa-folder/card-left-city.png";
@@ -26,9 +27,9 @@ const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
 const BACK_F1   = { size: 321, x: 0,   y: -56, rotate: 0,  z: 3 };
 
 /* -------------------- FRAME 2 (your latest manual tweaks) -------------------- */
-const RIGHT_F2  = { size: 206, x: 215,  y: -64,  rotate: -2.5, z: 6 };
+const RIGHT_F2  = { size: 206, x: 215,  y: -39,  rotate: -2.5, z: 6 };
 const MIDDLE_F2 = { size: 206, x: -23,  y: -206, rotate: -2.5, z: 7 };
-const LEFT_F2   = { size: 206, x: -224, y: -73,  rotate:  3.5, z: 5 };
+const LEFT_F2   = { size: 206, x: -219, y: -47,  rotate:  3.5, z: 5 };
 const BACK_F2   = { size: 321, x:   0,  y: -56,  rotate:  0,   z: 3 };
 
 /* NEW: Frame 2–only extras (starting guesses you can tweak) */
@@ -98,6 +99,9 @@ export default function VisaFolder_Intro() {
       setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
   }, []);
+
+  // (optional: preload frame-2 art to avoid flicker)
+  useEffect(() => { new Image().src = FOLDER_F2_SRC; }, []);
 
   // Normalize keys for international layouts (e.g., quotes as Dead key)
   const normKey = (e) => {
@@ -195,6 +199,7 @@ export default function VisaFolder_Intro() {
   const L = pose === "frame1" ? left1   : left2;
   const B = pose === "frame1" ? back1   : back2;
   const FRONT = pose === "frame1" ? FRONT_F1 : FRONT_F2;
+  const FOLDER_SRC = pose === "frame1" ? FOLDER_F1_SRC : FOLDER_F2_SRC;
 
   // frame2-only elements use their frame2 state; opacity 0 on frame1
   const PAPER = paper2;
@@ -351,7 +356,7 @@ export default function VisaFolder_Intro() {
 
           {/* Folder — front */}
           <img
-            src={FRONT_SRC}
+            src={FOLDER_SRC}
             alt="folder"
             draggable={false}
             className="absolute pointer-events-none select-none"
