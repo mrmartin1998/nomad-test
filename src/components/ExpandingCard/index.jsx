@@ -1,222 +1,430 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from "react";
 
-const ExpandingCard = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
+/** 360×208 comp area */
+const W = 360;
+const H = 208;
 
-  // Card configuration for initial state
-  const cards = [
-    {
-      src: '/assets/visa-folder/dusk-over-emerging-metropolis.png',
-      initialStyle: { x: -2, y: -1, rotate: '-0.8deg', scale: 0.998, opacity: 0.7 },
-      expandedStyle: { x: -32, y: 4, rotate: '-2.25deg', scale: 0.985, opacity: 1 }
-    },
-    {
-      src: '/assets/visa-folder/serene-thai-longtail-boat-at-karst-cliff-beach.png',
-      initialStyle: { x: 2, y: -0.5, rotate: '0.5deg', scale: 0.999, opacity: 0.85 },
-      expandedStyle: { x: -8, y: 0, rotate: '-0.5deg', scale: 0.995, opacity: 1 }
-    },
-    {
-      src: '/assets/visa-folder/timeless-desert-expedition-to-the-great-pyramids.png',
-      initialStyle: { x: -1, y: 0, rotate: '-0.3deg', scale: 1, opacity: 1 },
-      expandedStyle: { x: 24, y: 4, rotate: '2.25deg', scale: 0.985, opacity: 1 }
+/** Extra vertical room so cards can poke out */
+const BLEED_TOP = 64;
+const BLEED_BOTTOM = 12;
+
+/** Assets */
+const FOLDER_F1_SRC = "/assets/visa-folder/folder-white-blur.png";
+const FOLDER_F2_SRC = "/assets/visa-folder/folder-white-blur-f2.png"; // ← your new frame-2 folder
+const RIGHT_CARD_SRC  = "/assets/visa-folder/card-left-dessert.png";
+const MIDDLE_CARD_SRC = "/assets/visa-folder/card-middle-boat.png";
+const LEFT_CARD_SRC   = "/assets/visa-folder/card-left-city.png";
+const BACK_SRC        = "/assets/visa-folder/card-bg-light.png";
+
+/* NEW (adjust these paths) */
+const DOC_SRC   = "/assets/visa-folder/paper-visa.png";
+const STAMP_SRC = "/assets/visa-folder/stamp-round.png";
+
+/* -------------------- FRAME 1 (locked baseline) -------------------- */
+const RIGHT_F1  = { size: 206, x: 127,  y: -57, rotate: 0,  z: 6 };
+const MIDDLE_F1 = { size: 206, x: -30,  y: -98, rotate: 0,  z: 5 };
+const LEFT_F1   = { size: 206, x: -144, y: -26, rotate: 0,  z: 4 };
+const BACK_F1   = { size: 321, x: 0,   y: -56, rotate: 0,  z: 3 };
+
+/* -------------------- FRAME 2 (your latest manual tweaks) -------------------- */
+const RIGHT_F2  = { size: 206, x: 215,  y: -39,  rotate: -2.5, z: 6 };
+const MIDDLE_F2 = { size: 206, x: -23,  y: -206, rotate: -2.5, z: 7 };
+const LEFT_F2   = { size: 206, x: -219, y: -47,  rotate:  3.5, z: 5 };
+const BACK_F2   = { size: 321, x:   0,  y: -56,  rotate:  0,   z: 3 };
+
+/* NEW: Frame 2–only extras (starting guesses you can tweak) */
+const PAPER_F2  = { size: 200, x:  104, y: -150, rotate: -3.987, z: 8 };  // visa doc 
+const STAMP_F2  = { size: 100, x: -71, y: -163, rotate:  3.2017, z: 9 };  // round stamp 
+
+const FRONT_F1  = { opacity: 1, translateY: 0 };
+// Keep folder visible on frame2 as well (slight lift if you like)
+const FRONT_F2  = { opacity: 1, translateY: 0 };
+
+// If you want cards to appear ABOVE the folder on frame2, set this to 2.
+// If you want the folder on top on both frames, keep it 10.
+const FRONT_Z_F1 = 10;
+const FRONT_Z_F2 = 10; // change to 2 to put folder behind cards on frame2
+
+/** timing like Figma "Smart animate / ease in-out / 200ms" */
+const MS = 200;
+const EASE = "cubic-bezier(.4,0,.2,1)";
+
+const ENABLE_HOTKEYS = true;
+const SHOW_HUD_DEFAULT = false;
+
+export default function VisaFolder_Intro() {
+  const anchorRef = useRef(null);
+
+  /** which pose is shown right now */
+  const [pose, setPose] = useState("frame1");
+
+  /** editable state for BOTH frames (independent) */
+  const [right1,  setRight1]  = useState(RIGHT_F1);
+  const [middle1, setMiddle1] = useState(MIDDLE_F1);
+  const [left1,   setLeft1]   = useState(LEFT_F1);
+  const [back1,   setBack1]   = useState(BACK_F1);
+
+  const [right2,  setRight2]  = useState(RIGHT_F2);
+  const [middle2, setMiddle2] = useState(MIDDLE_F2);
+  const [left2,   setLeft2]   = useState(LEFT_F2);
+  const [back2,   setBack2]   = useState(BACK_F2);
+
+  /* NEW: frame2-only elements */
+  const [paper2, setPaper2]   = useState(PAPER_F2);
+  const [stamp2, setStamp2]   = useState(STAMP_F2);
+
+  const [active, setActive] = useState("back");
+  const [showHUD, setShowHUD] = useState(SHOW_HUD_DEFAULT);
+  const [reduced, setReduced] = useState(false);
+
+  // snap the 360×208 anchor to whole pixels
+  useEffect(() => {
+    const el = anchorRef.current;
+    if (!el) return;
+    const snap = () => {
+      el.style.transform = "translate(0,0)";
+      const r = el.getBoundingClientRect();
+      const dx = Math.round(r.left) - r.left;
+      const dy = Math.round(r.top)  - r.top;
+      if (dx || dy) el.style.transform = `translate(${dx}px,${dy}px)`;
+    };
+    snap();
+    window.addEventListener("resize", snap);
+    return () => window.removeEventListener("resize", snap);
+  }, []);
+
+  // reduced motion
+  useEffect(() => {
+    if (typeof window !== "undefined" && "matchMedia" in window) {
+      setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     }
-  ];
+  }, []);
+
+  // (optional: preload frame-2 art to avoid flicker)
+  useEffect(() => { new Image().src = FOLDER_F2_SRC; }, []);
+
+  // Normalize keys for international layouts (e.g., quotes as Dead key)
+  const normKey = (e) => {
+    if (e.key !== "Dead") return e.key;
+    if (e.code === "Quote") return "'";
+    if (e.code === "Semicolon") return ";";
+    return "Dead";
+  };
+
+  // Hotkeys — edit whichever frame is active
+  useEffect(() => {
+    if (!ENABLE_HOTKEYS) return;
+
+    const onKey = (e) => {
+      const k = normKey(e);
+
+      if (k === "g") { setShowHUD(v => !v); return; }
+      if (k === "t") { setPose(p => (p === "frame1" ? "frame2" : "frame1")); return; } // toggle
+
+      if (k === "1") { setActive("right");  return; }
+      if (k === "2") { setActive("middle"); return; }
+      if (k === "3") { setActive("left");   return; }
+      if (k === "4") { setActive("back");   return; }
+      if (k === "5") { setPose("frame2"); setActive("paper"); return; } // NEW
+      if (k === "6") { setPose("frame2"); setActive("stamp"); return; } // NEW
+
+      const step = e.shiftKey ? 5 : 1;
+      const rot  = e.shiftKey ? 0.5 : 0.1;
+
+      const editKeys = ["ArrowLeft","ArrowRight","ArrowUp","ArrowDown","[","]",";","'",",",".","a","A","d","D","0"];
+      if (!editKeys.includes(k)) return;
+      e.preventDefault();
+
+      // choose setters/defaults for the CURRENT pose
+      const sets =
+        pose === "frame1"
+          ? {
+              right: [setRight1, RIGHT_F1],
+              middle: [setMiddle1, MIDDLE_F1],
+              left: [setLeft1, LEFT_F1],
+              back: [setBack1, BACK_F1],
+              // paper/stamp not editable on frame1
+            }
+          : {
+              right: [setRight2, RIGHT_F2],
+              middle: [setMiddle2, MIDDLE_F2],
+              left: [setLeft2, LEFT_F2],
+              back: [setBack2, BACK_F2],
+              paper: [setPaper2, PAPER_F2],
+              stamp: [setStamp2, STAMP_F2],
+            };
+
+      // If user picked paper/stamp on frame1, bail safely
+      if (!(active in sets)) return;
+
+      const [setter, defaults] = sets[active];
+
+      if (k === "0" && e.shiftKey) {
+        // reset ALL layers for the *current* frame
+        Object.values(sets).forEach(([s, d]) => s(d));
+        return;
+      }
+
+      // rotate keys (multiple aliases for intl keyboards)
+      const rotLeft  = k === ";" || k === "," || k === "a" || k === "A";
+      const rotRight = k === "'" || k === "." || k === "d" || k === "D";
+
+      setter((s) => {
+        switch (true) {
+          case k === "ArrowLeft":  return { ...s, x: s.x - step };
+          case k === "ArrowRight": return { ...s, x: s.x + step };
+          case k === "ArrowUp":    return { ...s, y: s.y - step };
+          case k === "ArrowDown":  return { ...s, y: s.y + step };
+          case k === "[":          return { ...s, size: s.size - step };
+          case k === "]":          return { ...s, size: s.size + step };
+          case rotLeft:            return { ...s, rotate: s.rotate - rot };
+          case rotRight:           return { ...s, rotate: s.rotate + rot };
+          case k === "0":          return defaults; // reset current layer (current frame)
+          default:                 return s;
+        }
+      });
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active, pose]);
+
+  /** 360×208 positioning (same as comp) for the square cards */
+  const CARD_CENTER_LEFT = (W - 206) / 2;     // 77 when size=206
+  const CARD_CENTER_TOP  = (H - 206) / 2 - 8; // -7 when size=206
+
+  // values for the current pose (these animate between frames)
+  const R = pose === "frame1" ? right1  : right2;
+  const M = pose === "frame1" ? middle1 : middle2;
+  const L = pose === "frame1" ? left1   : left2;
+  const B = pose === "frame1" ? back1   : back2;
+  const FRONT = pose === "frame1" ? FRONT_F1 : FRONT_F2;
+  const FOLDER_SRC = pose === "frame1" ? FOLDER_F1_SRC : FOLDER_F2_SRC;
+
+  // frame2-only elements use their frame2 state; opacity 0 on frame1
+  const PAPER = paper2;
+  const STAMP = stamp2;
+
+  const tr = reduced ? "none" :
+    `left ${MS}ms ${EASE}, top ${MS}ms ${EASE}, width ${MS}ms ${EASE}, transform ${MS}ms ${EASE}, opacity ${MS}ms ${EASE}`;
+
+  const backLeft = (W - B.size) / 2 + B.x;
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center">
-      <div className="relative w-[260px]">
-        {/* Background Cards */}
-        {cards.map((card, i) => (
-          <motion.div
-            key={i}
-            className="absolute top-0 left-1/2 rounded-[20px] overflow-hidden"
+    <div className="w-full h-[80vh] flex items-center justify-center bg-white">
+      <div
+        style={{ width: W, height: H + BLEED_TOP + BLEED_BOTTOM, paddingTop: BLEED_TOP, paddingBottom: BLEED_BOTTOM, overflow: "visible" }}
+      >
+        <div
+          ref={anchorRef}
+          onMouseEnter={() => setPose("frame2")}
+          onMouseLeave={() => setPose("frame1")}
             style={{
-              width: '260px',
-              height: '175px',
-              zIndex: i,
-              transformOrigin: 'center bottom',
-              pointerEvents: 'none',
-              boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
-            }}
-            initial={card.initialStyle}
-            animate={isExpanded ? card.expandedStyle : card.initialStyle}
-            transition={{
-              type: 'spring',
-              stiffness: 200,
-              damping: 24,
-              mass: 0.8,
-              delay: i * 0.08
-            }}
-          >
-            <img 
-              src={card.src}
-              alt=""
-              className="w-full h-full object-cover"
-              style={{
-                transform: 'translateX(-50%)',
-                opacity: card.initialStyle.opacity
-              }}
-            />
-          </motion.div>
-        ))}
-
-        {/* Main Folder Card */}
-        <motion.div
-          className="absolute top-0 left-1/2 z-10 bg-white rounded-[20px] cursor-pointer"
-          style={{
-            width: '260px',
-            height: '175px',
-            transform: 'translateX(-50%)',
-            transformOrigin: 'center bottom',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.08)'
+            position: "relative",
+            width: W,
+            height: H,
+            margin: "0 auto",
+            outline: showHUD ? "1px dashed rgba(0,0,0,.12)" : "none",
           }}
-          initial={{ scale: 1 }}
-          animate={{
-            scale: isExpanded ? 1 : 1,
-            y: isExpanded ? -8 : 0
-          }}
-          onClick={() => setIsExpanded(!isExpanded)}
-          whileHover={{ 
-            scale: 1.02,
-            boxShadow: '0 12px 48px rgba(0, 0, 0, 0.12)',
-            transition: { duration: 0.2 }
-          }}
+          title="Hover to fan out (press 't' to lock/unlock frame)"
         >
-          {/* Folder Tab */}
-          <div 
-            className="absolute bg-white" 
-            style={{ 
-              width: '46px',
-              height: '12px',
-              top: '-12px',
-              left: '18px',
-              borderRadius: '10px 10px 0 0',
-              zIndex: 11,
-              boxShadow: '0 -1px 6px rgba(0,0,0,0.06)'
-            }} 
-          />
-          
-          {/* Title at bottom */}
-          <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center">
-            <h2 
-              className="text-[20px] text-gray-800"
+          {/* BACK (light panel) */}
+          <img
+            src={BACK_SRC}
+              alt=""
+            draggable={false}
+            className="absolute pointer-events-none select-none"
               style={{
-                fontFamily: 'Product Sans, Inter, sans-serif',
-                fontWeight: '450',
-                letterSpacing: '-0.2px'
+              left: backLeft,
+              top:  B.y,
+              width: B.size,
+              height: "auto",
+              transform: `rotate(${B.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: B.z,
+              transition: tr,
+            }}
+            decoding="sync"
+            loading="eager"
+            fetchPriority="high"
+          />
+
+          {/* LEFT card (city) */}
+          <img
+            src={LEFT_CARD_SRC}
+            alt=""
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+          style={{
+              left: CARD_CENTER_LEFT + L.x,
+              top:  CARD_CENTER_TOP  + L.y,
+              width: L.size,
+              height: "auto",
+              transform: `rotate(${L.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: L.z,
+              filter: "drop-shadow(0 10px 26px rgba(0,0,0,.22))",
+              willChange: "transform",
+              transition: tr,
+            }}
+            decoding="sync"
+          />
+
+          {/* MIDDLE card (boat) */}
+          <img
+            src={MIDDLE_CARD_SRC}
+            alt=""
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+            style={{ 
+              left: CARD_CENTER_LEFT + M.x,
+              top:  CARD_CENTER_TOP  + M.y,
+              width: M.size,
+              height: "auto",
+              transform: `rotate(${M.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: M.z,
+              filter: "drop-shadow(0 10px 26px rgba(0,0,0,.22))",
+              willChange: "transform",
+              transition: tr,
+            }}
+            decoding="sync"
+          />
+
+          {/* RIGHT/back card (desert) */}
+          <img
+            src={RIGHT_CARD_SRC}
+            alt=""
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+              style={{
+              left: CARD_CENTER_LEFT + R.x,
+              top:  CARD_CENTER_TOP  + R.y,
+              width: R.size,
+              height: "auto",
+              transform: `rotate(${R.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: R.z,
+              filter: "drop-shadow(0 10px 26px rgba(0,0,0,.22))",
+              willChange: "transform",
+              transition: tr,
+            }}
+            decoding="sync"
+          />
+
+          {/* NEW: VISA DOCUMENT (Frame 2 only) */}
+          <img
+            src={DOC_SRC}
+            alt="visa document"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+            style={{
+              left: CARD_CENTER_LEFT + PAPER.x,
+              top:  CARD_CENTER_TOP  + PAPER.y,
+              width: PAPER.size,
+              height: "auto",
+              transform: `rotate(${PAPER.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: PAPER.z,
+              opacity: pose === "frame2" ? 1 : 0,     // ← only used to show/hide per frame
+              transition: tr,
+              filter: "drop-shadow(0 8px 20px rgba(0,0,0,.18))",
+            }}
+            decoding="sync"
+          />
+
+          {/* NEW: ROUND STAMP (Frame 2 only) */}
+          <img
+            src={STAMP_SRC}
+            alt="visa stamp"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+            style={{
+              left: CARD_CENTER_LEFT + STAMP.x,
+              top:  CARD_CENTER_TOP  + STAMP.y,
+              width: STAMP.size,
+              height: "auto",
+              transform: `rotate(${STAMP.rotate}deg)`,
+              transformOrigin: "50% 50%",
+              zIndex: STAMP.z,
+              opacity: pose === "frame2" ? 1 : 0,     // ← full opaque on frame2
+              transition: tr,
+              filter: "drop-shadow(0 6px 16px rgba(0,0,0,.16))",
+            }}
+            decoding="sync"
+          />
+
+          {/* Folder — front */}
+          <img
+            src={FOLDER_SRC}
+            alt="folder"
+            draggable={false}
+            className="absolute pointer-events-none select-none"
+                style={{
+              left: 0,
+              bottom: 0,
+              width: W,
+              height: "auto",
+              zIndex: pose === "frame1" ? FRONT_Z_F1 : FRONT_Z_F2,
+              opacity: FRONT.opacity,
+              transform: `translateY(${FRONT.translateY}px)`,
+              transition: tr,
+            }}
+            decoding="sync"
+            loading="eager"
+            fetchPriority="high"
+          />
+
+          {/* HUD */}
+          {showHUD && (
+            <div
+                style={{
+                position: "absolute",
+                left: 8,
+                top: 8,
+                fontSize: 11,
+                background: "rgba(0,0,0,.62)",
+                color: "#fff",
+                padding: "6px 8px",
+                borderRadius: 8,
+                zIndex: 999,
+                lineHeight: 1.35,
               }}
             >
-              Solicitudes de visa
-            </h2>
-          </div>
-        </motion.div>
-
-        {/* Overlays - Only show when expanded */}
-        <AnimatePresence>
-          {isExpanded && (
-            <>
-              {/* Thai Visa Document */}
-              <motion.img
-                src="/assets/visa-folder/thai-visa-doc.png"
-                className="absolute w-[92px] z-20"
-                style={{
-                  bottom: '28px',
-                  right: '24px',
-                  transform: 'rotate(6deg)'
-                }}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{
-                  type: 'tween',
-                  duration: 0.3,
-                  delay: 0.35
-                }}
-              />
-
-              {/* Thai Stamp */}
-              <motion.img
-                src="/assets/visa-folder/thai-stamp.png"
-                className="absolute w-[42px] z-20"
-                style={{
-                  bottom: '18px',
-                  left: '12px',
-                  transform: 'rotate(-8deg)'
-                }}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.5 }}
-                transition={{
-                  type: 'tween',
-                  duration: 0.3,
-                  delay: 0.4
-                }}
-              />
-
-              {/* Status Labels */}
-              <motion.div
-                className="absolute left-1/2 z-30 bg-white/70 backdrop-blur-sm shadow-sm"
-                style={{
-                  top: '-36px',
-                  transform: 'translateX(-50%)',
-                  padding: '5px 14px',
-                  borderRadius: '9999px',
-                  fontSize: '15px',
-                  fontFamily: 'Product Sans, Inter, sans-serif',
-                  fontWeight: '400'
-                }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 24,
-                  delay: 0.45
-                }}
-              >
-                <span>
-                  ✓ Visa Tailandia <span className="text-blue-600">lista</span>
-                </span>
-                <div
-                  className="absolute w-0 h-0 border-l-[5px] border-r-[5px] border-b-[6px] border-transparent border-b-white/70"
-                  style={{
-                    bottom: '-5px',
-                    left: '50%',
-                    transform: 'translateX(-50%)'
-                  }}
-                />
-              </motion.div>
-
-              <motion.div
-                className="absolute z-30"
-                style={{
-                  bottom: '-32px',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  fontSize: '13px',
-                  fontFamily: 'Product Sans, Inter, sans-serif'
-                }}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                whileHover={{ y: -2 }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 24,
-                  delay: 0.5
-                }}
-              >
-                <span className="text-blue-600">✓ Completadas</span>
-              </motion.div>
+              <div style={{ marginBottom: 4 }}>
+                <strong>POSE</strong>: {pose} (hover / t) — editing this pose
+              </div>
+              <div><strong style={{opacity: active==="right"?1:.6}}>RIGHT</strong>  size:{R.size}px  x:{R.x}  y:{R.y}  rot:{R.rotate}°</div>
+              <div><strong style={{opacity: active==="middle"?1:.6}}>MIDDLE</strong> size:{M.size}px x:{M.x} y:{M.y} rot:{M.rotate}°</div>
+              <div><strong style={{opacity: active==="left"?1:.6}}>LEFT</strong>   size:{L.size}px   x:{L.x}   y:{L.y}   rot:{L.rotate}°</div>
+              <div><strong style={{opacity: active==="back"?1:.6}}>BACK</strong>   size:{B.size}px   x:{B.x}   y:{B.y}   rot:{B.rotate}°</div>
+              {pose === "frame2" && (
+                <>
+                  <div><strong style={{opacity: active==="paper"?1:.6}}>PAPER</strong>  size:{PAPER.size}px x:{PAPER.x} y:{PAPER.y} rot:{PAPER.rotate}°</div>
+                  <div><strong style={{opacity: active==="stamp"?1:.6}}>STAMP</strong>  size:{STAMP.size}px x:{STAMP.x} y:{STAMP.y} rot:{STAMP.rotate}°</div>
             </>
           )}
-        </AnimatePresence>
+              <div style={{opacity:.9, marginTop:4}}>
+                1/2/3/4 select · 5 paper · 6 stamp · ←→/↑↓ move · [ / ] size ·
+                ; / &apos; or , / . or A / D rotate · 0 reset layer · ⇧0 reset ALL (current frame) · g HUD · t toggle frames
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Caption + chip */}
+        <div style={{ height: 24 }} />
+        <div className="text-center">
+          <span className="font-medium" style={{ fontSize: 20, lineHeight: "28px", color: "#2f3445", letterSpacing: "0.2px" }}>
+            Solicitudes de visa
+          </span>
+          <div className="mt-3 flex justify-center">
+            <div className="bg-white shadow-md rounded-full px-6 py-2 text-sm flex items-center gap-1 font-medium border border-gray-200">
+              <span>✓</span> Completadas
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
-};
-
-export default ExpandingCard; 
+}
