@@ -211,7 +211,7 @@ export default function VisaFolder_Intro() {
   const backLeft = (W - B.size) / 2 + B.x;
 
   return (
-    <div className="w-full h-[80vh] flex items-center justify-center bg-[#f7f8f9]">
+    <div className="w-full h-[80vh] flex items-center justify-center bg-white">
       <div
         style={{ width: W, height: H + BLEED_TOP + BLEED_BOTTOM, paddingTop: BLEED_TOP, paddingBottom: BLEED_BOTTOM, overflow: "visible" }}
       >
