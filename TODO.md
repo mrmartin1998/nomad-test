@@ -28,14 +28,14 @@ Replace all 7 existing visa forms with the enhanced design system from demo page
 - [x] Test form functionality
 - [x] Commit: `feat: enhance India visa form with new design system`
 
-### Phase 4: UK Form ⏸️
-- [ ] Update: `src/app/pages/uk/apply/page.jsx`
-- [ ] Replace: `src/components/forms/uk/Form.jsx`
-- [ ] Create: UK-specific upload component
-- [ ] Test form functionality
-- [ ] Commit: `feat: enhance UK visa form with new design system`
+### Phase 4: UK Form ✅
+- [x] Update: `src/app/pages/uk/apply/page.jsx`
+- [x] Replace: `src/components/forms/uk/Form.jsx`
+- [x] Create: UK-specific upload component
+- [x] Test form functionality
+- [x] Commit: `feat: enhance UK visa form with new design system`
 
-### Phase 5: Cuba Form ⏸️
+### Phase 5: Cuba Form 🔄
 - [ ] Update: `src/app/pages/cuba/apply/page.jsx`
 - [ ] Replace: `src/components/forms/cuba/Form.jsx`
 - [ ] Create: Cuba-specific upload component
@@ -63,7 +63,7 @@ Replace all 7 existing visa forms with the enhanced design system from demo page
 - **Customize Content Only**: Form questions, validation, country branding
 
 ## ✅ Current Status
-- **Current Phase**: Phase 4 - UK Form
-- **Last Completed**: Phase 3 - India Form ✅
-- **Next Step**: Start updating UK form with enhanced design
-- **Progress**: 3/7 forms completed (42.9%)
+- **Current Phase**: Phase 5 - Cuba Form 🔄
+- **Last Completed**: Phase 4 - UK Form ✅
+- **Next Step**: Start updating Cuba form with enhanced design
+- **Progress**: 4/7 forms completed (57.1%)
