@@ -15,6 +15,9 @@ export default function Home() {
 
   return (
     <div className="app-background">
+      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
+        <ExpandingCard />
+      </div>
       {/* Hero Section */}
       <div className="min-h-[90vh] bg-base-100 relative overflow-hidden">
         <div className="container mx-auto px-4 pt-20">
