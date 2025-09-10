@@ -15,6 +15,9 @@ export default function Home() {
 
   return (
     <div className="app-background">
+      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
+        <ExpandingCard />
+      </div>
       {/* Hero Section */}
       <div className="min-h-[90vh] bg-base-100 relative overflow-hidden">
         <div className="container mx-auto px-4 pt-20">
@@ -54,26 +57,10 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Floating Cards Container */}
-        <div className="relative mt-20 h-[300px] overflow-hidden">
-          <div className="absolute left-1/2 transform -translate-x-1/2 flex justify-center w-full">
-            {[...Array(7)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-64 h-40 bg-base-200 rounded-lg shadow-xl"
-                style={{
-                  transform: `rotate(${(i - 3) * 5}deg) translateX(${(i - 3) * 30}px)`,
-                  zIndex: i
-                }}
-              >
-                <div className="w-full h-full bg-base-100 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl">🌍</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
+        <ExpandingCard />
       </div>
 
       {/* Destination Selector Section */}
