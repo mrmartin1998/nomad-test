@@ -42,14 +42,14 @@ Replace all 7 existing visa forms with the enhanced design system from demo page
 - [x] Test form functionality
 - [x] Commit: `feat: enhance Cuba visa form with new design system`
 
-### Phase 6: Thailand Form 🔄
-- [ ] Update: `src/app/pages/thailand/apply/page.jsx`
-- [ ] Replace: `src/components/forms/thailand/Form.jsx`
-- [ ] Create: Thailand-specific upload component
-- [ ] Test form functionality
-- [ ] Commit: `feat: enhance Thailand visa form with new design system`
+### Phase 6: Thailand Form ✅
+- [x] Update: `src/app/pages/thailand/apply/page.jsx`
+- [x] Replace: `src/components/forms/thailand/Form.jsx`
+- [x] Create: Thailand-specific upload component
+- [x] Test form functionality
+- [x] Commit: `feat: enhance Thailand visa form with new design system`
 
-### Phase 7: Egypt Form ⏸️
+### Phase 7: Egypt Form 🔄
 - [ ] Update: `src/app/pages/egypt/apply/page.jsx`
 - [ ] Replace: `src/components/forms/egypt/Form.jsx`
 - [ ] Create: Egypt-specific upload component
@@ -63,7 +63,7 @@ Replace all 7 existing visa forms with the enhanced design system from demo page
 - **Customize Content Only**: Form questions, validation, country branding
 
 ## ✅ Current Status
-- **Current Phase**: Phase 6 - Thailand Form 🔄
-- **Last Completed**: Phase 5 - Cuba Form ✅
-- **Next Step**: Start updating Thailand form with enhanced design
-- **Progress**: 5/7 forms completed (71.4%)
+- **Current Phase**: Phase 7 - Egypt Form 🔄
+- **Last Completed**: Phase 6 - Thailand Form ✅
+- **Next Step**: Start updating Egypt form with enhanced design
+- **Progress**: 6/7 forms completed (85.7%)
