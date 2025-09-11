@@ -59,10 +59,6 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
-        <ExpandingCard />
-      </div>
-
       {/* Destination Selector Section */}
       <div className="container mx-auto px-4 -mt-20 relative z-10 mb-16">
         <DestinationSelector />
@@ -700,9 +696,7 @@ export default function Home() {
       </section> */}
 
       {/* Add the ExpandingCard component in a centered container */}
-      <div className="flex justify-center items-center min-h-[400px] bg-gray-50">
-        <ExpandingCard />
-      </div>
+      
 
     </div>
   );
