@@ -189,6 +189,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Ocupación"
         name="ocupacion"
+        data-testid="ocupacion-input"
         value={formData.ocupacion}
         onChange={handleChange}
         error={errors.ocupacion}
@@ -204,6 +205,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Empresa"
         name="empresa"
+        data-testid="empresa-input"
         value={formData.empresa}
         onChange={handleChange}
         error={errors.empresa}

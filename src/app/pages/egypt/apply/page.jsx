@@ -61,6 +61,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
       <FormSelect
         label="Nacionalidad"
         name="nacionalidad"
+        id="nacionalidad"
         value={formData.nacionalidad}
         onChange={handleChange}
         options={countryOptions}
