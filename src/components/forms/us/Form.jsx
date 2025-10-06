@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
@@ -455,6 +457,8 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 };
 
 const Form = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
 
   // Form step configuration for USA ESTA
@@ -547,8 +551,23 @@ const Form = () => {
   ];
 
   const handleSubmit = async (formData) => {
+    // Check authentication
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    // Submit with user ID
+    const dataWithUser = {
+      ...formData,
+      userId: currentSession.user.id
+    };
+
     // Simulate API submission
-    console.log('Submitting USA ESTA form data:', formData);
+    console.log('Submitting USA ESTA form data:', dataWithUser);
     
     await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
     

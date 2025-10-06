@@ -5,6 +5,8 @@ import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
 import IndiaUpload from '@/components/upload/country/IndiaUpload';
+import { useRouter } from 'next/navigation';
+import { getSession } from 'next-auth/react';
 
 // Personal Information Step Component
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
@@ -326,6 +328,7 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 
 const Form = () => {
   const [submissionResult, setSubmissionResult] = useState(null);
+  const router = useRouter();
 
   // Form step configuration for India
   const formSteps = [
@@ -416,8 +419,21 @@ const Form = () => {
   ];
 
   const handleSubmit = async (formData) => {
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    const dataWithUser = {
+      ...formData,
+      userId: currentSession.user.id
+    };
+
     // Simulate API submission
-    console.log('Submitting India visa form data:', formData);
+    console.log('Submitting India visa form data:', dataWithUser);
     
     await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
     

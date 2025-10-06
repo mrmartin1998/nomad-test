@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import CubaApplication from '@/lib/models/CubaApplication';
+import { getServerSession } from 'next-auth';
 
 export const dynamic = 'force-static';
 
@@ -11,6 +12,17 @@ export async function POST(request) {
 
     // Parse the request body
     const data = await request.json();
+
+    // Get session for optional auth verification
+    const session = await getServerSession();
+    
+    // Validate userId if provided
+    if (session && data.userId && data.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: 'Usuario no autorizado' },
+        { status: 403 }
+      );
+    }
 
     // Validate required fields
     const requiredFields = [
@@ -51,8 +63,14 @@ export async function POST(request) {
       );
     }
 
+    // Handle userId for authenticated users
+    const applicationData = {
+      ...data,
+      ...(data.userId && { userId: data.userId })
+    };
+
     // Create new Cuba application
-    const application = new CubaApplication(data);
+    const application = new CubaApplication(applicationData);
     await application.save();
 
     return NextResponse.json(
@@ -89,4 +107,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}
