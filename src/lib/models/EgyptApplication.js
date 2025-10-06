@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
 const EgyptApplicationSchema = new mongoose.Schema({
+  // User Association (for authenticated users)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false  // Optional for backward compatibility with anonymous applications
+  },
+
   // Personal Information
   nombreCompleto: { type: String, required: true },
   fechaNacimiento: { type: Date, required: true },
@@ -48,4 +55,4 @@ const EgyptApplicationSchema = new mongoose.Schema({
 // Prevent duplicate model initialization
 const EgyptApplication = mongoose.models.EgyptApplication || mongoose.model('EgyptApplication', EgyptApplicationSchema);
 
-export default EgyptApplication; 
+export default EgyptApplication;

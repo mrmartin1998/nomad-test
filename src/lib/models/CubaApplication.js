@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
 const CubaApplicationSchema = new mongoose.Schema({
+  // User Association (for authenticated users)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false  // Optional for backward compatibility with anonymous applications
+  },
+
   // Personal Information
   nombreCompleto: { type: String, required: true },
   nacionalidad: { type: String, required: true },
@@ -46,4 +53,4 @@ const CubaApplicationSchema = new mongoose.Schema({
 // Prevent duplicate model initialization
 const CubaApplication = mongoose.models.CubaApplication || mongoose.model('CubaApplication', CubaApplicationSchema);
 
-export default CubaApplication; 
+export default CubaApplication;
