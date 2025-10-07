@@ -5,6 +5,8 @@ import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
 import ThailandUpload from '@/components/upload/country/ThailandUpload';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // Step Components
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
@@ -302,6 +304,7 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 
 export default function ThailandForm() {
   const [submissionResult, setSubmissionResult] = useState(null);
+  const router = useRouter();
 
   const formSteps = [
     {
@@ -386,7 +389,20 @@ export default function ThailandForm() {
   ];
 
   const handleSubmit = async (formData) => {
-    console.log('Submitting Thailand visa form:', formData);
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    const dataWithUser = {
+      ...formData,
+      userId: currentSession.user.id
+    };
+
+    console.log('Submitting Thailand visa form:', dataWithUser);
     
     // Simulate API submission
     await new Promise(resolve => setTimeout(resolve, 2000));

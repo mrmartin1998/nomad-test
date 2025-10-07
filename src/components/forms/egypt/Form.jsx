@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
@@ -189,6 +191,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Ocupación"
         name="ocupacion"
+        data-testid="ocupacion-input"
         value={formData.ocupacion}
         onChange={handleChange}
         error={errors.ocupacion}
@@ -204,6 +207,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Empresa"
         name="empresa"
+        data-testid="empresa-input"
         value={formData.empresa}
         onChange={handleChange}
         error={errors.empresa}
@@ -272,7 +276,9 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-export default function EgyptForm() {
+export default function EgyptFormPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
 
   const formSteps = [
@@ -341,22 +347,50 @@ export default function EgyptForm() {
   ];
 
   const handleSubmit = async (formData) => {
+    // Check if user is authenticated before submission
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      // Redirect to login with return URL
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    console.log('Submitting Egypt form data with user ID:', currentSession.user.id);
+    
     try {
-      console.log('Submitting Egypt visa application:', formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Add user ID to form data
+      const dataWithUser = {
+        ...formData,
+        userId: currentSession.user.id
+      };
+
+      // Submit to API
+      const response = await fetch('/api/egypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataWithUser)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud');
+      }
+
+      const result = await response.json();
       
       setSubmissionResult({
         success: true,
         message: 'Su solicitud de visa para Egipto ha sido enviada exitosamente!',
-        applicationId: 'EGYPT-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        applicationId: result.applicationId || 'EG-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       });
     } catch (error) {
-      console.error('Error submitting application:', error);
+      console.error('Error submitting form:', error);
       setSubmissionResult({
         success: false,
-        message: 'Error al enviar la solicitud. Por favor, intente nuevamente.'
+        message: 'Error al enviar la solicitud. Por favor, inténtelo de nuevo.'
       });
     }
   };

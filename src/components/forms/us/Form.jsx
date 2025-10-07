@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useSession, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
@@ -455,6 +457,8 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 };
 
 const Form = () => {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
 
   // Form step configuration for USA ESTA
@@ -547,16 +551,51 @@ const Form = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    // Simulate API submission
-    console.log('Submitting USA ESTA form data:', formData);
+    // Check authentication before submission
+    const currentSession = await getSession();
     
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
+    if (!currentSession) {
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    console.log('Submitting USA ESTA form data with user ID:', currentSession.user.id);
     
-    setSubmissionResult({
-      success: true,
-      message: 'Your USA ESTA application has been submitted successfully!',
-      applicationId: 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-    });
+    try {
+      // Add user ID to form data
+      const dataWithUser = {
+        ...formData,
+        userId: currentSession.user.id
+      };
+
+      // Submit to API
+      const response = await fetch('/api/esta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataWithUser)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud');
+      }
+
+      const result = await response.json();
+      
+      setSubmissionResult({
+        success: true,
+        message: 'Your USA ESTA application has been submitted successfully!',
+        applicationId: result.applicationId || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmissionResult({
+        success: false,
+        message: 'Error al enviar la solicitud. Por favor, inténtelo de nuevo.'
+      });
+    }
   };
 
   const handleStepChange = (stepIndex, formData) => {

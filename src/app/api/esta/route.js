@@ -74,8 +74,14 @@ export async function POST(request) {
       );
     }
 
+    // Handle userId for authenticated users
+    const applicationData = {
+      ...data,
+      ...(data.userId && { userId: data.userId })
+    };
+
     // Create new ESTA application
-    const application = new ESTAApplication(data);
+    const application = new ESTAApplication(applicationData);
     await application.save();
 
     return NextResponse.json(
@@ -112,4 +118,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

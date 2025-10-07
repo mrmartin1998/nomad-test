@@ -204,78 +204,6 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ [name]: value });
-  };
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormInput
-        label="Ocupación Actual"
-        name="ocupacionActual"
-        value={formData.ocupacionActual}
-        onChange={handleChange}
-        error={errors.ocupacionActual}
-        placeholder="Ingrese su ocupación actual"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Empresa"
-        name="empresa"
-        value={formData.empresa}
-        onChange={handleChange}
-        error={errors.empresa}
-        placeholder="Ingrese el nombre de su empresa"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Dirección de la Empresa"
-        name="direccionEmpresa"
-        value={formData.direccionEmpresa}
-        onChange={handleChange}
-        error={errors.direccionEmpresa}
-        placeholder="Ingrese la dirección de su empresa"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Teléfono de la Empresa"
-        name="telefonoEmpresa"
-        type="tel"
-        value={formData.telefonoEmpresa}
-        onChange={handleChange}
-        error={errors.telefonoEmpresa}
-        placeholder="Ingrese el teléfono de su empresa"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-          </svg>
-        }
-      />
-    </div>
-  );
-};
 
 const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
   const handleCheckboxChange = (e) => {
@@ -285,6 +213,14 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
 
   return (
     <div className="space-y-6">
+      <div className="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div>
+          <h3 className="font-bold">Preguntas de Seguridad</h3>
+          <div className="text-sm">Responda honestamente a todas las preguntas de seguridad requeridas.</div>
+        </div>
+      </div>
+
       <div className="form-control">
         <label className="label cursor-pointer justify-start gap-4">
           <input
@@ -294,7 +230,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
             onChange={handleCheckboxChange}
             className="checkbox checkbox-primary"
           />
-          <span className="label-text">¿Tiene antecedentes penales?</span>
+          <span className="label-text"><strong>¿Tiene antecedentes penales?</strong></span>
         </label>
         {errors.antecedentesPenales && (
           <label className="label">
@@ -312,7 +248,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
             onChange={handleCheckboxChange}
             className="checkbox checkbox-primary"
           />
-          <span className="label-text">¿Ha sido rechazado previamente en una solicitud migratoria?</span>
+          <span className="label-text"><strong>¿Ha sido rechazado previamente en una solicitud migratoria?</strong></span>
         </label>
         {errors.rechazosMigratorios && (
           <label className="label">
@@ -330,7 +266,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
             onChange={handleCheckboxChange}
             className="checkbox checkbox-primary"
           />
-          <span className="label-text">Acepto el procesamiento de mis datos personales</span>
+          <span className="label-text"><strong>Consentimiento para el uso de datos:</strong> Acepto el procesamiento de mis datos personales</span>
         </label>
         {errors.consentimientoDatos && (
           <label className="label">
@@ -343,21 +279,37 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
 };
 
 const DocumentUploadStep = ({ formData, setFormData, errors }) => {
-  const handleFileSelect = (file) => {
-    console.log('File selected:', file);
-    setFormData({ passportDocument: file });
+  const handleFileSelect = (file, documentType) => {
+    console.log('File selected:', file, 'Type:', documentType);
+    setFormData(prev => ({
+      ...prev,
+      documentos: {
+        ...prev.documentos,
+        [documentType]: file
+      }
+    }));
   };
 
-  const handleUploadComplete = (file) => {
-    console.log('Upload completed:', file);
+  const handleUploadComplete = (file, documentType) => {
+    console.log('Upload completed:', file, 'Type:', documentType);
   };
 
   return (
     <div className="space-y-8">
       <UKUpload
-        onFileSelect={handleFileSelect}
-        onUploadComplete={handleUploadComplete}
-        error={errors.passportDocument}
+        onFileSelect={(file) => handleFileSelect(file, 'fotoCarnet')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'fotoCarnet')}
+        error={errors.documentos?.fotoCarnet}
+        documentType="foto"
+      />
+      
+      <div className="divider">Pasaporte Escaneado</div>
+      
+      <UKUpload
+        onFileSelect={(file) => handleFileSelect(file, 'pasaporteEscaneado')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'pasaporteEscaneado')}
+        error={errors.documentos?.pasaporteEscaneado}
+        documentType="pasaporte"
       />
     </div>
   );
@@ -366,12 +318,12 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 export default function UKFormPage() {
   const [submissionResult, setSubmissionResult] = useState(null);
 
-  // Form step configuration
+  // Form step configuration - Updated to match Notion requirements exactly
   const formSteps = [
     {
       title: "Información Personal",
-      description: "Ingrese sus datos personales",
-      estimatedTime: 3,
+      description: "Ingrese sus datos personales básicos",
+      estimatedTime: 4,
       component: PersonalInfoStep,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
@@ -411,26 +363,6 @@ export default function UKFormPage() {
       }
     },
     {
-      title: "Información Profesional",
-      description: "Ingrese sus datos profesionales y de empleo",
-      estimatedTime: 3,
-      component: ProfessionalInfoStep,
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-        </svg>
-      ),
-      helpText: "Proporcione información detallada sobre su situación laboral actual.",
-      validate: (data) => {
-        const errors = {};
-        if (!data.ocupacionActual) errors.ocupacionActual = 'La ocupación actual es requerida';
-        if (!data.empresa) errors.empresa = 'El nombre de la empresa es requerido';
-        if (!data.direccionEmpresa) errors.direccionEmpresa = 'La dirección de la empresa es requerida';
-        if (!data.telefonoEmpresa) errors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
-        return errors;
-      }
-    },
-    {
       title: "Preguntas de Seguridad",
       description: "Responda las preguntas de seguridad requeridas",
       estimatedTime: 2,
@@ -450,7 +382,7 @@ export default function UKFormPage() {
       }
     },
     {
-      title: "Carga de Documentos",
+      title: "Documentos",
       description: "Suba los documentos requeridos",
       estimatedTime: 5,
       component: DocumentUploadStep,
@@ -462,7 +394,18 @@ export default function UKFormPage() {
       helpText: "Asegúrese de que sus documentos sean claros y legibles. Formatos aceptados: PDF, JPG, PNG.",
       validate: (data) => {
         const errors = {};
-        if (!data.passportDocument) errors.passportDocument = 'El documento del pasaporte es requerido';
+        if (!data.documentos?.fotoCarnet) {
+          errors.documentos = {
+            ...errors.documentos,
+            fotoCarnet: 'La fotografía tipo carnet es requerida'
+          };
+        }
+        if (!data.documentos?.pasaporteEscaneado) {
+          errors.documentos = {
+            ...errors.documentos,
+            pasaporteEscaneado: 'El pasaporte escaneado es requerido'
+          };
+        }
         return errors;
       }
     }
@@ -476,8 +419,8 @@ export default function UKFormPage() {
     
     setSubmissionResult({
       success: true,
-      message: 'Su solicitud de visa para Reino Unido ha sido enviada exitosamente!',
-      applicationId: 'UK-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      message: 'Su solicitud de ETA para Reino Unido ha sido enviada exitosamente!',
+      applicationId: 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
     });
   };
 
@@ -515,15 +458,15 @@ export default function UKFormPage() {
     <div className="min-h-screen bg-base-100">
       {/* Navigation */}
       <div className="navbar bg-base-200">
-        <div className="flex-1">
-          <a className="btn btn-ghost text-xl" href="/">
-            🏠 Nomad Visa
-          </a>
-        </div>
-        <div className="flex-none">
-          <a className="btn btn-outline" href="/pages/uk">
-            ← Volver a Reino Unido
-          </a>
+        <div className="container mx-auto">
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl" href="/pages/uk">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Volver
+            </a>
+          </div>
         </div>
       </div>
 
@@ -531,7 +474,7 @@ export default function UKFormPage() {
       <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center">
-            🚀 Solicitud de Visa Reino Unido
+            🇬🇧 Solicitud de ETA Reino Unido
           </h1>
           <p className="text-xl text-center mt-4 opacity-90">
             Complete el formulario con sus datos personales y documentos requeridos
@@ -545,7 +488,7 @@ export default function UKFormPage() {
         onSubmit={handleSubmit}
         onStepChange={handleStepChange}
         autoSave={true}
-        autoSaveKey="uk-visa-form"
+        autoSaveKey="uk-eta-form"
         countryTheme="uk"
       />
     </div>

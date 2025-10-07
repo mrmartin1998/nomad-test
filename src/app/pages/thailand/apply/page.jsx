@@ -60,22 +60,6 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         }
       />
 
-      <FormInput
-        label="Lugar de Nacimiento"
-        name="lugarNacimiento"
-        value={formData.lugarNacimiento}
-        onChange={handleChange}
-        error={errors.lugarNacimiento}
-        placeholder="Ingrese su lugar de nacimiento"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-          </svg>
-        }
-      />
-
       <FormSelect
         label="Nacionalidad"
         name="nacionalidad"
@@ -145,63 +129,6 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           }
         />
       </div>
-    </div>
-  );
-};
-
-const PassportInfoStep = ({ formData, setFormData, errors }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ [name]: value });
-  };
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormInput
-        label="Número de Pasaporte"
-        name="numeroPasaporte"
-        value={formData.numeroPasaporte}
-        onChange={handleChange}
-        error={errors.numeroPasaporte}
-        placeholder="Ingrese su número de pasaporte"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Fecha de Emisión del Pasaporte"
-        name="fechaEmisionPasaporte"
-        type="date"
-        value={formData.fechaEmisionPasaporte}
-        onChange={handleChange}
-        error={errors.fechaEmisionPasaporte}
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Fecha de Expiración del Pasaporte"
-        name="fechaExpiracionPasaporte"
-        type="date"
-        value={formData.fechaExpiracionPasaporte}
-        onChange={handleChange}
-        error={errors.fechaExpiracionPasaporte}
-        required
-        helpText="Debe ser válido por al menos 6 meses desde la fecha de viaje"
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        }
-      />
     </div>
   );
 };
@@ -276,6 +203,52 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
           </svg>
         }
       />
+
+      <FormInput
+        label="Número de Pasaporte"
+        name="numeroPasaporte"
+        value={formData.numeroPasaporte}
+        onChange={handleChange}
+        error={errors.numeroPasaporte}
+        placeholder="Ingrese su número de pasaporte"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Fecha de Emisión del Pasaporte"
+        name="fechaEmisionPasaporte"
+        type="date"
+        value={formData.fechaEmisionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaEmisionPasaporte}
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Fecha de Expiración del Pasaporte"
+        name="fechaExpiracionPasaporte"
+        type="date"
+        value={formData.fechaExpiracionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaExpiracionPasaporte}
+        required
+        helpText="Debe ser válido por al menos 6 meses desde la fecha de viaje"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        }
+      />
     </div>
   );
 };
@@ -292,10 +265,105 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
   return (
     <div className="space-y-8">
       <ThailandUpload
-        onFileSelect={(file) => handleFileSelect(file, 'passport')}
-        onUploadComplete={(file) => handleUploadComplete(file, 'passport')}
-        error={errors.passport}
+        documentType="foto"
+        onFileSelect={(file) => handleFileSelect(file, 'fotoCarnet')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'fotoCarnet')}
+        error={errors.fotoCarnet}
       />
+      
+      <ThailandUpload
+        documentType="pasaporte"
+        onFileSelect={(file) => handleFileSelect(file, 'pasaporteEscaneado')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'pasaporteEscaneado')}
+        error={errors.pasaporteEscaneado}
+      />
+      
+      <ThailandUpload
+        documentType="billete"
+        onFileSelect={(file) => handleFileSelect(file, 'billeteSalida')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'billeteSalida')}
+        error={errors.billeteSalida}
+      />
+      
+      <ThailandUpload
+        documentType="hotel"
+        onFileSelect={(file) => handleFileSelect(file, 'reservaHotel')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'reservaHotel')}
+        error={errors.reservaHotel}
+      />
+    </div>
+  );
+};
+
+const ConsentStep = ({ formData, setFormData, errors }) => {
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({ [name]: checked });
+  };
+
+  return (
+    <div className="space-y-6" data-testid="consent-step">
+      <div className="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <div>
+          <h3 className="font-bold">Consentimiento y Condiciones</h3>
+          <div className="text-sm">
+            <p>Por favor, lea y acepte los términos y condiciones antes de continuar.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="consentimientoProcesamiento"
+            checked={formData.consentimientoProcesamiento || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text">
+            <strong>Consentimiento de Procesamiento de Datos:</strong> Autorizo el procesamiento de mis datos personales para el trámite de la visa electrónica de Tailandia.
+          </span>
+        </label>
+        {errors.consentimientoProcesamiento && (
+          <div className="text-error text-sm">{errors.consentimientoProcesamiento}</div>
+        )}
+
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="veracidadInformacion"
+            checked={formData.veracidadInformacion || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text">
+            <strong>Veracidad de la Información:</strong> Declaro que toda la información proporcionada es verdadera y completa.
+          </span>
+        </label>
+        {errors.veracidadInformacion && (
+          <div className="text-error text-sm">{errors.veracidadInformacion}</div>
+        )}
+
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="aceptacionTerminos"
+            checked={formData.aceptacionTerminos || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text">
+            <strong>Aceptación de Términos y Condiciones:</strong> Acepto los términos y condiciones del servicio de visa electrónica.
+          </span>
+        </label>
+        {errors.aceptacionTerminos && (
+          <div className="text-error text-sm">{errors.aceptacionTerminos}</div>
+        )}
+      </div>
     </div>
   );
 };
@@ -306,7 +374,7 @@ export default function ThailandFormPage() {
   const formSteps = [
     {
       title: "Información Personal",
-      description: "Ingrese sus datos personales",
+      description: "Ingrese sus datos personales y de contacto",
       estimatedTime: 4,
       component: PersonalInfoStep,
       icon: (
@@ -319,7 +387,6 @@ export default function ThailandFormPage() {
         const errors = {};
         if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
         if (!data.fechaNacimiento) errors.fechaNacimiento = 'La fecha de nacimiento es requerida';
-        if (!data.lugarNacimiento) errors.lugarNacimiento = 'El lugar de nacimiento es requerido';
         if (!data.nacionalidad) errors.nacionalidad = 'La nacionalidad es requerida';
         if (!data.email) errors.email = 'El correo electrónico es requerido';
         if (!data.telefono) errors.telefono = 'El teléfono es requerido';
@@ -328,18 +395,22 @@ export default function ThailandFormPage() {
       }
     },
     {
-      title: "Detalles del Pasaporte",
-      description: "Proporcione la información de su pasaporte",
-      estimatedTime: 2,
-      component: PassportInfoStep,
+      title: "Información Profesional y Pasaporte",
+      description: "Proporcione sus datos profesionales y de pasaporte",
+      estimatedTime: 4,
+      component: ProfessionalInfoStep,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
         </svg>
       ),
-      helpText: "Verifique todos los detalles del pasaporte para asegurar la precisión.",
+      helpText: "Proporcione información detallada sobre su situación laboral y datos del pasaporte.",
       validate: (data) => {
         const errors = {};
+        if (!data.ocupacionActual) errors.ocupacionActual = 'La ocupación actual es requerida';
+        if (!data.empresa) errors.empresa = 'El nombre de la empresa es requerido';
+        if (!data.direccionEmpresa) errors.direccionEmpresa = 'La dirección de la empresa es requerida';
+        if (!data.telefonoEmpresa) errors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
         if (!data.numeroPasaporte) errors.numeroPasaporte = 'El número de pasaporte es requerido';
         if (!data.fechaEmisionPasaporte) errors.fechaEmisionPasaporte = 'La fecha de emisión del pasaporte es requerida';
         if (!data.fechaExpiracionPasaporte) errors.fechaExpiracionPasaporte = 'La fecha de expiración del pasaporte es requerida';
@@ -347,28 +418,8 @@ export default function ThailandFormPage() {
       }
     },
     {
-      title: "Información Profesional",
-      description: "Ingrese sus datos profesionales y de empleo",
-      estimatedTime: 3,
-      component: ProfessionalInfoStep,
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-        </svg>
-      ),
-      helpText: "Proporcione información detallada sobre su situación laboral actual.",
-      validate: (data) => {
-        const errors = {};
-        if (!data.ocupacionActual) errors.ocupacionActual = 'La ocupación actual es requerida';
-        if (!data.empresa) errors.empresa = 'El nombre de la empresa es requerido';
-        if (!data.direccionEmpresa) errors.direccionEmpresa = 'La dirección de la empresa es requerida';
-        if (!data.telefonoEmpresa) errors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
-        return errors;
-      }
-    },
-    {
-      title: "Carga de Documentos",
-      description: "Suba los documentos requeridos",
+      title: "Documentos Requeridos",
+      description: "Suba los documentos necesarios para su visa",
       estimatedTime: 5,
       component: DocumentUploadStep,
       icon: (
@@ -379,7 +430,29 @@ export default function ThailandFormPage() {
       helpText: "Asegúrese de que sus documentos sean claros y legibles. Formatos aceptados: PDF, JPG, PNG.",
       validate: (data) => {
         const errors = {};
-        if (!data.passport) errors.passport = 'El documento del pasaporte es requerido';
+        if (!data.fotoCarnet) errors.fotoCarnet = 'La fotografía tipo carnet es requerida';
+        if (!data.pasaporteEscaneado) errors.pasaporteEscaneado = 'El pasaporte escaneado es requerido';
+        if (!data.billeteSalida) errors.billeteSalida = 'El boleto de salida es requerido';
+        if (!data.reservaHotel) errors.reservaHotel = 'La reserva de hotel es requerida';
+        return errors;
+      }
+    },
+    {
+      title: "Consentimiento y Condiciones",
+      description: "Acepte los términos y condiciones",
+      estimatedTime: 2,
+      component: ConsentStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      helpText: "Lea cuidadosamente y acepte todos los términos y condiciones.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.consentimientoProcesamiento) errors.consentimientoProcesamiento = 'Debe aceptar el consentimiento de procesamiento de datos';
+        if (!data.veracidadInformacion) errors.veracidadInformacion = 'Debe confirmar la veracidad de la información';
+        if (!data.aceptacionTerminos) errors.aceptacionTerminos = 'Debe aceptar los términos y condiciones';
         return errors;
       }
     }
@@ -393,8 +466,8 @@ export default function ThailandFormPage() {
     
     setSubmissionResult({
       success: true,
-      message: 'Su solicitud de visa para Tailandia ha sido enviada exitosamente!',
-      applicationId: 'THA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      message: 'Su solicitud de eVisa para Tailandia ha sido enviada exitosamente!',
+      applicationId: 'THA-EVISA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
     });
   };
 
@@ -429,15 +502,29 @@ export default function ThailandFormPage() {
   }
 
   return (
-    <div>
-      {/* Header */}
+    <div className="min-h-screen bg-base-100">
+      {/* Navigation */}
+      <div className="navbar bg-base-200">
+        <div className="container mx-auto">
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl" href="/pages/thailand">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Volver
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Header Banner */}
       <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center">
-            🇹🇭 Solicitud de Visa para Tailandia
+            🇹🇭 Solicitud de eVisa Tailandia
           </h1>
           <p className="text-xl text-center mt-4 opacity-90">
-            Complete su solicitud de visa para Tailandia de manera rápida y segura
+            Complete su solicitud de visa electrónica para Tailandia con nuestro sistema mejorado
           </p>
         </div>
       </div>
@@ -448,10 +535,9 @@ export default function ThailandFormPage() {
         onSubmit={handleSubmit}
         onStepChange={handleStepChange}
         autoSave={true}
-        autoSaveKey="thailand-visa-form"
+        autoSaveKey="thailand-evisa-form"
         countryTheme="thailand"
       />
     </div>
   );
 }
-

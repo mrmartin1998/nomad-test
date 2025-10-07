@@ -5,6 +5,8 @@ import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
 import CubaUpload from '@/components/upload/country/CubaUpload';
+import { getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 // Step Components
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
@@ -395,6 +397,7 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 
 export default function CubaForm() {
   const [submissionResult, setSubmissionResult] = useState(null);
+  const router = useRouter();
 
   // Form step configuration
   const formSteps = [
@@ -488,8 +491,21 @@ export default function CubaForm() {
   ];
 
   const handleSubmit = async (formData) => {
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    const dataWithUser = {
+      ...formData,
+      userId: currentSession.user.id
+    };
+
     // Simulate API submission
-    console.log('Submitting Cuba form data:', formData);
+    console.log('Submitting Cuba form data:', dataWithUser);
     
     await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
     

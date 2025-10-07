@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
 const ESTAApplicationSchema = new mongoose.Schema({
+  // User Association (for authenticated users)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false  // Optional for backward compatibility with anonymous applications
+  },
+
   // Personal Information
   nombreCompleto: { type: String, required: true },
   fechaNacimiento: { type: Date, required: true },
@@ -48,4 +55,4 @@ const ESTAApplicationSchema = new mongoose.Schema({
 // Prevent duplicate model initialization
 const ESTAApplication = mongoose.models.ESTAApplication || mongoose.model('ESTAApplication', ESTAApplicationSchema);
 
-export default ESTAApplication; 
+export default ESTAApplication;

@@ -192,7 +192,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const TravelInfoStep = ({ formData, setFormData, errors }) => {
+const DeliveryAndConsentStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ [name]: value });
@@ -206,7 +206,7 @@ const TravelInfoStep = ({ formData, setFormData, errors }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <FormSelect
-        label="Método de Entrega"
+        label="¿Quieres recibir la tarjeta por correo o recogerla?"
         name="metodoEntrega"
         value={formData.metodoEntrega}
         onChange={handleChange}
@@ -219,13 +219,13 @@ const TravelInfoStep = ({ formData, setFormData, errors }) => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m6.75 4.5v-6a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25v6m7.5 0V9.75a2.25 2.25 0 00-2.25-2.25H9a2.25 2.25 0 00-2.25 2.25v9.75m7.5 0V9.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25v9.75m-7.5 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m6.75 4.5v-6a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25v6" />
           </svg>
         }
-        helpText="Cómo desea recibir su visa"
+        helpText="Cómo desea recibir su tarjeta turística"
       />
 
       {formData.metodoEntrega === 'correo' && (
         <div className="md:col-span-2">
           <FormInput
-            label="Dirección de Envío"
+            label="Dirección de envío (si aplica)"
             name="direccionEnvio"
             value={formData.direccionEnvio}
             onChange={handleChange}
@@ -252,7 +252,7 @@ const TravelInfoStep = ({ formData, setFormData, errors }) => {
               className="checkbox checkbox-primary"
             />
             <span className="label-text">
-              Acepto el procesamiento de mis datos personales para la solicitud de visa
+              <strong>Consentimiento para el procesamiento del trámite</strong> - Acepto el procesamiento de mis datos personales para la solicitud de tarjeta turística
             </span>
           </label>
           {errors.consentimientoProcesamiento && (
@@ -266,111 +266,6 @@ const TravelInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ [name]: value });
-  };
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormInput
-        label="Ocupación"
-        name="ocupacion"
-        value={formData.ocupacion}
-        onChange={handleChange}
-        error={errors.ocupacion}
-        placeholder="Ingrese su ocupación actual"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Empresa"
-        name="empresa"
-        value={formData.empresa}
-        onChange={handleChange}
-        error={errors.empresa}
-        placeholder="Nombre de su empresa"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 7.5h10.5M6.75 12h10.5M6.75 16.5h10.5" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Cargo"
-        name="cargo"
-        value={formData.cargo}
-        onChange={handleChange}
-        error={errors.cargo}
-        placeholder="Su cargo o posición"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
-          </svg>
-        }
-      />
-
-      <FormInput
-        label="Ingreso Mensual"
-        name="ingresoMensual"
-        type="number"
-        value={formData.ingresoMensual}
-        onChange={handleChange}
-        error={errors.ingresoMensual}
-        placeholder="0"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        }
-        helpText="Ingreso mensual en USD"
-      />
-
-      <div className="md:col-span-2">
-        <FormInput
-          label="Dirección de la Empresa"
-          name="direccionEmpresa"
-          value={formData.direccionEmpresa}
-          onChange={handleChange}
-          error={errors.direccionEmpresa}
-          placeholder="Dirección completa de su empresa"
-          required
-          icon={
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-            </svg>
-          }
-        />
-      </div>
-
-      <FormInput
-        label="Teléfono de la Empresa"
-        name="telefonoEmpresa"
-        type="tel"
-        value={formData.telefonoEmpresa}
-        onChange={handleChange}
-        error={errors.telefonoEmpresa}
-        placeholder="+1 (555) 123-4567"
-        required
-        icon={
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
-          </svg>
-        }
-      />
-    </div>
-  );
-};
 
 const DocumentUploadStep = ({ formData, setFormData, errors }) => {
   const handleFileSelect = (file) => {
@@ -400,7 +295,7 @@ export default function CubaFormPage() {
   const formSteps = [
     {
       title: "Información Personal",
-      description: "Ingrese sus datos personales y de viaje",
+      description: "Datos personales y de contacto",
       estimatedTime: 4,
       component: PersonalInfoStep,
       icon: (
@@ -414,26 +309,26 @@ export default function CubaFormPage() {
         if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
         if (!data.nacionalidad) errors.nacionalidad = 'La nacionalidad es requerida';
         if (!data.fechaNacimiento) errors.fechaNacimiento = 'La fecha de nacimiento es requerida';
+        if (!data.numeroPasaporte) errors.numeroPasaporte = 'El número de pasaporte es requerido';
         if (!data.fechaEntradaEstimada) errors.fechaEntradaEstimada = 'La fecha estimada de entrada es requerida';
         if (!data.direccionAlojamientoCuba) errors.direccionAlojamientoCuba = 'La dirección de alojamiento en Cuba es requerida';
-        if (!data.direccionResidencia) errors.direccionResidencia = 'La dirección de residencia es requerida';
+        if (!data.direccionResidencia) errors.direccionResidencia = 'La dirección de residencia en España es requerida';
         if (!data.email) errors.email = 'El correo electrónico es requerido';
         if (!data.telefono) errors.telefono = 'El teléfono es requerido';
-        if (!data.numeroPasaporte) errors.numeroPasaporte = 'El número de pasaporte es requerido';
         return errors;
       }
     },
     {
-      title: "Información de Viaje",
-      description: "Detalles de entrega y consentimiento",
+      title: "Entrega y Consentimiento",
+      description: "Método de entrega y consentimiento",
       estimatedTime: 2,
-      component: TravelInfoStep,
+      component: DeliveryAndConsentStep,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m6.75 4.5v-6a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25v6m7.5 0V9.75a2.25 2.25 0 00-2.25-2.25H9a2.25 2.25 0 00-2.25 2.25v9.75m7.5 0V9.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25v9.75m-7.5 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m6.75 4.5v-6a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25v6" />
         </svg>
       ),
-      helpText: "Seleccione cómo desea recibir su visa y acepte los términos.",
+      helpText: "Seleccione cómo desea recibir su tarjeta turística y acepte los términos.",
       validate: (data) => {
         const errors = {};
         if (!data.metodoEntrega) errors.metodoEntrega = 'El método de entrega es requerido';
@@ -447,31 +342,9 @@ export default function CubaFormPage() {
       }
     },
     {
-      title: "Información Profesional",
-      description: "Ingrese sus datos profesionales y financieros",
-      estimatedTime: 3,
-      component: ProfessionalInfoStep,
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
-        </svg>
-      ),
-      helpText: "Proporcione información detallada sobre su situación laboral actual.",
-      validate: (data) => {
-        const errors = {};
-        if (!data.ocupacion) errors.ocupacion = 'La ocupación es requerida';
-        if (!data.empresa) errors.empresa = 'El nombre de la empresa es requerido';
-        if (!data.cargo) errors.cargo = 'El cargo es requerido';
-        if (!data.ingresoMensual) errors.ingresoMensual = 'El ingreso mensual es requerido';
-        if (!data.direccionEmpresa) errors.direccionEmpresa = 'La dirección de la empresa es requerida';
-        if (!data.telefonoEmpresa) errors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
-        return errors;
-      }
-    },
-    {
-      title: "Carga de Documentos",
+      title: "Documentos",
       description: "Suba los documentos requeridos",
-      estimatedTime: 5,
+      estimatedTime: 3,
       component: DocumentUploadStep,
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
@@ -495,8 +368,8 @@ export default function CubaFormPage() {
     
     setSubmissionResult({
       success: true,
-      message: 'Su solicitud de visa para Cuba ha sido enviada exitosamente!',
-      applicationId: 'CUBA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      message: 'Su solicitud de tarjeta turística para Cuba ha sido enviada exitosamente!',
+      applicationId: 'CUBA-TC-' + Math.random().toString(36).substr(2, 9).toUpperCase()
     });
   };
 
@@ -531,15 +404,29 @@ export default function CubaFormPage() {
   }
 
   return (
-    <div>
-      {/* Header */}
+    <div className="min-h-screen bg-base-100">
+      {/* Navigation */}
+      <div className="navbar bg-base-200">
+        <div className="container mx-auto">
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl" href="/pages/cuba">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Volver
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Header Banner */}
       <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold text-center">
-            🇨🇺 Solicitud de Visa Cuba
+            🇨🇺 Solicitud de Tarjeta Turística Cuba
           </h1>
           <p className="text-xl text-center mt-4 opacity-90">
-            Complete su solicitud de visa para Cuba con nuestro sistema mejorado
+            Complete su solicitud de tarjeta turística para Cuba con nuestro sistema mejorado
           </p>
         </div>
       </div>
@@ -550,7 +437,7 @@ export default function CubaFormPage() {
         onSubmit={handleSubmit}
         onStepChange={handleStepChange}
         autoSave={true}
-        autoSaveKey="cuba-visa-form"
+        autoSaveKey="cuba-tc-form"
         countryTheme="cuba"
       />
     </div>
