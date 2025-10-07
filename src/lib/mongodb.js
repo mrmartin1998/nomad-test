@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 // Import all models
 import './models/Category';
 import './models/Post';
+import './models/User'; // Add User model import
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -59,4 +60,4 @@ async function connectDB() {
   }
 }
 
-export default connectDB; 
+export default connectDB;

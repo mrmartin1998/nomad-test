@@ -1,190 +1,453 @@
 'use client';
 
 import React, { useState } from 'react';
-import PersonalInfo from './components/PersonalInfo';
-import ProfessionalInfo from './components/ProfessionalInfo';
-import DocumentUpload from './components/DocumentUpload';
+import { useSession, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
+import FormInput from '@/components/forms/enhanced/FormInput';
+import FormSelect from '@/components/forms/enhanced/FormSelect';
+import EgyptUpload from '@/components/upload/country/EgyptUpload';
 
-const Form = () => {
-  const [formData, setFormData] = useState({
-    // Personal Information
-    nombreCompleto: '',
-    nacionalidad: '',
-    fechaNacimiento: '',
-    // Passport Details
-    numeroPasaporte: '',
-    fechaEmisionPasaporte: '',
-    fechaExpiracionPasaporte: '',
-    // Professional Information
-    ocupacion: '',
-    empresa: '',
-    direccionEmpresa: '',
-    telefonoEmpresa: '',
-    // Documents
-    documentos: {
-      passport: null,
-      employmentProof: null,
-      photo: null
-    }
-  });
-
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Personal Information Validation
-    if (!formData.nombreCompleto) newErrors.nombreCompleto = 'El nombre completo es requerido';
-    if (!formData.nacionalidad) newErrors.nacionalidad = 'La nacionalidad es requerida';
-    if (!formData.fechaNacimiento) newErrors.fechaNacimiento = 'La fecha de nacimiento es requerida';
-
-    // Passport Validation
-    if (!formData.numeroPasaporte) newErrors.numeroPasaporte = 'El número de pasaporte es requerido';
-    if (!formData.fechaEmisionPasaporte) newErrors.fechaEmisionPasaporte = 'La fecha de emisión del pasaporte es requerida';
-    if (!formData.fechaExpiracionPasaporte) newErrors.fechaExpiracionPasaporte = 'La fecha de expiración del pasaporte es requerida';
-
-    // Professional Information Validation
-    if (!formData.ocupacion) newErrors.ocupacion = 'La ocupación es requerida';
-    if (!formData.empresa) newErrors.empresa = 'El nombre de la empresa es requerido';
-    if (!formData.direccionEmpresa) newErrors.direccionEmpresa = 'La dirección de la empresa es requerida';
-    if (!formData.telefonoEmpresa) newErrors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
-
-    // Document Validation
-    if (!formData.documentos.passport) {
-      newErrors.documentos = {
-        ...newErrors.documentos,
-        passport: 'El escaneo del pasaporte es requerido'
-      };
-    }
-    if (!formData.documentos.employmentProof) {
-      newErrors.documentos = {
-        ...newErrors.documentos,
-        employmentProof: 'El comprobante de empleo es requerido'
-      };
-    }
-    if (!formData.documentos.photo) {
-      newErrors.documentos = {
-        ...newErrors.documentos,
-        photo: 'La fotografía es requerida'
-      };
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+// Step Components
+const PersonalInfoStep = ({ formData, setFormData, errors }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch('/api/egypt', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          estado: 'pendiente',
-          fechaCreacion: new Date().toISOString()
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Error al enviar la solicitud');
-      }
-
-      // Success handling
-      alert('Solicitud enviada exitosamente');
-      setFormData({
-        nombreCompleto: '',
-        nacionalidad: '',
-        fechaNacimiento: '',
-        numeroPasaporte: '',
-        fechaEmisionPasaporte: '',
-        fechaExpiracionPasaporte: '',
-        ocupacion: '',
-        empresa: '',
-        direccionEmpresa: '',
-        telefonoEmpresa: '',
-        documentos: {
-          passport: null,
-          employmentProof: null,
-          photo: null
-        }
-      });
-      
-    } catch (error) {
-      console.error('Error:', error);
-      setErrors({
-        submit: 'Error al enviar la solicitud. Por favor, intente nuevamente.'
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const countryOptions = [
+    { value: 'eg', label: 'Egipto' },
+    { value: 'us', label: 'Estados Unidos' },
+    { value: 'ca', label: 'Canadá' },
+    { value: 'uk', label: 'Reino Unido' },
+    { value: 'mx', label: 'México' },
+    { value: 'br', label: 'Brasil' },
+    { value: 'ar', label: 'Argentina' },
+    { value: 'co', label: 'Colombia' }
+  ];
 
   return (
-    <div className="card bg-base-200 shadow-xl">
-      <div className="card-body">
-        <form onSubmit={handleSubmit} className="space-y-12">
-          <PersonalInfo 
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-          />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <FormInput
+        label="Nombre Completo"
+        name="nombreCompleto"
+        value={formData.nombreCompleto}
+        onChange={handleChange}
+        error={errors.nombreCompleto}
+        placeholder="Ingrese su nombre completo"
+        required
+        autoComplete="name"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        }
+        helpText="Ingrese su nombre como aparece en su pasaporte"
+      />
 
-          <div className="divider"></div>
+      <FormInput
+        label="Fecha de Nacimiento"
+        name="fechaNacimiento"
+        type="date"
+        value={formData.fechaNacimiento}
+        onChange={handleChange}
+        error={errors.fechaNacimiento}
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
 
-          <ProfessionalInfo 
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-          />
+      <FormSelect
+        label="Nacionalidad"
+        name="nacionalidad"
+        value={formData.nacionalidad}
+        onChange={handleChange}
+        options={countryOptions}
+        error={errors.nacionalidad}
+        placeholder="Seleccione su nacionalidad"
+        required
+        searchable
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+          </svg>
+        }
+        helpText="Seleccione el país que emitió su pasaporte"
+      />
 
-          <div className="divider"></div>
+      <FormInput
+        label="Correo Electrónico"
+        name="email"
+        type="email"
+        value={formData.email}
+        onChange={handleChange}
+        error={errors.email}
+        placeholder="su.email@ejemplo.com"
+        required
+        autoComplete="email"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75z" />
+          </svg>
+        }
+      />
 
-          <DocumentUpload 
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-          />
+      <FormInput
+        label="Teléfono"
+        name="telefono"
+        type="tel"
+        value={formData.telefono}
+        onChange={handleChange}
+        error={errors.telefono}
+        placeholder="+1 (555) 123-4567"
+        required
+        autoComplete="tel"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+        }
+      />
 
-          {errors.submit && (
-            <div className="alert alert-error">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{errors.submit}</span>
-            </div>
-          )}
+      <FormInput
+        label="Número de Pasaporte"
+        name="numeroPasaporte"
+        value={formData.numeroPasaporte}
+        onChange={handleChange}
+        error={errors.numeroPasaporte}
+        placeholder="Ingrese su número de pasaporte"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
+          </svg>
+        }
+      />
 
-          <div className="flex justify-center pt-6">
-            <button
-              type="submit"
-              className={`btn btn-primary btn-lg gap-2 ${isSubmitting ? 'loading' : ''}`}
-              disabled={isSubmitting}
-            >
-              {!isSubmitting && (
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-              )}
-              {isSubmitting ? 'Enviando...' : 'Enviar Solicitud'}
-            </button>
-          </div>
-        </form>
+      <FormInput
+        label="Fecha de Emisión del Pasaporte"
+        name="fechaEmisionPasaporte"
+        type="date"
+        value={formData.fechaEmisionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaEmisionPasaporte}
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Fecha de Expiración del Pasaporte"
+        name="fechaExpiracionPasaporte"
+        type="date"
+        value={formData.fechaExpiracionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaExpiracionPasaporte}
+        required
+        helpText="Debe ser válido por al menos 6 meses desde la fecha de viaje"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
+
+      <div className="md:col-span-2">
+        <FormInput
+          label="Dirección de Residencia"
+          name="direccionResidencia"
+          value={formData.direccionResidencia}
+          onChange={handleChange}
+          error={errors.direccionResidencia}
+          placeholder="Ingrese su dirección de residencia"
+          required
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          }
+        />
       </div>
     </div>
   );
 };
 
-export default Form;
+
+const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <FormInput
+        label="Ocupación"
+        name="ocupacion"
+        data-testid="ocupacion-input"
+        value={formData.ocupacion}
+        onChange={handleChange}
+        error={errors.ocupacion}
+        placeholder="Ingrese su ocupación"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Empresa"
+        name="empresa"
+        data-testid="empresa-input"
+        value={formData.empresa}
+        onChange={handleChange}
+        error={errors.empresa}
+        placeholder="Ingrese el nombre de su empresa"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3a.75.75 0 01.75-.75h3a.75.75 0 01.75.75v3m-6 0h9" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Dirección de la Empresa"
+        name="direccionEmpresa"
+        value={formData.direccionEmpresa}
+        onChange={handleChange}
+        error={errors.direccionEmpresa}
+        placeholder="Ingrese la dirección de su empresa"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Teléfono de la Empresa"
+        name="telefonoEmpresa"
+        type="tel"
+        value={formData.telefonoEmpresa}
+        onChange={handleChange}
+        error={errors.telefonoEmpresa}
+        placeholder="Ingrese el teléfono de su empresa"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+        }
+      />
+    </div>
+  );
+};
+
+const DocumentUploadStep = ({ formData, setFormData, errors }) => {
+  const handleFileSelect = (file) => {
+    console.log('File selected:', file);
+    setFormData({ passportDocument: file });
+  };
+
+  const handleUploadComplete = (file) => {
+    console.log('Upload completed:', file);
+  };
+
+  return (
+    <div className="space-y-8">
+      <EgyptUpload
+        onFileSelect={handleFileSelect}
+        onUploadComplete={handleUploadComplete}
+        error={errors.passportDocument}
+      />
+    </div>
+  );
+};
+
+export default function EgyptFormPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [submissionResult, setSubmissionResult] = useState(null);
+
+  const formSteps = [
+    {
+      title: "Información Personal",
+      description: "Ingrese sus datos personales",
+      estimatedTime: 4,
+      component: PersonalInfoStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+      ),
+      helpText: "Asegúrese de que toda la información coincida exactamente con su pasaporte.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
+        if (!data.fechaNacimiento) errors.fechaNacimiento = 'La fecha de nacimiento es requerida';
+        if (!data.nacionalidad) errors.nacionalidad = 'La nacionalidad es requerida';
+        if (!data.email) errors.email = 'El correo electrónico es requerido';
+        if (!data.telefono) errors.telefono = 'El teléfono es requerido';
+        if (!data.direccionResidencia) errors.direccionResidencia = 'La dirección de residencia es requerida';
+        if (!data.numeroPasaporte) errors.numeroPasaporte = 'El número de pasaporte es requerido';
+        if (!data.fechaEmisionPasaporte) errors.fechaEmisionPasaporte = 'La fecha de emisión del pasaporte es requerida';
+        if (!data.fechaExpiracionPasaporte) errors.fechaExpiracionPasaporte = 'La fecha de expiración del pasaporte es requerida';
+        return errors;
+      }
+    },
+    {
+      title: "Información Profesional",
+      description: "Ingrese sus datos profesionales y de empleo",
+      estimatedTime: 3,
+      component: ProfessionalInfoStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+        </svg>
+      ),
+      helpText: "Proporcione información detallada sobre su situación laboral actual.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.ocupacion) errors.ocupacion = 'La ocupación es requerida';
+        if (!data.empresa) errors.empresa = 'El nombre de la empresa es requerido';
+        if (!data.direccionEmpresa) errors.direccionEmpresa = 'La dirección de la empresa es requerida';
+        if (!data.telefonoEmpresa) errors.telefonoEmpresa = 'El teléfono de la empresa es requerido';
+        return errors;
+      }
+    },
+    {
+      title: "Carga de Documentos",
+      description: "Suba los documentos requeridos",
+      estimatedTime: 5,
+      component: DocumentUploadStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c-.621 0-1.125-.504-1.125-1.125V11.25a9 9 0 00-9-9z" />
+        </svg>
+      ),
+      helpText: "Asegúrese de que sus documentos sean claros y legibles. Formatos aceptados: PDF, JPG, PNG.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.passportDocument) errors.passportDocument = 'El documento del pasaporte es requerido';
+        return errors;
+      }
+    }
+  ];
+
+  const handleSubmit = async (formData) => {
+    // Check if user is authenticated before submission
+    const currentSession = await getSession();
+    
+    if (!currentSession) {
+      // Redirect to login with return URL
+      const currentUrl = window.location.pathname;
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    console.log('Submitting Egypt form data with user ID:', currentSession.user.id);
+    
+    try {
+      // Add user ID to form data
+      const dataWithUser = {
+        ...formData,
+        userId: currentSession.user.id
+      };
+
+      // Submit to API
+      const response = await fetch('/api/egypt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataWithUser)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud');
+      }
+
+      const result = await response.json();
+      
+      setSubmissionResult({
+        success: true,
+        message: 'Su solicitud de visa para Egipto ha sido enviada exitosamente!',
+        applicationId: result.applicationId || 'EG-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmissionResult({
+        success: false,
+        message: 'Error al enviar la solicitud. Por favor, inténtelo de nuevo.'
+      });
+    }
+  };
+
+  const handleStepChange = (stepIndex, formData) => {
+    console.log(`Step changed to ${stepIndex}:`, formData);
+  };
+
+  if (submissionResult?.success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+        <div className="max-w-lg mx-auto bg-base-100 rounded-2xl shadow-xl p-8 text-center">
+          <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-success-content">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-success mb-2">¡Solicitud Enviada!</h1>
+          <p className="text-base-content/70 mb-4">{submissionResult.message}</p>
+          <div className="bg-base-200 rounded-lg p-3 mb-6">
+            <p className="text-sm text-base-content/60">ID de Solicitud</p>
+            <p className="font-mono font-bold">{submissionResult.applicationId}</p>
+          </div>
+          <button 
+            className="btn btn-primary"
+            onClick={() => window.location.reload()}
+          >
+            Iniciar Nueva Solicitud
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-base-100">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold text-center">
+            🚀 Solicitud de Visa Egipto
+          </h1>
+          <p className="text-xl text-center mt-4 opacity-90">
+            Complete el siguiente formulario para solicitar su visa de turista para Egipto
+          </p>
+        </div>
+      </div>
+
+      {/* Enhanced Form */}
+      <EnhancedForm
+        steps={formSteps}
+        onSubmit={handleSubmit}
+        onStepChange={handleStepChange}
+        autoSave={true}
+        autoSaveKey="egypt-visa-form"
+        countryTheme="egypt"
+      />
+    </div>
+  );
+}

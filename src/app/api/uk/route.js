@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import UKApplication from '@/lib/models/UKApplication';
+import { getServerSession } from 'next-auth';
 
 export const dynamic = 'force-static';
 
@@ -11,6 +12,23 @@ export async function POST(request) {
 
     // Parse the request body
     const data = await request.json();
+
+    // Get session for optional auth verification
+    const session = await getServerSession();
+    
+    // Validate userId if provided
+    if (session && data.userId && data.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: 'Usuario no autorizado' },
+        { status: 403 }
+      );
+    }
+
+    // Handle userId for authenticated users
+    const applicationData = {
+      ...data,
+      ...(data.userId && { userId: data.userId })
+    };
 
     // Validate required fields
     const requiredFields = [
@@ -29,7 +47,7 @@ export async function POST(request) {
       'consentimientoDatos'
     ];
 
-    const missingFields = requiredFields.filter(field => !data[field]);
+    const missingFields = requiredFields.filter(field => !applicationData[field]);
     if (missingFields.length > 0) {
       return NextResponse.json(
         { error: `Missing required fields: ${missingFields.join(', ')}` },
@@ -38,7 +56,7 @@ export async function POST(request) {
     }
 
     // Validate passport expiration date
-    const passportExpiration = new Date(data.fechaExpiracionPasaporte);
+    const passportExpiration = new Date(applicationData.fechaExpiracionPasaporte);
     const today = new Date();
     if (passportExpiration <= today) {
       return NextResponse.json(
@@ -48,7 +66,7 @@ export async function POST(request) {
     }
 
     // Validate passport issuance date
-    const passportIssuance = new Date(data.fechaEmisionPasaporte);
+    const passportIssuance = new Date(applicationData.fechaEmisionPasaporte);
     if (passportIssuance >= today) {
       return NextResponse.json(
         { error: 'Passport issuance date must be in the past' },
@@ -57,7 +75,7 @@ export async function POST(request) {
     }
 
     // Validate document uploads
-    if (!data.documentos) {
+    if (!applicationData.documentos) {
       return NextResponse.json(
         { error: 'Document uploads are required' },
         { status: 400 }
@@ -65,7 +83,7 @@ export async function POST(request) {
     }
 
     const requiredDocuments = ['fotoCarnet', 'pasaporteEscaneado'];
-    const missingDocuments = requiredDocuments.filter(doc => !data.documentos[doc]);
+    const missingDocuments = requiredDocuments.filter(doc => !applicationData.documentos[doc]);
     if (missingDocuments.length > 0) {
       return NextResponse.json(
         { error: `Missing required documents: ${missingDocuments.join(', ')}` },
@@ -74,7 +92,7 @@ export async function POST(request) {
     }
 
     // Validate document URLs
-    const documentUrls = Object.values(data.documentos);
+    const documentUrls = Object.values(applicationData.documentos);
     const invalidUrls = documentUrls.filter(url => !url || typeof url !== 'string');
     if (invalidUrls.length > 0) {
       return NextResponse.json(
@@ -84,9 +102,9 @@ export async function POST(request) {
     }
 
     // Validate security questions
-    if (typeof data.antecedentesPenales !== 'boolean' || 
-        typeof data.rechazosMigratorios !== 'boolean' || 
-        typeof data.consentimientoDatos !== 'boolean') {
+    if (typeof applicationData.antecedentesPenales !== 'boolean' || 
+        typeof applicationData.rechazosMigratorios !== 'boolean' || 
+        typeof applicationData.consentimientoDatos !== 'boolean') {
       return NextResponse.json(
         { error: 'Security questions must be answered with true or false' },
         { status: 400 }
@@ -94,7 +112,7 @@ export async function POST(request) {
     }
 
     // Create new UK application
-    const application = new UKApplication(data);
+    const application = new UKApplication(applicationData);
     await application.save();
 
     return NextResponse.json(
@@ -131,4 +149,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

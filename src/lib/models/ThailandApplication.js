@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 
 const ThailandApplicationSchema = new mongoose.Schema({
+  // User Association (for authenticated users)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false  // Optional for backward compatibility with anonymous applications
+  },
+
   // Personal Information
   nombreCompleto: { type: String, required: true },
   fechaNacimiento: { type: Date, required: true },
@@ -49,4 +56,4 @@ const ThailandApplicationSchema = new mongoose.Schema({
 // Prevent duplicate model initialization
 const ThailandApplication = mongoose.models.ThailandApplication || mongoose.model('ThailandApplication', ThailandApplicationSchema);
 
-export default ThailandApplication; 
+export default ThailandApplication;

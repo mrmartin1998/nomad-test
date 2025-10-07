@@ -41,3 +41,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+
+# Ignore ALL tests EXCEPT the basic ones
+src/__tests__/*
+!src/__tests__/example.test.jsx
+!src/__tests__/placeholder.test.js
+
+# Test coverage
+coverage/
+.nyc_output/
+# Test coverage
+coverage/
+.nyc_output/
+jest.config.js
+jest.config.mjs
+jest.setup.js
+setupTests.js
+
+# Test coverage
+coverage/
+.nyc_output/

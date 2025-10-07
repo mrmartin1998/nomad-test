@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import EgyptApplication from '@/lib/models/EgyptApplication';
+import { getServerSession } from 'next-auth';
 
 export const dynamic = 'force-static';
 
@@ -11,6 +12,27 @@ export async function POST(request) {
 
     // Parse the request body
     const data = await request.json();
+    console.log('Received Egypt application data:', data);
+
+    // Get session to verify authentication (optional - for extra security)
+    const session = await getServerSession();
+
+    // If userId is provided in body, use it (from client)
+    // If session exists, ensure userId matches session user
+    if (session && data.userId && data.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: 'Usuario no autorizado' },
+        { status: 403 }
+      );
+    }
+
+    // Create new application with userId if provided
+    const applicationData = {
+      ...data,
+      // Use userId from body if provided (for authenticated users)
+      // or leave undefined for anonymous applications
+      ...(data.userId && { userId: data.userId })
+    };
 
     // Validate required fields
     const requiredFields = [
@@ -28,7 +50,7 @@ export async function POST(request) {
       'consentimientoLegal'
     ];
 
-    const missingFields = requiredFields.filter(field => !data[field]);
+    const missingFields = requiredFields.filter(field => !applicationData[field]);
     if (missingFields.length > 0) {
       return NextResponse.json(
         { error: `Missing required fields: ${missingFields.join(', ')}` },
@@ -37,7 +59,7 @@ export async function POST(request) {
     }
 
     // Validate itinerarioViaje structure
-    if (!data.itinerarioViaje.fechaEntrada || !data.itinerarioViaje.fechaSalida) {
+    if (!applicationData.itinerarioViaje.fechaEntrada || !applicationData.itinerarioViaje.fechaSalida) {
       return NextResponse.json(
         { error: 'Travel itinerary must include both entry and exit dates' },
         { status: 400 }
@@ -45,21 +67,20 @@ export async function POST(request) {
     }
 
     // Create new Egypt application
-    const application = new EgyptApplication(data);
-    await application.save();
+    const application = new EgyptApplication(applicationData);
+    const savedApplication = await application.save();
 
-    return NextResponse.json(
-      { 
-        message: 'Egypt visa application submitted successfully',
-        data: application 
-      },
-      { status: 201 }
-    );
+    console.log('Egypt application saved successfully:', savedApplication._id);
 
+    return NextResponse.json({
+      success: true,
+      message: 'Solicitud de visa para Egipto recibida exitosamente',
+      applicationId: savedApplication._id
+    });
   } catch (error) {
-    console.error('Egypt visa application submission error:', error);
+    console.error('Error saving Egypt application:', error);
     return NextResponse.json(
-      { error: 'Failed to submit Egypt visa application' },
+      { error: 'Error interno del servidor' },
       { status: 500 }
     );
   }
@@ -82,4 +103,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

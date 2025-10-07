@@ -1,80 +1,496 @@
 'use client';
 
-import React from 'react';
-import Form from '@/components/forms/uk/Form';
+import React, { useState } from 'react';
+import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
+import FormInput from '@/components/forms/enhanced/FormInput';
+import FormSelect from '@/components/forms/enhanced/FormSelect';
+import UKUpload from '@/components/upload/country/UKUpload';
 
-const ApplyPage = () => {
+// Step Components
+const PersonalInfoStep = ({ formData, setFormData, errors }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
+  };
+
+  const countryOptions = [
+    { value: 'mx', label: 'México' },
+    { value: 'us', label: 'Estados Unidos' },
+    { value: 'ca', label: 'Canadá' },
+    { value: 'br', label: 'Brasil' },
+    { value: 'ar', label: 'Argentina' },
+    { value: 'co', label: 'Colombia' },
+    { value: 'pe', label: 'Perú' },
+    { value: 'cl', label: 'Chile' }
+  ];
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Solicitud de Visa para Reino Unido</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Complete el siguiente formulario para solicitar su visa para el Reino Unido. 
-          Asegúrese de tener todos los documentos requeridos antes de comenzar.
-        </p>
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <FormInput
+        label="Nombre Completo"
+        name="nombreCompleto"
+        value={formData.nombreCompleto}
+        onChange={handleChange}
+        error={errors.nombreCompleto}
+        placeholder="Ingrese su nombre completo"
+        required
+        autoComplete="name"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        }
+        helpText="Ingrese su nombre como aparece en su pasaporte"
+      />
 
-      {/* Required Documents Section */}
-      <div className="bg-base-200 rounded-lg p-6 mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Documentos Requeridos</h2>
-        <ul className="space-y-3">
-          <li className="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Pasaporte válido con al menos 6 meses de vigencia</span>
-          </li>
-          <li className="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Fotografía reciente tipo carnet (fondo blanco, 2x2 pulgadas)</span>
-          </li>
-        </ul>
-      </div>
+      <FormInput
+        label="Fecha de Nacimiento"
+        name="fechaNacimiento"
+        type="date"
+        value={formData.fechaNacimiento}
+        onChange={handleChange}
+        error={errors.fechaNacimiento}
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
 
-      {/* Important Information Section */}
-      <div className="bg-base-200 rounded-lg p-6 mb-12">
-        <h2 className="text-2xl font-semibold mb-4">Información Importante</h2>
-        <div className="space-y-4">
-          <div className="alert alert-info">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <div>
-              <h3 className="font-bold">Proceso de Solicitud</h3>
-              <p>El proceso de revisión puede tomar hasta 15 días hábiles.</p>
-            </div>
-          </div>
-          <div className="alert alert-warning">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-            </svg>
-            <div>
-              <h3 className="font-bold">Veracidad de la Información</h3>
-              <p>Proporcionar información falsa puede resultar en el rechazo de su solicitud y restricciones futuras.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <FormInput
+        label="Lugar de Nacimiento"
+        name="lugarNacimiento"
+        value={formData.lugarNacimiento}
+        onChange={handleChange}
+        error={errors.lugarNacimiento}
+        placeholder="Ingrese su lugar de nacimiento"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+        }
+      />
 
-      {/* Form Section */}
-      <div className="max-w-4xl mx-auto">
-        <Form />
-      </div>
+      <FormSelect
+        label="Nacionalidad"
+        name="nacionalidad"
+        value={formData.nacionalidad}
+        onChange={handleChange}
+        options={countryOptions}
+        error={errors.nacionalidad}
+        placeholder="Seleccione su nacionalidad"
+        required
+        searchable
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3v1.5M3 21v-6m0 0l2.77-.693a9 9 0 016.208.682l.108.054a9 9 0 006.086.71l3.114-.732a48.524 48.524 0 01-.005-10.499l-3.11.732a9 9 0 01-6.085-.711l-.108-.054a9 9 0 00-6.208-.682L3 4.5M3 15V4.5" />
+          </svg>
+        }
+        helpText="Seleccione el país que emitió su pasaporte"
+      />
 
-      {/* Footer Section */}
-      <div className="mt-12 text-center text-sm text-gray-600">
-        <p>
-          Para cualquier consulta, por favor contacte a nuestro equipo de soporte.
-        </p>
-        <p className="mt-2">
-          Horario de atención: Lunes a Viernes, 9:00 AM - 5:00 PM
-        </p>
+      <FormInput
+        label="Correo Electrónico"
+        name="email"
+        type="email"
+        value={formData.email}
+        onChange={handleChange}
+        error={errors.email}
+        placeholder="su.email@ejemplo.com"
+        required
+        autoComplete="email"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75z" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Teléfono"
+        name="telefono"
+        type="tel"
+        value={formData.telefono}
+        onChange={handleChange}
+        error={errors.telefono}
+        placeholder="+52 (555) 123-4567"
+        required
+        autoComplete="tel"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+        }
+      />
+
+      <div className="md:col-span-2">
+        <FormInput
+          label="Dirección de Residencia"
+          name="direccionResidencia"
+          value={formData.direccionResidencia}
+          onChange={handleChange}
+          error={errors.direccionResidencia}
+          placeholder="Ingrese su dirección completa de residencia"
+          required
+          autoComplete="address-line1"
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.5V3m-3.75 9.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          }
+        />
       </div>
     </div>
   );
 };
 
-export default ApplyPage;
+const PassportInfoStep = ({ formData, setFormData, errors }) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ [name]: value });
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <FormInput
+        label="Número de Pasaporte"
+        name="numeroPasaporte"
+        value={formData.numeroPasaporte}
+        onChange={handleChange}
+        error={errors.numeroPasaporte}
+        placeholder="Ingrese su número de pasaporte"
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Fecha de Emisión del Pasaporte"
+        name="fechaEmisionPasaporte"
+        type="date"
+        value={formData.fechaEmisionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaEmisionPasaporte}
+        required
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
+
+      <FormInput
+        label="Fecha de Expiración del Pasaporte"
+        name="fechaExpiracionPasaporte"
+        type="date"
+        value={formData.fechaExpiracionPasaporte}
+        onChange={handleChange}
+        error={errors.fechaExpiracionPasaporte}
+        required
+        helpText="Debe ser válido por al menos 6 meses desde la fecha de viaje"
+        icon={
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5a2.25 2.25 0 002.25-2.25m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5a2.25 2.25 0 012.25 2.25v7.5" />
+          </svg>
+        }
+      />
+    </div>
+  );
+};
+
+
+const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setFormData({ [name]: checked });
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="alert alert-info">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="stroke-current shrink-0 w-6 h-6"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div>
+          <h3 className="font-bold">Preguntas de Seguridad</h3>
+          <div className="text-sm">Responda honestamente a todas las preguntas de seguridad requeridas.</div>
+        </div>
+      </div>
+
+      <div className="form-control">
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="antecedentesPenales"
+            checked={formData.antecedentesPenales || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text"><strong>¿Tiene antecedentes penales?</strong></span>
+        </label>
+        {errors.antecedentesPenales && (
+          <label className="label">
+            <span className="label-text-alt text-error">{errors.antecedentesPenales}</span>
+          </label>
+        )}
+      </div>
+
+      <div className="form-control">
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="rechazosMigratorios"
+            checked={formData.rechazosMigratorios || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text"><strong>¿Ha sido rechazado previamente en una solicitud migratoria?</strong></span>
+        </label>
+        {errors.rechazosMigratorios && (
+          <label className="label">
+            <span className="label-text-alt text-error">{errors.rechazosMigratorios}</span>
+          </label>
+        )}
+      </div>
+
+      <div className="form-control">
+        <label className="label cursor-pointer justify-start gap-4">
+          <input
+            type="checkbox"
+            name="consentimientoDatos"
+            checked={formData.consentimientoDatos || false}
+            onChange={handleCheckboxChange}
+            className="checkbox checkbox-primary"
+          />
+          <span className="label-text"><strong>Consentimiento para el uso de datos:</strong> Acepto el procesamiento de mis datos personales</span>
+        </label>
+        {errors.consentimientoDatos && (
+          <label className="label">
+            <span className="label-text-alt text-error">{errors.consentimientoDatos}</span>
+          </label>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const DocumentUploadStep = ({ formData, setFormData, errors }) => {
+  const handleFileSelect = (file, documentType) => {
+    console.log('File selected:', file, 'Type:', documentType);
+    setFormData(prev => ({
+      ...prev,
+      documentos: {
+        ...prev.documentos,
+        [documentType]: file
+      }
+    }));
+  };
+
+  const handleUploadComplete = (file, documentType) => {
+    console.log('Upload completed:', file, 'Type:', documentType);
+  };
+
+  return (
+    <div className="space-y-8">
+      <UKUpload
+        onFileSelect={(file) => handleFileSelect(file, 'fotoCarnet')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'fotoCarnet')}
+        error={errors.documentos?.fotoCarnet}
+        documentType="foto"
+      />
+      
+      <div className="divider">Pasaporte Escaneado</div>
+      
+      <UKUpload
+        onFileSelect={(file) => handleFileSelect(file, 'pasaporteEscaneado')}
+        onUploadComplete={(file) => handleUploadComplete(file, 'pasaporteEscaneado')}
+        error={errors.documentos?.pasaporteEscaneado}
+        documentType="pasaporte"
+      />
+    </div>
+  );
+};
+
+export default function UKFormPage() {
+  const [submissionResult, setSubmissionResult] = useState(null);
+
+  // Form step configuration - Updated to match Notion requirements exactly
+  const formSteps = [
+    {
+      title: "Información Personal",
+      description: "Ingrese sus datos personales básicos",
+      estimatedTime: 4,
+      component: PersonalInfoStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+        </svg>
+      ),
+      helpText: "Asegúrese de que toda la información coincida exactamente con su pasaporte.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.nombreCompleto) errors.nombreCompleto = 'El nombre completo es requerido';
+        if (!data.fechaNacimiento) errors.fechaNacimiento = 'La fecha de nacimiento es requerida';
+        if (!data.lugarNacimiento) errors.lugarNacimiento = 'El lugar de nacimiento es requerido';
+        if (!data.nacionalidad) errors.nacionalidad = 'La nacionalidad es requerida';
+        if (!data.email) errors.email = 'El correo electrónico es requerido';
+        if (!data.telefono) errors.telefono = 'El teléfono es requerido';
+        if (!data.direccionResidencia) errors.direccionResidencia = 'La dirección de residencia es requerida';
+        return errors;
+      }
+    },
+    {
+      title: "Detalles del Pasaporte",
+      description: "Proporcione la información de su pasaporte",
+      estimatedTime: 2,
+      component: PassportInfoStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0z" />
+        </svg>
+      ),
+      helpText: "Verifique todos los detalles del pasaporte para asegurar la precisión.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.numeroPasaporte) errors.numeroPasaporte = 'El número de pasaporte es requerido';
+        if (!data.fechaEmisionPasaporte) errors.fechaEmisionPasaporte = 'La fecha de emisión es requerida';
+        if (!data.fechaExpiracionPasaporte) errors.fechaExpiracionPasaporte = 'La fecha de expiración es requerida';
+        return errors;
+      }
+    },
+    {
+      title: "Preguntas de Seguridad",
+      description: "Responda las preguntas de seguridad requeridas",
+      estimatedTime: 2,
+      component: SecurityQuestionsStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m5.25 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      helpText: "Responda honestamente a todas las preguntas de seguridad.",
+      validate: (data) => {
+        const errors = {};
+        if (data.antecedentesPenales === undefined) errors.antecedentesPenales = 'Debe indicar si tiene antecedentes penales';
+        if (data.rechazosMigratorios === undefined) errors.rechazosMigratorios = 'Debe indicar si ha sido rechazado previamente';
+        if (!data.consentimientoDatos) errors.consentimientoDatos = 'Debe aceptar el procesamiento de sus datos personales';
+        return errors;
+      }
+    },
+    {
+      title: "Documentos",
+      description: "Suba los documentos requeridos",
+      estimatedTime: 5,
+      component: DocumentUploadStep,
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-primary">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c-.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+        </svg>
+      ),
+      helpText: "Asegúrese de que sus documentos sean claros y legibles. Formatos aceptados: PDF, JPG, PNG.",
+      validate: (data) => {
+        const errors = {};
+        if (!data.documentos?.fotoCarnet) {
+          errors.documentos = {
+            ...errors.documentos,
+            fotoCarnet: 'La fotografía tipo carnet es requerida'
+          };
+        }
+        if (!data.documentos?.pasaporteEscaneado) {
+          errors.documentos = {
+            ...errors.documentos,
+            pasaporteEscaneado: 'El pasaporte escaneado es requerido'
+          };
+        }
+        return errors;
+      }
+    }
+  ];
+
+  const handleSubmit = async (formData) => {
+    // Simulate API submission
+    console.log('Submitting UK form data:', formData);
+    
+    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
+    
+    setSubmissionResult({
+      success: true,
+      message: 'Su solicitud de ETA para Reino Unido ha sido enviada exitosamente!',
+      applicationId: 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+    });
+  };
+
+  const handleStepChange = (stepIndex, formData) => {
+    console.log(`Step changed to ${stepIndex}:`, formData);
+  };
+
+  if (submissionResult?.success) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-red-50 flex items-center justify-center">
+        <div className="max-w-lg mx-auto bg-base-100 rounded-2xl shadow-xl p-8 text-center">
+          <div className="w-16 h-16 bg-success rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-8 h-8 text-success-content">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-success mb-2">¡Solicitud Enviada!</h1>
+          <p className="text-base-content/70 mb-4">{submissionResult.message}</p>
+          <div className="bg-base-200 rounded-lg p-3 mb-6">
+            <p className="text-sm text-base-content/60">ID de Solicitud</p>
+            <p className="font-mono font-bold">{submissionResult.applicationId}</p>
+          </div>
+          <button 
+            className="btn btn-primary"
+            onClick={() => window.location.reload()}
+          >
+            Iniciar Nueva Solicitud
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-base-100">
+      {/* Navigation */}
+      <div className="navbar bg-base-200">
+        <div className="container mx-auto">
+          <div className="flex-1">
+            <a className="btn btn-ghost text-xl" href="/pages/uk">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+              Volver
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Header Banner */}
+      <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold text-center">
+            🇬🇧 Solicitud de ETA Reino Unido
+          </h1>
+          <p className="text-xl text-center mt-4 opacity-90">
+            Complete el formulario con sus datos personales y documentos requeridos
+          </p>
+        </div>
+      </div>
+
+      {/* Enhanced Form */}
+      <EnhancedForm
+        steps={formSteps}
+        onSubmit={handleSubmit}
+        onStepChange={handleStepChange}
+        autoSave={true}
+        autoSaveKey="uk-eta-form"
+        countryTheme="uk"
+      />
+    </div>
+  );
+}
