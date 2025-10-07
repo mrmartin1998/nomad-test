@@ -49,17 +49,17 @@ next-env.d.ts
 # OS
 Thumbs.db
 
-# Test files - Updated patterns
-src/__tests__/
-__tests__/
-*.test.js
-*.test.jsx
-*.test.ts
-*.test.tsx
-*.spec.js
-*.spec.jsx
-*.spec.ts
-*.spec.tsx
+# Ignore ALL tests EXCEPT the basic ones
+src/__tests__/*
+!src/__tests__/example.test.jsx
+!src/__tests__/placeholder.test.js
+
+# Test coverage
+coverage/
+.nyc_output/
+# Test coverage
+coverage/
+.nyc_output/
 jest.config.js
 jest.config.mjs
 jest.setup.js
