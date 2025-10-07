@@ -551,7 +551,7 @@ const Form = () => {
   ];
 
   const handleSubmit = async (formData) => {
-    // Check authentication
+    // Check authentication before submission
     const currentSession = await getSession();
     
     if (!currentSession) {
@@ -560,22 +560,42 @@ const Form = () => {
       return;
     }
 
-    // Submit with user ID
-    const dataWithUser = {
-      ...formData,
-      userId: currentSession.user.id
-    };
+    console.log('Submitting USA ESTA form data with user ID:', currentSession.user.id);
+    
+    try {
+      // Add user ID to form data
+      const dataWithUser = {
+        ...formData,
+        userId: currentSession.user.id
+      };
 
-    // Simulate API submission
-    console.log('Submitting USA ESTA form data:', dataWithUser);
-    
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
-    
-    setSubmissionResult({
-      success: true,
-      message: 'Your USA ESTA application has been submitted successfully!',
-      applicationId: 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-    });
+      // Submit to API
+      const response = await fetch('/api/esta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataWithUser)
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al enviar la solicitud');
+      }
+
+      const result = await response.json();
+      
+      setSubmissionResult({
+        success: true,
+        message: 'Your USA ESTA application has been submitted successfully!',
+        applicationId: result.applicationId || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmissionResult({
+        success: false,
+        message: 'Error al enviar la solicitud. Por favor, inténtelo de nuevo.'
+      });
+    }
   };
 
   const handleStepChange = (stepIndex, formData) => {
