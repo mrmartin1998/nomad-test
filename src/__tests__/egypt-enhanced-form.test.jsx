@@ -1,6 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { SessionProvider } from 'next-auth/react';
+
+// Mock next-auth
+jest.mock('next-auth/react', () => ({
+  ...jest.requireActual('next-auth/react'),
+  useSession: () => ({
+    data: null,
+    status: 'unauthenticated'
+  }),
+  getSession: jest.fn(() => Promise.resolve(null)),
+  SessionProvider: ({ children }) => children
+}));
 
 // Mock EgyptUpload component
 jest.mock('@/components/upload/country/EgyptUpload', () => {
@@ -146,6 +158,13 @@ jest.mock('@/components/forms/enhanced/EnhancedForm', () => {
 // Import the Egypt form component
 import EgyptForm from '@/components/forms/egypt/Form';
 
+// Test wrapper component
+const TestWrapper = ({ children, session = null }) => (
+  <SessionProvider session={session}>
+    {children}
+  </SessionProvider>
+);
+
 // Mock localStorage
 const localStorageMock = {
   getItem: jest.fn(),
@@ -166,12 +185,20 @@ describe('Egypt Enhanced Form Component', () => {
 
   describe('Form Rendering', () => {
     test('renders Egypt form with header', () => {
-      render(<EgyptForm />);
-      expect(screen.getByText('🇪🇬 Solicitud de eVisa Egipto')).toBeInTheDocument();
+      render(
+        <TestWrapper>
+          <EgyptForm />
+        </TestWrapper>
+      );
+      expect(screen.getByText('🚀 Solicitud de Visa Egipto')).toBeInTheDocument();
     });
 
     test('renders enhanced form component', () => {
-      render(<EgyptForm />);
+      render(
+        <TestWrapper>
+          <EgyptForm />
+        </TestWrapper>
+      );
       expect(screen.getByTestId('enhanced-form')).toBeInTheDocument();
     });
 

@@ -1,6 +1,28 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { SessionProvider } from 'next-auth/react';
 import EgyptFormPage from '@/app/pages/egypt/apply/page';
+
+// Mock next-auth
+jest.mock('next-auth/react', () => ({
+  ...jest.requireActual('next-auth/react'),
+  useSession: () => ({
+    data: null,
+    status: 'unauthenticated'
+  }),
+  getSession: jest.fn(() => Promise.resolve(null)),
+  SessionProvider: ({ children }) => children
+}));
+
+// Mock next/navigation
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      back: jest.fn()
+    };
+  }
+}));
 
 // Mock EgyptUpload component with proper file input handling
 jest.mock('@/components/upload/country/EgyptUpload', () => {
@@ -26,6 +48,13 @@ jest.mock('@/components/upload/country/EgyptUpload', () => {
   };
 });
 
+// Test wrapper component
+const TestWrapper = ({ children, session = null }) => (
+  <SessionProvider session={session}>
+    {children}
+  </SessionProvider>
+);
+
 // Mock console.log to avoid noise in test output
 const originalLog = console.log;
 beforeAll(() => {
@@ -39,17 +68,29 @@ afterAll(() => {
 describe('Egypt eVisa Application Page', () => {
   describe('Page Rendering', () => {
     test('renders Egypt eVisa application page', () => {
-      render(<EgyptFormPage />);
+      render(
+        <TestWrapper>
+          <EgyptFormPage />
+        </TestWrapper>
+      );
       expect(screen.getByText('🇪🇬 Solicitud de eVisa Egipto')).toBeInTheDocument();
     });
 
     test('renders enhanced form component', () => {
-      render(<EgyptFormPage />);
+      render(
+        <TestWrapper>
+          <EgyptFormPage />
+        </TestWrapper>
+      );
       expect(screen.getByRole('heading', { name: 'Información Personal' })).toBeInTheDocument();
     });
 
     test('renders form step indicators', () => {
-      render(<EgyptFormPage />);
+      render(
+        <TestWrapper>
+          <EgyptFormPage />
+        </TestWrapper>
+      );
       // Check for step titles in the step indicators
       const stepTitles = ['Información Personal', 'Información de Viaje', 'Carga de Documentos', 'Consentimiento Legal'];
       stepTitles.forEach(title => {

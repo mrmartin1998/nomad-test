@@ -1,6 +1,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { SessionProvider } from 'next-auth/react';
+
+// Mock next-auth
+jest.mock('next-auth/react', () => ({
+  ...jest.requireActual('next-auth/react'),
+  useSession: () => ({
+    data: null,
+    status: 'unauthenticated'
+  }),
+  getSession: jest.fn(() => Promise.resolve(null)),
+  SessionProvider: ({ children }) => children
+}));
 
 // Mock EnhancedForm for India
 const MockEnhancedForm = function({ onSubmit }) {
@@ -83,6 +95,13 @@ jest.mock('@/components/upload/country/IndiaUpload', () => {
 // Mock EnhancedForm component
 jest.mock('@/components/forms/enhanced/EnhancedForm', () => MockEnhancedForm);
 
+// Test wrapper component
+const TestWrapper = ({ children, session = null }) => (
+  <SessionProvider session={session}>
+    {children}
+  </SessionProvider>
+);
+
 describe('India Form Page', () => {
   beforeEach(() => {
     // Clear any previous state
@@ -91,7 +110,11 @@ describe('India Form Page', () => {
 
   describe('Page Rendering', () => {
     test('renders India visa application page', () => {
-      render(<MockEnhancedForm onSubmit={jest.fn()} />);
+      render(
+        <TestWrapper>
+          <MockEnhancedForm onSubmit={jest.fn()} />
+        </TestWrapper>
+      );
       
       expect(screen.getByText('India Visa Application Form')).toBeInTheDocument();
       expect(screen.getByTestId('submit-button')).toBeInTheDocument();

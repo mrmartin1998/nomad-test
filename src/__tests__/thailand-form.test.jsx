@@ -1,7 +1,29 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { SessionProvider } from 'next-auth/react';
 import ThailandFormPage from '@/app/pages/thailand/apply/page';
+
+// Mock next-auth
+jest.mock('next-auth/react', () => ({
+  ...jest.requireActual('next-auth/react'),
+  useSession: () => ({
+    data: null,
+    status: 'unauthenticated'
+  }),
+  getSession: jest.fn(() => Promise.resolve(null)),
+  SessionProvider: ({ children }) => children
+}));
+
+// Mock next/navigation
+jest.mock('next/navigation', () => ({
+  useRouter() {
+    return {
+      push: jest.fn(),
+      back: jest.fn()
+    };
+  }
+}));
 
 // Mock the EnhancedForm component
 jest.mock('@/components/forms/enhanced/EnhancedForm', () => {
@@ -160,6 +182,13 @@ jest.mock('@/components/upload/country/ThailandUpload', () => {
   };
 });
 
+// Test wrapper component
+const TestWrapper = ({ children, session = null }) => (
+  <SessionProvider session={session}>
+    {children}
+  </SessionProvider>
+);
+
 describe('Thailand eVisa Application Page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -167,7 +196,11 @@ describe('Thailand eVisa Application Page', () => {
 
   describe('Page Rendering', () => {
     test('renders Thailand eVisa application page', () => {
-      render(<ThailandFormPage />);
+      render(
+        <TestWrapper>
+          <ThailandFormPage />
+        </TestWrapper>
+      );
       
       expect(screen.getByText('🇹🇭 Solicitud de eVisa Tailandia')).toBeInTheDocument();
       expect(screen.getByText('Complete su solicitud de visa electrónica para Tailandia con nuestro sistema mejorado')).toBeInTheDocument();

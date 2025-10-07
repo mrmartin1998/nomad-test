@@ -1,16 +1,19 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { SessionProvider } from 'next-auth/react';
 
 // Mock next-auth
 jest.mock('next-auth/react', () => ({
+  ...jest.requireActual('next-auth/react'),
   useSession: () => ({
     data: null,
     status: 'unauthenticated'
   }),
   getSession: jest.fn(() => Promise.resolve(null)),
   signIn: jest.fn(),
-  signOut: jest.fn()
+  signOut: jest.fn(),
+  SessionProvider: ({ children }) => children
 }));
 
 // Mock next/navigation
@@ -199,6 +202,13 @@ jest.mock('@/components/upload/country/UKUpload', () => {
   };
 });
 
+// Test wrapper component
+const TestWrapper = ({ children, session = null }) => (
+  <SessionProvider session={session}>
+    {children}
+  </SessionProvider>
+);
+
 // Create a mock UK form component for testing
 const MockUKForm = () => {
   const mockSteps = [
@@ -246,7 +256,11 @@ describe('UK ETA Application Page', () => {
 
   describe('Page Rendering', () => {
     test('renders UK ETA application page', () => {
-      render(<MockUKForm />);
+      render(
+        <TestWrapper>
+          <MockUKForm />
+        </TestWrapper>
+      );
       
       expect(screen.getByText('🇬🇧 Solicitud de ETA Reino Unido')).toBeInTheDocument();
       expect(screen.getByText('Complete el formulario con sus datos personales y documentos requeridos')).toBeInTheDocument();
