@@ -9,10 +9,16 @@ import { useSession, signOut } from 'next-auth/react';
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // Add client-side hydration check
   const mobileMenuRef = useRef(null);
   const userMenuRef = useRef(null);
   const pathname = usePathname();
   const { data: session, status } = useSession();
+
+  // Ensure client-side rendering
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Close dropdown when route changes
   useEffect(() => {
@@ -61,6 +67,39 @@ const Navbar = () => {
     setIsUserMenuOpen(false);
     await signOut({ redirect: true, callbackUrl: '/' });
   };
+
+  // Don't render auth-related content until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="navbar container mx-auto px-4">
+        <div className="flex-1">
+          <Link href="/" className="flex items-center">
+            <div className="hidden md:block">
+              <Image
+                src="/assets/brand/nomad-logo-horizontal.png"
+                alt="Nomad"
+                width={120}
+                height={32}
+                priority
+              />
+            </div>
+            <div className="block md:hidden">
+              <Image
+                src="/assets/brand/nomad-icon-dark.png"
+                alt="Nomad"
+                width={32}
+                height={32}
+                priority
+              />
+            </div>
+          </Link>
+        </div>
+        <div className="flex-none">
+          <div className="skeleton w-24 h-8 rounded"></div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="navbar container mx-auto px-4">

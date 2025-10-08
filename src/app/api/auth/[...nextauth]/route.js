@@ -3,8 +3,14 @@ import GoogleProvider from "next-auth/providers/google"
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
 import { MongoClient } from "mongodb"
 
-// Create MongoDB client connection for NextAuth
-const client = new MongoClient(process.env.MONGODB_URI)
+// Use the same MongoDB URI as your main app
+const client = new MongoClient(process.env.MONGODB_URI, {
+  serverApi: {
+    version: '1',
+    strict: true,
+    deprecationErrors: true,
+  }
+})
 const clientPromise = client.connect()
 
 // NextAuth configuration
@@ -20,49 +26,24 @@ const handler = NextAuth({
     })
   ],
   
-  // Configure session strategy - DATABASE sessions (more secure)
+  // Switch to JWT sessions for better production reliability
   session: {
-    strategy: "database",        // Store sessions in MongoDB
-    maxAge: 30 * 24 * 60 * 60,   // 30 days
-    updateAge: 24 * 60 * 60,     // Update session every 24 hours
+    strategy: "jwt",              // Changed from "database" to "jwt"
+    maxAge: 30 * 24 * 60 * 60,    // 30 days
   },
   
-  // Events for logging authentication success
-  events: {
-    async signIn({ user, account, profile }) {
-      console.log('🎉 SUCCESSFUL SIGN-IN DETECTED!')
-      console.log('✅ User authenticated successfully:', {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        provider: account.provider,
-        timestamp: new Date().toISOString()
-      })
-    },
-    async createUser({ user }) {
-      console.log('👤 NEW USER CREATED:', {
-        userId: user.id,
-        email: user.email,
-        name: user.name,
-        timestamp: new Date().toISOString()
-      })
+  // Add JWT callback for user ID
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+      }
+      return token
     },
     async session({ session, token }) {
-      console.log('🔐 SESSION ACCESSED:', {
-        userId: session.user?.id,
-        email: session.user?.email,
-        timestamp: new Date().toISOString()
-      })
-    }
-  },
-  
-  // Customize session and user data
-  callbacks: {
-    async session({ session, user }) {
-      // Add user ID to session so we can use it in our forms
-      if (user) {
-        session.user.id = user.id
-        console.log('📝 SESSION CALLBACK - User ID added to session:', user.id)
+      if (token) {
+        session.user.id = token.id
+        console.log('📝 SESSION CALLBACK - User ID added to session:', token.id)
       }
       return session
     },
@@ -73,6 +54,19 @@ const handler = NextAuth({
       // Allows callback URLs on the same origin
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
+    }
+  },
+  
+  // Events for logging authentication success
+  events: {
+    async signIn({ user, account, profile }) {
+      console.log('✅ User authenticated successfully:', {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        provider: account.provider,
+        timestamp: new Date().toISOString()
+      })
     }
   },
   
