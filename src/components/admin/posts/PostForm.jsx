@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import RichTextEditor from '@/components/admin/RichTextEditor';
+import MediaLibrary from '@/components/admin/MediaLibrary';
 
 const PostForm = ({ initialData }) => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const PostForm = ({ initialData }) => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showMediaLibrary, setShowMediaLibrary] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -75,32 +77,12 @@ const PostForm = ({ initialData }) => {
     setFormData(prev => ({ ...prev, content }));
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/blog/images', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Error al subir la imagen');
-      }
-
-      setFormData(prev => ({
-        ...prev,
-        image: data.url
-      }));
-    } catch (error) {
-      setError(error.message);
-    }
+  const handleImageSelect = (image) => {
+    setFormData(prev => ({
+      ...prev,
+      image: image.url
+    }));
+    setShowMediaLibrary(false);
   };
 
   const validateForm = () => {
@@ -263,33 +245,60 @@ const PostForm = ({ initialData }) => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Imagen</span>
+            <span className="label-text font-medium">Imagen destacada</span>
           </label>
           <div className="space-y-4">
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered w-full"
-            />
-            {formData.image && (
-              <div className="relative">
+            {formData.image ? (
+              <div className="relative inline-block">
                 <img
                   src={formData.image}
-                  alt="Preview"
-                  className="max-w-xs rounded-lg"
+                  alt="Featured image preview"
+                  className="max-w-xs max-h-48 rounded-lg object-cover"
                 />
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
-                  className="btn btn-circle btn-sm absolute top-2 right-2"
+                  className="btn btn-circle btn-sm absolute -top-2 -right-2 btn-error"
                 >
                   ×
                 </button>
               </div>
+            ) : (
+              <div className="text-center py-8 border-2 border-dashed border-base-300 rounded-lg">
+                <p className="text-base-content/70 mb-4">No image selected</p>
+              </div>
             )}
+            
+            <button
+              type="button"
+              onClick={() => setShowMediaLibrary(true)}
+              className="btn btn-outline"
+            >
+              {formData.image ? 'Change Image' : 'Select Image'}
+            </button>
           </div>
         </div>
+
+        {/* Media Library Modal */}
+        {showMediaLibrary && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-base-100 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto m-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Media Library</h2>
+                <button
+                  onClick={() => setShowMediaLibrary(false)}
+                  className="btn btn-circle btn-sm"
+                >
+                  ×
+                </button>
+              </div>
+              <MediaLibrary 
+                onSelect={handleImageSelect}
+                selectedImage={formData.image ? { url: formData.image } : null}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">

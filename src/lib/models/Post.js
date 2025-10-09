@@ -31,7 +31,7 @@ const postSchema = new mongoose.Schema({
   }],
   image: {
     type: String,
-    trim: true
+    default: ''
   },
   status: {
     type: String,
@@ -69,4 +69,4 @@ postSchema.index({ title: 'text', content: 'text', tags: 'text' });
 
 const Post = mongoose.models.Post || mongoose.model('Post', postSchema);
 
-export default Post; 
+export default Post;
