@@ -23,6 +23,7 @@ const PostForm = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showMediaLibrary, setShowMediaLibrary] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -135,6 +136,14 @@ const PostForm = ({ initialData }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handlePreview = () => {
+    if (!formData.title || !formData.content) {
+      setError('Title and content are required for preview');
+      return;
+    }
+    setShowPreview(true);
   };
 
   return (
@@ -300,6 +309,66 @@ const PostForm = ({ initialData }) => {
           </div>
         )}
 
+        {/* Preview Modal */}
+        {showPreview && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-base-100 rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto m-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Post Preview</h2>
+                <button
+                  onClick={() => setShowPreview(false)}
+                  className="btn btn-circle btn-sm"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <article className="prose prose-lg max-w-none">
+                <header className="mb-8">
+                  <h1 className="text-4xl font-bold mb-4">{formData.title}</h1>
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <span>{formData.author}</span>
+                    {formData.category && categories.find(c => c._id === formData.category) && (
+                      <>
+                        <span>·</span>
+                        <span>{categories.find(c => c._id === formData.category)?.name}</span>
+                      </>
+                    )}
+                  </div>
+                </header>
+
+                {formData.image && (
+                  <div className="mb-8">
+                    <img
+                      src={formData.image}
+                      alt={formData.title}
+                      className="w-full h-[400px] object-cover rounded-lg"
+                    />
+                  </div>
+                )}
+
+                <div dangerouslySetInnerHTML={{ __html: formData.content }} />
+
+                {formData.tags && (
+                  <div className="mt-8 pt-4 border-t">
+                    <h2 className="text-xl font-semibold mb-4">Tags:</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.split(',').map((tag, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1 bg-gray-100 rounded-full text-sm"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </article>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
@@ -358,23 +427,33 @@ const PostForm = ({ initialData }) => {
           )}
         </div>
 
-        <div className="flex justify-end gap-4 pt-6">
+        <div className="flex justify-between items-center pt-6">
           <button
             type="button"
-            onClick={() => router.push('/admin/posts')}
-            className="btn btn-ghost"
+            onClick={handlePreview}
+            className="btn btn-outline"
           >
-            Cancelar
+            Preview
           </button>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="loading loading-spinner"></span>
-            ) : initialData ? 'Actualizar Post' : 'Crear Post'}
-          </button>
+          
+          <div className="flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={() => router.push('/admin/posts')}
+              className="btn btn-ghost"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : initialData ? 'Actualizar Post' : 'Crear Post'}
+            </button>
+          </div>
         </div>
       </form>
     </div>
