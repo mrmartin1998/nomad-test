@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import RichTextEditor from '@/components/admin/RichTextEditor';
 
 const PostForm = ({ initialData }) => {
   const router = useRouter();
@@ -69,6 +70,11 @@ const PostForm = ({ initialData }) => {
     });
   };
 
+  // New handler for rich text editor
+  const handleContentChange = (content) => {
+    setFormData(prev => ({ ...prev, content }));
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -100,7 +106,9 @@ const PostForm = ({ initialData }) => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.title) newErrors.title = 'El título es requerido';
-    if (!formData.content) newErrors.content = 'El contenido es requerido';
+    if (!formData.content || formData.content.trim() === '<p><br></p>') {
+      newErrors.content = 'El contenido es requerido';
+    }
     if (!formData.author) newErrors.author = 'El autor es requerido';
     if (!formData.category) newErrors.category = 'La categoría es requerida';
     if (!formData.metaDescription) newErrors.metaDescription = 'La descripción meta es requerida';
@@ -129,7 +137,7 @@ const PostForm = ({ initialData }) => {
         },
         body: JSON.stringify({
           ...formData,
-          tags: formData.tags.split(',').map(tag => tag.trim())
+          tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
         })
       });
 
@@ -155,10 +163,10 @@ const PostForm = ({ initialData }) => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Título</span>
+            <span className="label-text text-lg font-medium">Título *</span>
           </label>
           <input
             type="text"
@@ -177,14 +185,12 @@ const PostForm = ({ initialData }) => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Contenido</span>
+            <span className="label-text text-lg font-medium">Contenido *</span>
           </label>
-          <textarea
-            name="content"
+          <RichTextEditor
             value={formData.content}
-            onChange={handleChange}
-            className={`textarea textarea-bordered h-64 ${errors.content ? 'textarea-error' : ''}`}
-            placeholder="Contenido del post"
+            onChange={handleContentChange}
+            placeholder="Escribe el contenido de tu post aquí..."
           />
           {errors.content && (
             <label className="label">
@@ -196,7 +202,7 @@ const PostForm = ({ initialData }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Autor</span>
+              <span className="label-text font-medium">Autor *</span>
             </label>
             <input
               type="text"
@@ -215,7 +221,7 @@ const PostForm = ({ initialData }) => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Categoría</span>
+              <span className="label-text font-medium">Categoría *</span>
             </label>
             <select
               name="category"
@@ -240,7 +246,7 @@ const PostForm = ({ initialData }) => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Etiquetas</span>
+            <span className="label-text font-medium">Etiquetas</span>
           </label>
           <input
             type="text"
@@ -248,8 +254,11 @@ const PostForm = ({ initialData }) => {
             value={formData.tags}
             onChange={handleChange}
             className="input input-bordered"
-            placeholder="Etiquetas separadas por comas"
+            placeholder="Etiquetas separadas por comas (ej: visa, viaje, turismo)"
           />
+          <label className="label">
+            <span className="label-text-alt">Separa las etiquetas con comas</span>
+          </label>
         </div>
 
         <div className="form-control">
@@ -285,7 +294,7 @@ const PostForm = ({ initialData }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Estado</span>
+              <span className="label-text font-medium">Estado</span>
             </label>
             <select
               name="status"
@@ -300,24 +309,47 @@ const PostForm = ({ initialData }) => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Descripción Meta</span>
+              <span className="label-text font-medium">Slug *</span>
             </label>
-            <textarea
-              name="metaDescription"
-              value={formData.metaDescription}
+            <input
+              type="text"
+              name="slug"
+              value={formData.slug}
               onChange={handleChange}
-              className={`textarea textarea-bordered h-24 ${errors.metaDescription ? 'textarea-error' : ''}`}
-              placeholder="Descripción para SEO"
+              className={`input input-bordered ${errors.slug ? 'input-error' : ''}`}
+              placeholder="url-amigable-del-post"
             />
-            {errors.metaDescription && (
+            {errors.slug && (
               <label className="label">
-                <span className="label-text-alt text-error">{errors.metaDescription}</span>
+                <span className="label-text-alt text-error">{errors.slug}</span>
               </label>
             )}
           </div>
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-medium">Descripción Meta *</span>
+          </label>
+          <textarea
+            name="metaDescription"
+            value={formData.metaDescription}
+            onChange={handleChange}
+            className={`textarea textarea-bordered h-24 ${errors.metaDescription ? 'textarea-error' : ''}`}
+            placeholder="Descripción para SEO (160 caracteres máximo)"
+            maxLength={160}
+          />
+          <label className="label">
+            <span className="label-text-alt">{formData.metaDescription.length}/160 caracteres</span>
+          </label>
+          {errors.metaDescription && (
+            <label className="label">
+              <span className="label-text-alt text-error">{errors.metaDescription}</span>
+            </label>
+          )}
+        </div>
+
+        <div className="flex justify-end gap-4 pt-6">
           <button
             type="button"
             onClick={() => router.push('/admin/posts')}
@@ -332,7 +364,7 @@ const PostForm = ({ initialData }) => {
           >
             {loading ? (
               <span className="loading loading-spinner"></span>
-            ) : initialData ? 'Actualizar' : 'Crear'}
+            ) : initialData ? 'Actualizar Post' : 'Crear Post'}
           </button>
         </div>
       </form>
@@ -340,4 +372,4 @@ const PostForm = ({ initialData }) => {
   );
 };
 
-export default PostForm; 
+export default PostForm;
