@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession, getSession } from 'next-auth/react';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
@@ -461,13 +461,15 @@ const ApplyPage = () => {
   const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
   const [initialFormData, setInitialFormData] = useState(null);
-  const [formData, setFormData] = useState({});  // Empty object instead of null
+  const [formData, setFormData] = useState({});
+  // Add a ref to track if we've already auto-submitted the form
+  const hasAutoSubmitted = useRef(false);
   
   // Check for pending submission when component mounts
   useEffect(() => {
     const pendingSubmission = localStorage.getItem('esta_pending_submission');
     
-    if (pendingSubmission) {
+    if (pendingSubmission && !hasAutoSubmitted.current) {
       try {
         const { formData, timestamp } = JSON.parse(pendingSubmission);
         
@@ -481,6 +483,11 @@ const ApplyPage = () => {
           
           // If user is now authenticated, we could auto-submit
           if (session && status === 'authenticated') {
+            console.log('User is now authenticated, auto-submitting pending form data');
+            // Mark that we've auto-submitted to prevent multiple submissions
+            hasAutoSubmitted.current = true;
+            // Clear localStorage immediately before submitting
+            localStorage.removeItem('esta_pending_submission');
             handleSubmit(formData);
           }
         } else {
@@ -614,10 +621,14 @@ const ApplyPage = () => {
         nombreCompleto: formData.fullName,
         telefono: formData.phone,
         numeroPasaporte: formData.passportNumber,
-        fechaCreacion: new Date().toISOString()
+        fechaCreacion: new Date().toISOString(),
+        // Ensure passportDocument is a string
+        passportDocument: typeof formData.passportDocument === 'string' 
+          ? formData.passportDocument 
+          : (formData.passportDocument ? JSON.stringify(formData.passportDocument) : '')
       };
 
-      // Submit to API - REAL API CALL (not simulation)
+      // Submit to API - REAL API CALL
       console.log('Sending data to API:', dataWithUser);
       const response = await fetch('/api/esta', {
         method: 'POST',

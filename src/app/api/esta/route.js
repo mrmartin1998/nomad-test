@@ -30,6 +30,25 @@ export async function POST(request) {
     const data = await request.json();
     console.log("📋 Received ESTA application data for:", data.fullName);
 
+    // Check for recent duplicate submission (within the last 5 seconds)
+    const recentSubmission = await ESTAApplication.findOne({
+      userId: session.user.id,
+      fechaCreacion: { $gte: new Date(Date.now() - 5000) }, // Last 5 seconds
+    });
+
+    if (recentSubmission) {
+      console.log(
+        "⚠️ Potential duplicate submission detected, returning existing application"
+      );
+      return NextResponse.json({
+        success: true,
+        message: "ESTA application submitted successfully",
+        applicationId: recentSubmission._id.toString(),
+        data: recentSubmission,
+        isDuplicate: true,
+      });
+    }
+
     // Ensure required fields are present
     if (!data.fullName || !data.email || !data.passportNumber) {
       console.error("❌ Missing required fields in submission");
