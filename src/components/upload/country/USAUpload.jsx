@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import BaseUpload from '../BaseUpload';
 
 const USAUpload = ({ 
@@ -7,6 +7,53 @@ const USAUpload = ({
   error,
   className = "" 
 }) => {
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setUploadSuccess(false);
+      
+      // Call the parent's onFileSelect handler if provided
+      if (onFileSelect) {
+        onFileSelect(file);
+      }
+      
+      // Simulate upload process
+      simulateUpload(file);
+    }
+  };
+  
+  const simulateUpload = (file) => {
+    setIsUploading(true);
+    setUploadProgress(0);
+    
+    // Simulate progress
+    const interval = setInterval(() => {
+      setUploadProgress(prev => {
+        const newProgress = prev + 10;
+        if (newProgress >= 100) {
+          clearInterval(interval);
+          setIsUploading(false);
+          setUploadSuccess(true);
+          
+          // In a real implementation, you'd get a URL back from your server
+          // For now, we'll just return the file name as a simple string
+          if (onUploadComplete) {
+            onUploadComplete(file.name);
+          }
+          
+          return 100;
+        }
+        return newProgress;
+      });
+    }, 300);
+  };
+  
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Processing Info Banner */}
@@ -116,4 +163,4 @@ const USAUpload = ({
   );
 };
 
-export default USAUpload; 
+export default USAUpload;

@@ -609,11 +609,41 @@ const ApplyPage = () => {
       // Add user ID to form data
       const dataWithUser = {
         ...formData,
-        userId: currentSession.user.id
+        userId: currentSession.user.id,
+        // Add Spanish field names for consistency with model
+        nombreCompleto: formData.fullName,
+        telefono: formData.phone,
+        numeroPasaporte: formData.passportNumber,
+        fechaCreacion: new Date().toISOString()
       };
 
-      // Submit to API (this is currently a simulation)
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
+      // Submit to API - REAL API CALL (not simulation)
+      console.log('Sending data to API:', dataWithUser);
+      const response = await fetch('/api/esta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataWithUser),
+        credentials: 'include' // Include cookies for auth
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (e) {
+          console.error('Failed to parse error response:', errorText);
+          throw new Error(`Server error: ${response.status}`);
+        }
+        
+        console.error('API error response:', response.status, errorData);
+        throw new Error(errorData.error || `Error ${response.status}: Failed to submit form`);
+      }
+
+      const responseData = await response.json();
+      console.log('API success response:', responseData);
       
       // Clear the pending submission data on successful submission
       localStorage.removeItem('esta_pending_submission');
@@ -621,13 +651,14 @@ const ApplyPage = () => {
       setSubmissionResult({
         success: true,
         message: 'Your USA ESTA application has been submitted successfully!',
-        applicationId: 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        // Use the actual application ID from the response
+        applicationId: responseData.applicationId || responseData.data?._id || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       });
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmissionResult({
         success: false,
-        message: 'There was an error submitting your application. Please try again.'
+        message: `Error: ${error.message || 'Unknown error occurred'}`
       });
     }
   };

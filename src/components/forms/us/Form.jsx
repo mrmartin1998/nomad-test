@@ -438,11 +438,18 @@ const PassportInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
 const DocumentUploadStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleFileSelect = (file) => {
     console.log('File selected:', file);
-    setFormData({ passportDocument: file });
+    // Store the file name instead of the file object
+    setFormData({ passportDocument: file ? file.name : '' });
   };
 
   const handleUploadComplete = (file) => {
     console.log('Upload completed:', file);
+    // If we have a URL from the upload, use that instead
+    if (file && typeof file === 'string') {
+      setFormData({ passportDocument: file });
+    } else if (file && file.url) {
+      setFormData({ passportDocument: file.url });
+    }
   };
 
   return (
@@ -468,7 +475,7 @@ const Form = () => {
     
     if (pendingSubmission) {
       try {
-        const { formData, timestamp } = JSON.parse(pendingSubmission);
+        const { formData, timestamp, returnUrl } = JSON.parse(pendingSubmission);
         
         // Only restore if the data is less than 1 hour old
         const now = new Date().getTime();
@@ -480,10 +487,12 @@ const Form = () => {
           
           // If user is now authenticated, we could auto-submit
           if (session && status === 'authenticated') {
+            console.log('User is now authenticated, auto-submitting pending form data');
             handleSubmit(formData);
           }
         } else {
           // Clear stale data
+          console.log('Clearing stale pending submission data');
           localStorage.removeItem('esta_pending_submission');
         }
       } catch (error) {
@@ -586,7 +595,18 @@ const Form = () => {
     // Check authentication before submission
     const currentSession = await getSession();
     if (!currentSession) {
-      const currentUrl = window.location.pathname;
+      // Get full URL with pathname and search params for more reliable redirect
+      const currentUrl = window.location.pathname + window.location.search;
+      console.log('User not authenticated, storing pending submission and redirecting to login');
+      
+      // Store the form data for later submission
+      localStorage.setItem('esta_pending_submission', JSON.stringify({
+        formData,
+        timestamp: new Date().getTime(),
+        returnUrl: currentUrl
+      }));
+      
+      // Use full path with callbackUrl parameter
       router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
       return;
     }
@@ -597,28 +617,51 @@ const Form = () => {
       // Add user ID to form data
       const dataWithUser = {  
         ...formData,
-        userId: currentSession.user.id
+        userId: currentSession.user.id,
+        nombreCompleto: formData.fullName, // Ensure Spanish field name exists for DB consistency
+        email: formData.email,
+        telefono: formData.phone,
+        numeroPasaporte: formData.passportNumber,
+        fechaCreacion: new Date().toISOString(),
+        // Ensure passportDocument is a string
+        passportDocument: typeof formData.passportDocument === 'string' 
+          ? formData.passportDocument 
+          : (formData.passportDocument ? JSON.stringify(formData.passportDocument) : '')
       };
 
       // Submit to API
+      console.log('Sending data to API:', dataWithUser);
       const response = await fetch('/api/esta', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(dataWithUser)
+        body: JSON.stringify(dataWithUser),
+        credentials: 'include'
       });
 
-      if (!response.ok) {
-        throw new Error('Error al enviar la solicitud');
+      // Get response text for better error debugging
+      const responseText = await response.text();
+      let responseData;
+      
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Failed to parse response as JSON:', responseText);
+        throw new Error(`Server returned non-JSON response: ${responseText.substring(0, 100)}...`);
       }
 
-      const result = await response.json();
-      
+      if (!response.ok) {
+        console.error('API error response:', response.status, responseData);
+        throw new Error(responseData.error || `Error ${response.status}: Failed to submit form`);
+      }
+
+      console.log('API success response:', responseData);
+
       setSubmissionResult({
         success: true,
         message: 'Your USA ESTA application has been submitted successfully!',
-        applicationId: result.applicationId || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        applicationId: responseData.data?._id || responseData.applicationId || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       });
       
       // Clear the pending submission data on successful submission
@@ -627,7 +670,7 @@ const Form = () => {
       console.error('Error submitting form:', error);
       setSubmissionResult({
         success: false,
-        message: 'Error al enviar la solicitud. Por favor, inténtelo de nuevo.'
+        message: `Error: ${error.message || 'Unknown error occurred'}`
       });
     }
   };

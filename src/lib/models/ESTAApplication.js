@@ -1,58 +1,82 @@
 import mongoose from 'mongoose';
 
+// Define the schema
 const ESTAApplicationSchema = new mongoose.Schema({
-  // User Association (for authenticated users)
+  // User reference
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: false  // Optional for backward compatibility with anonymous applications
+    type: String,
+    required: true,
+    index: true
   },
-
+  
   // Personal Information
-  nombreCompleto: { type: String, required: true },
-  fechaNacimiento: { type: Date, required: true },
-  ciudadNacimiento: { type: String, required: true },
-  paisNacimiento: { type: String, required: true },
-  nacionalidad: { type: String, required: true },
-  nombrePadre: { type: String, required: true },
-  nombreMadre: { type: String, required: true },
-
+  fullName: {
+    type: String,
+    required: true
+  },
+  nombreCompleto: String, // Spanish field name
+  dateOfBirth: String,
+  birthCity: String,
+  birthCountry: String,
+  nationality: String,
+  
   // Contact Information
-  email: { type: String, required: true },
-  telefono: { type: String, required: true },
-  direccionResidencia: { type: String, required: true },
-
-  // Passport Details
-  numeroPasaporte: { type: String, required: true },
-  fechaEmisionPasaporte: { type: Date, required: true },
-  fechaExpiracionPasaporte: { type: Date, required: true },
-  paisEmisionPasaporte: { type: String, required: true },
-
-  // Travel Information
-  viajeAnteriorUSA: { type: Boolean, required: true },
-  direccionUSA: { type: String, required: true },
-  empresa: { type: String, required: true },
-  cargo: { type: String, required: true },
-  direccionLaboral: { type: String, required: true },
-
-  // Security & Legal
-  antecedentesPenales: { type: Boolean, required: true },
-  aceptaTerminos: { type: Boolean, required: true },
-
+  email: {
+    type: String,
+    required: true
+  },
+  phone: String,
+  telefono: String, // Spanish field name
+  
+  // Address Information
+  address: String,
+  usAddress: String,
+  
+  // Family Information
+  fatherName: String,
+  motherName: String,
+  
+  // Additional Information
+  previousUsTravel: Boolean,
+  hasCriminalRecord: Boolean,
+  criminalRecordDetails: String,
+  
+  // Professional Information
+  occupation: String,
+  companyName: String,
+  position: String,
+  annualIncome: String,
+  companyAddress: String,
+  
+  // Passport Information
+  passportNumber: {
+    type: String,
+    required: true
+  },
+  numeroPasaporte: String, // Spanish field name
+  passportIssueDate: String,
+  passportExpiryDate: String,
+  passportIssuingCountry: String,
+  
+  // Document References
+  passportDocument: String,
+  
   // Application Status
   estado: {
     type: String,
     enum: ['pendiente', 'aprobado', 'rechazado'],
     default: 'pendiente'
   },
-
+  
+  // Timestamps
   fechaCreacion: {
     type: Date,
     default: Date.now
-  }
+  },
+  fechaActualizacion: Date
 });
 
-// Prevent duplicate model initialization
+// Use existing model if it exists, otherwise create a new one
 const ESTAApplication = mongoose.models.ESTAApplication || mongoose.model('ESTAApplication', ESTAApplicationSchema);
 
 export default ESTAApplication;
