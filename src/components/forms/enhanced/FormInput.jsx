@@ -14,6 +14,8 @@ const FormInput = ({
   helpText,
   autoComplete,
   className = '',
+  multiline = false, // Boolean prop that shouldn't be passed to DOM
+  rows = 3,
   ...props
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -51,31 +53,53 @@ const FormInput = ({
           </div>
         )}
 
-        {/* Input Field */}
-        <input
-          type={inputType}
-          id={name}
-          name={name}
-          value={value || ''}
-          onChange={onChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          disabled={disabled}
-          autoComplete={autoComplete}
-          placeholder={placeholder}
-          className={`input input-bordered w-full transition-all duration-200
-            ${icon ? 'pl-10' : ''}
-            ${type === 'password' ? 'pr-10' : ''}
-            ${error ? 'input-error border-error focus:border-error' : ''}
-            ${isFocused && !error ? 'border-primary ring-2 ring-primary/20' : ''}
-            ${disabled ? 'input-disabled' : ''}
-            ${value ? 'input-success' : ''}
-          `}
-          {...props}
-        />
+        {/* Render textarea if multiline, otherwise render input */}
+        {multiline ? (
+          <textarea
+            id={name}
+            name={name}
+            value={value || ''}
+            onChange={onChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            disabled={disabled}
+            placeholder={placeholder}
+            rows={rows}
+            className={`textarea textarea-bordered w-full transition-all duration-200
+              ${icon ? 'pl-10' : ''}
+              ${error ? 'textarea-error border-error focus:border-error' : ''}
+              ${isFocused && !error ? 'border-primary ring-2 ring-primary/20' : ''}
+              ${disabled ? 'textarea-disabled' : ''}
+              ${value ? 'textarea-success' : ''}
+            `}
+            {...props}
+          />
+        ) : (
+          <input
+            type={inputType}
+            id={name}
+            name={name}
+            value={value || ''}
+            onChange={onChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            disabled={disabled}
+            autoComplete={autoComplete}
+            placeholder={placeholder}
+            className={`input input-bordered w-full transition-all duration-200
+              ${icon ? 'pl-10' : ''}
+              ${type === 'password' ? 'pr-10' : ''}
+              ${error ? 'input-error border-error focus:border-error' : ''}
+              ${isFocused && !error ? 'border-primary ring-2 ring-primary/20' : ''}
+              ${disabled ? 'input-disabled' : ''}
+              ${value ? 'input-success' : ''}
+            `}
+            {...props}
+          />
+        )}
 
         {/* Password Toggle */}
-        {type === 'password' && (
+        {type === 'password' && !multiline && (
           <button
             type="button"
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-base-content/50 hover:text-base-content"
@@ -122,4 +146,4 @@ const FormInput = ({
   );
 };
 
-export default FormInput; 
+export default FormInput;

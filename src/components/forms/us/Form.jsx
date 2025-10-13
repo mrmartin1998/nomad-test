@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
@@ -9,7 +9,7 @@ import FormSelect from '@/components/forms/enhanced/FormSelect';
 import USAUpload from '@/components/upload/country/USAUpload';
 
 // USA ESTA Specific Step Components
-const PersonalInfoStep = ({ formData, setFormData, errors }) => {
+const PersonalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ [name]: value });
@@ -46,7 +46,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Full Name (as appears on passport)"
           name="fullName"
-          value={formData.fullName}
+          value={formData.fullName || ''}
           onChange={handleChange}
           error={errors.fullName}
           placeholder="Enter your full name"
@@ -64,7 +64,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           label="Date of Birth"
           name="dateOfBirth"
           type="date"
-          value={formData.dateOfBirth}
+          value={formData.dateOfBirth || ''}
           onChange={handleChange}
           error={errors.dateOfBirth}
           required
@@ -78,7 +78,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="City of Birth"
           name="birthCity"
-          value={formData.birthCity}
+          value={formData.birthCity || ''}
           onChange={handleChange}
           error={errors.birthCity}
           placeholder="Enter your city of birth"
@@ -94,7 +94,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Country of Birth"
           name="birthCountry"
-          value={formData.birthCountry}
+          value={formData.birthCountry || ''}
           onChange={handleChange}
           error={errors.birthCountry}
           placeholder="Enter your country of birth"
@@ -128,7 +128,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           label="Email Address"
           name="email"
           type="email"
-          value={formData.email}
+          value={formData.email || ''}
           onChange={handleChange}
           error={errors.email}
           placeholder="your.email@example.com"
@@ -145,7 +145,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           label="Phone Number"
           name="phone"
           type="tel"
-          value={formData.phone}
+          value={formData.phone || ''}
           onChange={handleChange}
           error={errors.phone}
           placeholder="+1 (555) 123-4567"
@@ -166,7 +166,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           <FormInput
             label="Father's Name"
             name="fatherName"
-            value={formData.fatherName}
+            value={formData.fatherName || ''}
             onChange={handleChange}
             error={errors.fatherName}
             placeholder="Enter your father's full name"
@@ -181,7 +181,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           <FormInput
             label="Mother's Name"
             name="motherName"
-            value={formData.motherName}
+            value={formData.motherName || ''}
             onChange={handleChange}
             error={errors.motherName}
             placeholder="Enter your mother's full name"
@@ -202,7 +202,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           <FormInput
             label="Residential Address"
             name="address"
-            value={formData.address}
+            value={formData.address || ''}
             onChange={handleChange}
             error={errors.address}
             placeholder="Enter your complete residential address"
@@ -219,7 +219,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
           <FormInput
             label="Planned Address in United States"
             name="usAddress"
-            value={formData.usAddress}
+            value={formData.usAddress || ''}
             onChange={handleChange}
             error={errors.usAddress}
             placeholder="Enter your planned address in the United States (hotel or contact)"
@@ -269,7 +269,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
                 <FormInput
                   label="Please provide details"
                   name="criminalRecordDetails"
-                  value={formData.criminalRecordDetails}
+                  value={formData.criminalRecordDetails || ''}
                   onChange={handleChange}
                   error={errors.criminalRecordDetails}
                   placeholder="Please provide details"
@@ -285,7 +285,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
+const ProfessionalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ [name]: value });
@@ -297,7 +297,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Current Occupation"
           name="occupation"
-          value={formData.occupation}
+          value={formData.occupation || ''}
           onChange={handleChange}
           error={errors.occupation}
           placeholder="Enter your current occupation"
@@ -312,7 +312,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Company Name"
           name="companyName"
-          value={formData.companyName}
+          value={formData.companyName || ''}
           onChange={handleChange}
           error={errors.companyName}
           placeholder="Enter your company name"
@@ -327,7 +327,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Position/Job Title"
           name="position"
-          value={formData.position}
+          value={formData.position || ''}
           onChange={handleChange}
           error={errors.position}
           placeholder="Enter your position or job title"
@@ -343,7 +343,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
           label="Annual Income"
           name="annualIncome"
           type="number"
-          value={formData.annualIncome}
+          value={formData.annualIncome || ''}
           onChange={handleChange}
           error={errors.annualIncome}
           placeholder="Enter your annual income"
@@ -359,7 +359,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
           <FormInput
             label="Company Address"
             name="companyAddress"
-            value={formData.companyAddress}
+            value={formData.companyAddress || ''}
             onChange={handleChange}
             error={errors.companyAddress}
             placeholder="Enter your company address"
@@ -378,7 +378,7 @@ const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const PassportInfoStep = ({ formData, setFormData, errors }) => {
+const PassportInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ [name]: value });
@@ -389,7 +389,7 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Passport Number"
         name="passportNumber"
-        value={formData.passportNumber}
+        value={formData.passportNumber || ''}
         onChange={handleChange}
         error={errors.passportNumber}
         placeholder="Enter passport number"
@@ -405,7 +405,7 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
         label="Passport Issue Date"
         name="passportIssueDate"
         type="date"
-        value={formData.passportIssueDate}
+        value={formData.passportIssueDate || ''}
         onChange={handleChange}
         error={errors.passportIssueDate}
         required
@@ -415,7 +415,7 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
         label="Passport Expiry Date"
         name="passportExpiryDate"
         type="date"
-        value={formData.passportExpiryDate}
+        value={formData.passportExpiryDate || ''}
         onChange={handleChange}
         error={errors.passportExpiryDate}
         required
@@ -425,7 +425,7 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Issuing Country"
         name="passportIssuingCountry"
-        value={formData.passportIssuingCountry}
+        value={formData.passportIssuingCountry || ''}
         onChange={handleChange}
         error={errors.passportIssuingCountry}
         placeholder="Country that issued your passport"
@@ -435,7 +435,7 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-const DocumentUploadStep = ({ formData, setFormData, errors }) => {
+const DocumentUploadStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleFileSelect = (file) => {
     console.log('File selected:', file);
     setFormData({ passportDocument: file });
@@ -460,7 +460,39 @@ const Form = () => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
-
+  const [initialFormData, setInitialFormData] = useState(null);
+  
+  // Check for pending submission when component mounts
+  useEffect(() => {
+    const pendingSubmission = localStorage.getItem('esta_pending_submission');
+    
+    if (pendingSubmission) {
+      try {
+        const { formData, timestamp } = JSON.parse(pendingSubmission);
+        
+        // Only restore if the data is less than 1 hour old
+        const now = new Date().getTime();
+        const oneHour = 60 * 60 * 1000;
+        
+        if (now - timestamp < oneHour) {
+          // Set initial form data for EnhancedForm
+          setInitialFormData(formData);
+          
+          // If user is now authenticated, we could auto-submit
+          if (session && status === 'authenticated') {
+            handleSubmit(formData);
+          }
+        } else {
+          // Clear stale data
+          localStorage.removeItem('esta_pending_submission');
+        }
+      } catch (error) {
+        console.error('Error parsing pending submission:', error);
+        localStorage.removeItem('esta_pending_submission');
+      }
+    }
+  }, [session, status]);
+  
   // Form step configuration for USA ESTA
   const formSteps = [
     {
@@ -529,7 +561,7 @@ const Form = () => {
         if (!data.passportExpiryDate) errors.passportExpiryDate = 'Expiry date is required';
         if (!data.passportIssuingCountry) errors.passportIssuingCountry = 'Issuing country is required';
         return errors;
-      }
+      }  
     },
     {
       title: "Document Upload",
@@ -553,7 +585,6 @@ const Form = () => {
   const handleSubmit = async (formData) => {
     // Check authentication before submission
     const currentSession = await getSession();
-    
     if (!currentSession) {
       const currentUrl = window.location.pathname;
       router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
@@ -564,7 +595,7 @@ const Form = () => {
     
     try {
       // Add user ID to form data
-      const dataWithUser = {
+      const dataWithUser = {  
         ...formData,
         userId: currentSession.user.id
       };
@@ -589,6 +620,9 @@ const Form = () => {
         message: 'Your USA ESTA application has been submitted successfully!',
         applicationId: result.applicationId || 'ESTA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       });
+      
+      // Clear the pending submission data on successful submission
+      localStorage.removeItem('esta_pending_submission');
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmissionResult({
@@ -617,10 +651,7 @@ const Form = () => {
             <p className="text-sm text-base-content/60">Application ID</p>
             <p className="font-mono font-bold">{submissionResult.applicationId}</p>
           </div>
-          <button 
-            className="btn btn-primary"
-            onClick={() => window.location.reload()}
-          >
+          <button className="btn btn-primary" onClick={() => window.location.reload()}>
             Start New Application
           </button>
         </div>
@@ -629,28 +660,17 @@ const Form = () => {
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-secondary text-white py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-center">
-            🇺🇸 USA ESTA Application
-          </h1>
-          <p className="text-xl text-center mt-4 opacity-90">
-            Apply for your Electronic System for Travel Authorization
-          </p>
-        </div>
-      </div>
-
+    <div className="w-full">
       {/* Enhanced Form - Full Width */}
-      <div className="w-full">
+      <div className="container mx-auto px-4 py-8">
         <EnhancedForm
-          steps={formSteps}
-          onSubmit={handleSubmit}
-          onStepChange={handleStepChange}
-          autoSave={true}
-          autoSaveKey="usa-esta-visa-form"
+          initialData={initialFormData} // Pass the restored data if available
           countryTheme="usa"
+          autoSaveKey="usa-esta-visa-form"
+          autoSave={true}
+          onStepChange={handleStepChange}
+          onSubmit={handleSubmit}
+          steps={formSteps}
         />
       </div>
     </div>
