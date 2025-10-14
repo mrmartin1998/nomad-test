@@ -15,10 +15,13 @@ const DevLogin = () => {
   const handleDevLogin = async () => {
     setIsLoading(true);
     try {
+      // Get the full current URL (path + query string)
+      const currentUrl = window.location.pathname + window.location.search;
+
       // Use Google provider but with a redirect that we'll intercept in development
       // This is a workaround since we can't easily mock Google auth
       await signIn('google', {
-        callbackUrl: window.location.pathname,
+        callbackUrl: currentUrl,
       });
     } catch (error) {
       console.error('Dev login error:', error);
@@ -29,7 +32,7 @@ const DevLogin = () => {
 
   return (
     <div className="mt-4 text-center">
-      <button 
+      <button
         onClick={handleDevLogin}
         disabled={isLoading}
         className="btn btn-sm btn-warning btn-outline"
