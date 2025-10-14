@@ -339,8 +339,8 @@ export default function UKFormPage() {
           
           if (session && status === 'authenticated') {
             console.log('User is now authenticated, auto-submitting pending UK visa form data');
-            hasAutoSubmitted.current = true;
-            localStorage.removeItem('uk_pending_submission');
+            hasAutoSubmitted.current = true; // Set flag to prevent resubmission
+            localStorage.removeItem('uk_pending_submission'); // Clear BEFORE submission
             handleSubmit(formData);
           }
         } else {
@@ -470,21 +470,80 @@ export default function UKFormPage() {
     console.log('Submitting UK visa form data with user ID:', currentSession.user.id);
     
     try {
-      // Simulate API submission
-      console.log('Submitting UK form data:', submitData);
+      // Process the document data properly
+      const processedDocuments = {
+        fotoCarnet: submitData.documentos?.fotoCarnet?.name || "",
+        pasaporteEscaneado: submitData.documentos?.pasaporteEscaneado?.name || ""
+      };
+
+      // Format data exactly like the API expects
+      const formattedData = {
+        // Required fields that the API validates
+        nombreCompleto: submitData.nombreCompleto || '',
+        fechaNacimiento: submitData.fechaNacimiento || '',
+        lugarNacimiento: submitData.lugarNacimiento || '',
+        nacionalidad: submitData.nacionalidad || '',
+        email: submitData.email || '',
+        telefono: submitData.telefono || '',
+        direccionResidencia: submitData.direccionResidencia || '',
+        numeroPasaporte: submitData.numeroPasaporte || '',
+        fechaEmisionPasaporte: submitData.fechaEmisionPasaporte || '',
+        fechaExpiracionPasaporte: submitData.fechaExpiracionPasaporte || '',
+        antecedentesPenales: submitData.antecedentesPenales === true,
+        rechazosMigratorios: submitData.rechazosMigratorios === true,
+        consentimientoDatos: submitData.consentimientoDatos === true,
+        
+        // Add user ID and timestamps
+        userId: currentSession.user.id,
+        fechaCreacion: new Date().toISOString(),
+        
+        // Document handling - use processed strings instead of objects
+        documentos: processedDocuments
+      };
+
+      // Log data before sending
+      console.log('Sending data to API:', formattedData);
+
+      // Submit to API
+      const response = await fetch('/api/uk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData),
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (e) {
+          console.error('Failed to parse error response:', errorText);
+          throw new Error(`Server error: ${response.status}`);
+        }
+        
+        console.error('API error response:', response.status, errorData);
+        throw new Error(errorData.error || `Error ${response.status}: Failed to submit form`);
+      }
+
+      const responseData = await response.json();
+      console.log('API success response:', responseData);
       
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
-      
+      // Clear localStorage BEFORE setting submission result (important!)
+      localStorage.removeItem('uk_pending_submission');
+
       setSubmissionResult({
         success: true,
         message: 'Su solicitud de ETA para Reino Unido ha sido enviada exitosamente!',
-        applicationId: 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+        applicationId: responseData.applicationId || responseData.data?._id || 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       });
     } catch (error) {
       console.error('Error submitting form:', error);
       setSubmissionResult({
         success: false,
-        message: 'Ocurrió un error al enviar su solicitud. Por favor, intente nuevamente más tarde.'
+        message: `Error: ${error.message || 'Ocurrió un error al enviar su solicitud. Por favor, intente nuevamente más tarde.'}`
       });
     }
   };
