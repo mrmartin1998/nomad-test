@@ -4,7 +4,7 @@ const FormInput = ({
   label,
   name,
   type = 'text',
-  value,
+  value = '',  // Default to empty string
   onChange,
   error,
   placeholder,
@@ -23,6 +23,13 @@ const FormInput = ({
 
   const handleFocus = () => setIsFocused(true);
   const handleBlur = () => setIsFocused(false);
+  
+  // Add a direct change handler to ensure input is working
+  const handleChange = (e) => {
+    if (onChange) {
+      onChange(e);
+    }
+  };
 
   const inputType = type === 'password' && showPassword ? 'text' : type;
 
@@ -58,8 +65,8 @@ const FormInput = ({
           <textarea
             id={name}
             name={name}
-            value={value || ''}
-            onChange={onChange}
+            value={value}
+            onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
             disabled={disabled}
@@ -79,8 +86,8 @@ const FormInput = ({
             type={inputType}
             id={name}
             name={name}
-            value={value || ''}
-            onChange={onChange}
+            value={value}
+            onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}
             disabled={disabled}

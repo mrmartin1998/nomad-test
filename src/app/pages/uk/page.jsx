@@ -68,7 +68,7 @@ const UKVisaPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Autorización Electrónica para el Reino Unido</h1>
               <p className="text-lg text-base-content/70 mb-8">Explore la rica historia y cultura británica con una autorización electrónica rápida y sencilla</p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/uk/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
+                <Link href="uk/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
                   Solicitar ETA
                 </Link>
                 <Link href="/status" className="btn btn-outline btn-lg w-full sm:w-auto">

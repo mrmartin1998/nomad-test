@@ -10,7 +10,7 @@ import CubaUpload from '@/components/upload/country/CubaUpload';
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const countryOptions = [
@@ -195,7 +195,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
 const DeliveryAndConsentStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const deliveryOptions = [

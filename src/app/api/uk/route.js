@@ -2,26 +2,52 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import UKApplication from '@/lib/models/UKApplication';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
 export const dynamic = 'force-static';
 
 export async function POST(request) {
+  console.log('📥 UK API: Received POST request');
+
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      console.log('❌ Authentication failed: No session');
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    console.log('✅ Authentication successful for user:', session.user.id);
+
     // Connect to MongoDB
     await connectDB();
+    console.log('✅ Connected to MongoDB');
 
-    // Parse the request body
+    // Parse request body
     const data = await request.json();
+    console.log('📋 Received UK application data for:', data.fullName);
 
-    // Get session for optional auth verification
-    const session = await getServerSession();
-    
-    // Validate userId if provided
-    if (session && data.userId && data.userId !== session.user.id) {
-      return NextResponse.json(
-        { error: 'Usuario no autorizado' },
-        { status: 403 }
+    // Check for recent duplicate submission (within the last 5 seconds)
+    const recentSubmission = await UKApplication.findOne({
+      userId: session.user.id,
+      fechaCreacion: { $gte: new Date(Date.now() - 5000) }, // Last 5 seconds
+    });
+
+    if (recentSubmission) {
+      console.log(
+        '⚠️ Potential duplicate submission detected, returning existing application'
       );
+      return NextResponse.json({
+        success: true,
+        message: 'UK ETA application submitted successfully',
+        applicationId: recentSubmission._id.toString(),
+        data: recentSubmission,
+        isDuplicate: true,
+      });
     }
 
     // Handle userId for authenticated users

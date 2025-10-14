@@ -3,18 +3,12 @@ import React from 'react';
 const PersonalInfo = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: checked
-    }));
+    setFormData(prev => ({ ...prev || {}, [name]: checked }));
   };
 
   return (
@@ -373,4 +367,4 @@ const PersonalInfo = ({ formData, setFormData, errors }) => {
   );
 };
 
-export default PersonalInfo; 
+export default PersonalInfo;

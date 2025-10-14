@@ -12,12 +12,14 @@ import USAUpload from '@/components/upload/country/USAUpload';
 const PersonalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    // Fix: preserve previous form data when updating a field
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setFormData({ [name]: checked });
+    // Fix: preserve previous form data when updating a checkbox
+    setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
   const countryOptions = [
@@ -288,7 +290,8 @@ const PersonalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
 const ProfessionalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    // Fix: preserve previous form data
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -381,7 +384,8 @@ const ProfessionalInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
 const PassportInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    // Fix: preserve previous form data
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -438,17 +442,20 @@ const PassportInfoStep = ({ formData = {}, setFormData, errors = {} }) => {
 const DocumentUploadStep = ({ formData = {}, setFormData, errors = {} }) => {
   const handleFileSelect = (file) => {
     console.log('File selected:', file);
-    // Store the file name instead of the file object
-    setFormData({ passportDocument: file ? file.name : '' });
+    // Fix: preserve previous form data
+    setFormData(prev => ({ 
+      ...prev, 
+      passportDocument: file ? file.name : '' 
+    }));
   };
 
   const handleUploadComplete = (file) => {
     console.log('Upload completed:', file);
-    // If we have a URL from the upload, use that instead
+    // Fix: preserve previous form data
     if (file && typeof file === 'string') {
-      setFormData({ passportDocument: file });
+      setFormData(prev => ({ ...prev, passportDocument: file }));
     } else if (file && file.url) {
-      setFormData({ passportDocument: file.url });
+      setFormData(prev => ({ ...prev, passportDocument: file.url }));
     }
   };
 
