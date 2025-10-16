@@ -68,7 +68,7 @@ const ThailandVisaPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Visa Electrónica para Tailandia</h1>
               <p className="text-lg text-base-content/70 mb-8">Explore las playas paradisíacas y la rica cultura tailandesa con una visa electrónica rápida y sencilla</p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/thailand/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
+                <Link href="thailand/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
                   Solicitar eVisa
                 </Link>
                 <Link href="/status" className="btn btn-outline btn-lg w-full sm:w-auto">
