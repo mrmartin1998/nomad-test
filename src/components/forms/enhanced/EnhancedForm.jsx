@@ -14,8 +14,11 @@ const EnhancedForm = ({
   countryTheme = 'default',
   children
 }) => {
+  // Ensure initialData is never null
+  const safeInitialData = initialData || {};
+  
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState(initialData);
+  const [formData, setFormData] = useState(safeInitialData);
   const [errors, setErrors] = useState({});
   const [completedSteps, setCompletedSteps] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -56,11 +59,18 @@ const EnhancedForm = ({
     }
   }, [autoSave, autoSaveKey]);
 
+  // THIS IS THE KEY FIX: Handle both function and object updates
   const updateFormData = useCallback((updates) => {
-    setFormData(prev => ({
-      ...prev,
-      ...updates
-    }));
+    if (typeof updates === 'function') {
+      // Handle functional update (when component passes prev => ...)
+      setFormData(updates);
+    } else {
+      // Handle direct object update
+      setFormData(prev => ({
+        ...prev || {}, // Ensure prev is never null
+        ...updates
+      }));
+    }
   }, []);
 
   const validateCurrentStep = useCallback(() => {

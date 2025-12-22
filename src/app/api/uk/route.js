@@ -2,35 +2,60 @@ import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import UKApplication from '@/lib/models/UKApplication';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
-export const dynamic = 'force-static';
+// Fix: Change from static to dynamic to allow auth to work
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
+  console.log('📥 UK API: Received POST request');
+
   try {
-    // Connect to MongoDB
-    await connectDB();
+    // Check authentication
+    const session = await getServerSession(authOptions);
+    console.log('🔐 Auth attempt result:', session ? 'Session found' : 'No session');
 
-    // Parse the request body
-    const data = await request.json();
-
-    // Get session for optional auth verification
-    const session = await getServerSession();
-    
-    // Validate userId if provided
-    if (session && data.userId && data.userId !== session.user.id) {
+    if (!session) {
+      console.log('❌ Authentication failed: No session');
       return NextResponse.json(
-        { error: 'Usuario no autorizado' },
-        { status: 403 }
+        { error: 'Authentication required' },
+        { status: 401 }
       );
     }
 
-    // Handle userId for authenticated users
-    const applicationData = {
-      ...data,
-      ...(data.userId && { userId: data.userId })
-    };
+    console.log('✅ Authentication successful for user:', session.user.id);
 
-    // Validate required fields
+    // Connect to MongoDB
+    console.log('🔄 Connecting to MongoDB...');
+    await connectDB();
+    console.log('✅ MongoDB connection successful');
+    console.log('✅ Connected to MongoDB');
+
+    // Parse request body
+    const data = await request.json();
+    console.log('📋 Received UK application data for:', data.nombreCompleto);
+    console.log('📄 Full application data:', JSON.stringify(data, null, 2));
+
+    // Check for recent duplicate submission (within the last 5 seconds)
+    const recentSubmission = await UKApplication.findOne({
+      userId: session.user.id,
+      fechaCreacion: { $gte: new Date(Date.now() - 5000) }, // Last 5 seconds
+    });
+
+    if (recentSubmission) {
+      console.log(
+        '⚠️ Potential duplicate submission detected, returning existing application'
+      );
+      return NextResponse.json({
+        success: true,
+        message: 'UK ETA application submitted successfully',
+        applicationId: recentSubmission._id.toString(),
+        data: recentSubmission,
+        isDuplicate: true,
+      });
+    }
+
+    // Validate required fields with detailed error reporting
     const requiredFields = [
       'nombreCompleto',
       'fechaNacimiento',
@@ -47,84 +72,64 @@ export async function POST(request) {
       'consentimientoDatos'
     ];
 
-    const missingFields = requiredFields.filter(field => !applicationData[field]);
+    const missingFields = requiredFields.filter(field => !data[field]);
     if (missingFields.length > 0) {
+      console.log('❌ Missing required fields:', missingFields);
       return NextResponse.json(
         { error: `Missing required fields: ${missingFields.join(', ')}` },
         { status: 400 }
       );
     }
 
-    // Validate passport expiration date
-    const passportExpiration = new Date(applicationData.fechaExpiracionPasaporte);
-    const today = new Date();
-    if (passportExpiration <= today) {
-      return NextResponse.json(
-        { error: 'Passport must be valid (not expired)' },
-        { status: 400 }
-      );
-    }
+    // Prepare document data for MongoDB - ensure documents are strings
+    const processedData = {
+      ...data,
+      documentos: {
+        fotoCarnet: typeof data.documentos?.fotoCarnet === 'string' 
+          ? data.documentos.fotoCarnet 
+          : JSON.stringify(data.documentos?.fotoCarnet || ''),
+        pasaporteEscaneado: typeof data.documentos?.pasaporteEscaneado === 'string'
+          ? data.documentos.pasaporteEscaneado
+          : JSON.stringify(data.documentos?.pasaporteEscaneado || '')
+      }
+    };
 
-    // Validate passport issuance date
-    const passportIssuance = new Date(applicationData.fechaEmisionPasaporte);
-    if (passportIssuance >= today) {
-      return NextResponse.json(
-        { error: 'Passport issuance date must be in the past' },
-        { status: 400 }
-      );
-    }
-
-    // Validate document uploads
-    if (!applicationData.documentos) {
-      return NextResponse.json(
-        { error: 'Document uploads are required' },
-        { status: 400 }
-      );
-    }
-
-    const requiredDocuments = ['fotoCarnet', 'pasaporteEscaneado'];
-    const missingDocuments = requiredDocuments.filter(doc => !applicationData.documentos[doc]);
-    if (missingDocuments.length > 0) {
-      return NextResponse.json(
-        { error: `Missing required documents: ${missingDocuments.join(', ')}` },
-        { status: 400 }
-      );
-    }
-
-    // Validate document URLs
-    const documentUrls = Object.values(applicationData.documentos);
-    const invalidUrls = documentUrls.filter(url => !url || typeof url !== 'string');
-    if (invalidUrls.length > 0) {
-      return NextResponse.json(
-        { error: 'Invalid document URLs provided' },
-        { status: 400 }
-      );
-    }
-
-    // Validate security questions
-    if (typeof applicationData.antecedentesPenales !== 'boolean' || 
-        typeof applicationData.rechazosMigratorios !== 'boolean' || 
-        typeof applicationData.consentimientoDatos !== 'boolean') {
-      return NextResponse.json(
-        { error: 'Security questions must be answered with true or false' },
-        { status: 400 }
-      );
-    }
-
-    // Create new UK application
-    const application = new UKApplication(applicationData);
+    // Create new application with the processed data
+    console.log('💾 Creating new UK application document');
+    const application = new UKApplication(processedData);
     await application.save();
+    console.log('✅ UK application saved successfully with ID:', application._id);
 
     return NextResponse.json(
       { 
+        success: true,
         message: 'UK ETA application submitted successfully',
+        applicationId: application._id.toString(),
         data: application 
       },
       { status: 201 }
     );
 
   } catch (error) {
-    console.error('UK ETA application submission error:', error);
+    console.error('❌ UK ETA application submission error:', error);
+    
+    // Detailed error handling for validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = {};
+      
+      for (const field in error.errors) {
+        validationErrors[field] = error.errors[field].message;
+      }
+      
+      return NextResponse.json(
+        { 
+          error: 'Validation failed', 
+          details: validationErrors 
+        },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
       { error: 'Failed to submit UK ETA application' },
       { status: 500 }

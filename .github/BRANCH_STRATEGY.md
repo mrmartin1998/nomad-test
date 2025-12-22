@@ -113,4 +113,3 @@ Set up these branch protection rules in GitHub:
    - [ ] Create PR on GitHub from develop to master
    - [ ] Get code review
    - [ ] Merge via GitHub interface only
-

@@ -1,20 +1,17 @@
 import React from 'react';
-import AdminLayout from '@/components/admin/layout/AdminLayout';
 import PostForm from '@/components/admin/posts/PostForm';
 
-const NewPostPage = () => {
+export default function NewPostPage() {
   return (
-    <AdminLayout>
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Nuevo Post</h1>
-        <div className="card bg-base-100 shadow-xl">
-          <div className="card-body">
-            <PostForm />
-          </div>
-        </div>
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <h1 className="text-3xl font-bold">Crear Nuevo Post</h1>
+        <div className="badge badge-primary">Nuevo</div>
       </div>
-    </AdminLayout>
+      <div className="text-base-content/70">
+        Llena el formulario para crear un nuevo post para tu blog
+      </div>
+      <PostForm />
+    </div>
   );
-};
-
-export default NewPostPage; 
+}

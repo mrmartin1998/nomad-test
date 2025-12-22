@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import RichTextEditor from '@/components/admin/RichTextEditor';
+import MediaLibrary from '@/components/admin/MediaLibrary';
 
 const PostForm = ({ initialData }) => {
   const router = useRouter();
@@ -20,6 +22,8 @@ const PostForm = ({ initialData }) => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showMediaLibrary, setShowMediaLibrary] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetchCategories();
@@ -69,38 +73,25 @@ const PostForm = ({ initialData }) => {
     });
   };
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // New handler for rich text editor
+  const handleContentChange = (content) => {
+    setFormData(prev => ({ ...prev, content }));
+  };
 
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/blog/images', {
-        method: 'POST',
-        body: formData
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Error al subir la imagen');
-      }
-
-      setFormData(prev => ({
-        ...prev,
-        image: data.url
-      }));
-    } catch (error) {
-      setError(error.message);
-    }
+  const handleImageSelect = (image) => {
+    setFormData(prev => ({
+      ...prev,
+      image: image.url
+    }));
+    setShowMediaLibrary(false);
   };
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.title) newErrors.title = 'El título es requerido';
-    if (!formData.content) newErrors.content = 'El contenido es requerido';
+    if (!formData.content || formData.content.trim() === '<p><br></p>') {
+      newErrors.content = 'El contenido es requerido';
+    }
     if (!formData.author) newErrors.author = 'El autor es requerido';
     if (!formData.category) newErrors.category = 'La categoría es requerida';
     if (!formData.metaDescription) newErrors.metaDescription = 'La descripción meta es requerida';
@@ -129,7 +120,7 @@ const PostForm = ({ initialData }) => {
         },
         body: JSON.stringify({
           ...formData,
-          tags: formData.tags.split(',').map(tag => tag.trim())
+          tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
         })
       });
 
@@ -147,6 +138,14 @@ const PostForm = ({ initialData }) => {
     }
   };
 
+  const handlePreview = () => {
+    if (!formData.title || !formData.content) {
+      setError('Title and content are required for preview');
+      return;
+    }
+    setShowPreview(true);
+  };
+
   return (
     <div className="space-y-6">
       {error && (
@@ -155,10 +154,10 @@ const PostForm = ({ initialData }) => {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Título</span>
+            <span className="label-text text-lg font-medium">Título *</span>
           </label>
           <input
             type="text"
@@ -177,14 +176,12 @@ const PostForm = ({ initialData }) => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Contenido</span>
+            <span className="label-text text-lg font-medium">Contenido *</span>
           </label>
-          <textarea
-            name="content"
+          <RichTextEditor
             value={formData.content}
-            onChange={handleChange}
-            className={`textarea textarea-bordered h-64 ${errors.content ? 'textarea-error' : ''}`}
-            placeholder="Contenido del post"
+            onChange={handleContentChange}
+            placeholder="Escribe el contenido de tu post aquí..."
           />
           {errors.content && (
             <label className="label">
@@ -196,7 +193,7 @@ const PostForm = ({ initialData }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Autor</span>
+              <span className="label-text font-medium">Autor *</span>
             </label>
             <input
               type="text"
@@ -215,7 +212,7 @@ const PostForm = ({ initialData }) => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Categoría</span>
+              <span className="label-text font-medium">Categoría *</span>
             </label>
             <select
               name="category"
@@ -240,7 +237,7 @@ const PostForm = ({ initialData }) => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Etiquetas</span>
+            <span className="label-text font-medium">Etiquetas</span>
           </label>
           <input
             type="text"
@@ -248,44 +245,134 @@ const PostForm = ({ initialData }) => {
             value={formData.tags}
             onChange={handleChange}
             className="input input-bordered"
-            placeholder="Etiquetas separadas por comas"
+            placeholder="Etiquetas separadas por comas (ej: visa, viaje, turismo)"
           />
+          <label className="label">
+            <span className="label-text-alt">Separa las etiquetas con comas</span>
+          </label>
         </div>
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text">Imagen</span>
+            <span className="label-text font-medium">Imagen destacada</span>
           </label>
           <div className="space-y-4">
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              onChange={handleImageUpload}
-              className="file-input file-input-bordered w-full"
-            />
-            {formData.image && (
-              <div className="relative">
+            {formData.image ? (
+              <div className="relative inline-block">
                 <img
                   src={formData.image}
-                  alt="Preview"
-                  className="max-w-xs rounded-lg"
+                  alt="Featured image preview"
+                  className="max-w-xs max-h-48 rounded-lg object-cover"
                 />
                 <button
                   type="button"
                   onClick={() => setFormData(prev => ({ ...prev, image: '' }))}
-                  className="btn btn-circle btn-sm absolute top-2 right-2"
+                  className="btn btn-circle btn-sm absolute -top-2 -right-2 btn-error"
                 >
                   ×
                 </button>
               </div>
+            ) : (
+              <div className="text-center py-8 border-2 border-dashed border-base-300 rounded-lg">
+                <p className="text-base-content/70 mb-4">No image selected</p>
+              </div>
             )}
+            
+            <button
+              type="button"
+              onClick={() => setShowMediaLibrary(true)}
+              className="btn btn-outline"
+            >
+              {formData.image ? 'Change Image' : 'Select Image'}
+            </button>
           </div>
         </div>
+
+        {/* Media Library Modal */}
+        {showMediaLibrary && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-base-100 rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto m-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Media Library</h2>
+                <button
+                  onClick={() => setShowMediaLibrary(false)}
+                  className="btn btn-circle btn-sm"
+                >
+                  ×
+                </button>
+              </div>
+              <MediaLibrary 
+                onSelect={handleImageSelect}
+                selectedImage={formData.image ? { url: formData.image } : null}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Preview Modal */}
+        {showPreview && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-base-100 rounded-lg p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto m-4">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Post Preview</h2>
+                <button
+                  onClick={() => setShowPreview(false)}
+                  className="btn btn-circle btn-sm"
+                >
+                  ×
+                </button>
+              </div>
+              
+              <article className="prose prose-lg max-w-none">
+                <header className="mb-8">
+                  <h1 className="text-4xl font-bold mb-4">{formData.title}</h1>
+                  <div className="flex items-center gap-4 text-gray-600">
+                    <span>{formData.author}</span>
+                    {formData.category && categories.find(c => c._id === formData.category) && (
+                      <>
+                        <span>·</span>
+                        <span>{categories.find(c => c._id === formData.category)?.name}</span>
+                      </>
+                    )}
+                  </div>
+                </header>
+
+                {formData.image && (
+                  <div className="mb-8">
+                    <img
+                      src={formData.image}
+                      alt={formData.title}
+                      className="w-full h-[400px] object-cover rounded-lg"
+                    />
+                  </div>
+                )}
+
+                <div dangerouslySetInnerHTML={{ __html: formData.content }} />
+
+                {formData.tags && (
+                  <div className="mt-8 pt-4 border-t">
+                    <h2 className="text-xl font-semibold mb-4">Tags:</h2>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.tags.split(',').map((tag, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1 bg-gray-100 rounded-full text-sm"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </article>
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Estado</span>
+              <span className="label-text font-medium">Estado</span>
             </label>
             <select
               name="status"
@@ -300,44 +387,77 @@ const PostForm = ({ initialData }) => {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Descripción Meta</span>
+              <span className="label-text font-medium">Slug *</span>
             </label>
-            <textarea
-              name="metaDescription"
-              value={formData.metaDescription}
+            <input
+              type="text"
+              name="slug"
+              value={formData.slug}
               onChange={handleChange}
-              className={`textarea textarea-bordered h-24 ${errors.metaDescription ? 'textarea-error' : ''}`}
-              placeholder="Descripción para SEO"
+              className={`input input-bordered ${errors.slug ? 'input-error' : ''}`}
+              placeholder="url-amigable-del-post"
             />
-            {errors.metaDescription && (
+            {errors.slug && (
               <label className="label">
-                <span className="label-text-alt text-error">{errors.metaDescription}</span>
+                <span className="label-text-alt text-error">{errors.slug}</span>
               </label>
             )}
           </div>
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text font-medium">Descripción Meta *</span>
+          </label>
+          <textarea
+            name="metaDescription"
+            value={formData.metaDescription}
+            onChange={handleChange}
+            className={`textarea textarea-bordered h-24 ${errors.metaDescription ? 'textarea-error' : ''}`}
+            placeholder="Descripción para SEO (160 caracteres máximo)"
+            maxLength={160}
+          />
+          <label className="label">
+            <span className="label-text-alt">{formData.metaDescription.length}/160 caracteres</span>
+          </label>
+          {errors.metaDescription && (
+            <label className="label">
+              <span className="label-text-alt text-error">{errors.metaDescription}</span>
+            </label>
+          )}
+        </div>
+
+        <div className="flex justify-between items-center pt-6">
           <button
             type="button"
-            onClick={() => router.push('/admin/posts')}
-            className="btn btn-ghost"
+            onClick={handlePreview}
+            className="btn btn-outline"
           >
-            Cancelar
+            Preview
           </button>
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="loading loading-spinner"></span>
-            ) : initialData ? 'Actualizar' : 'Crear'}
-          </button>
+          
+          <div className="flex justify-end gap-4">
+            <button
+              type="button"
+              onClick={() => router.push('/admin/posts')}
+              className="btn btn-ghost"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : initialData ? 'Actualizar Post' : 'Crear Post'}
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default PostForm; 
+export default PostForm;

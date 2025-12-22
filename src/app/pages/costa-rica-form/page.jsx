@@ -11,7 +11,7 @@ import CostaRicaUpload from '@/components/upload/country/CostaRicaUpload';
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const countryOptions = [
@@ -128,7 +128,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
 const ProfessionalInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const employmentOptions = [
@@ -346,4 +346,4 @@ export default function CostaRicaFormPage() {
       />
     </div>
   );
-} 
+}

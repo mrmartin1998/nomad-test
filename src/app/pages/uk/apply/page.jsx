@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSession, getSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import EnhancedForm from '@/components/forms/enhanced/EnhancedForm';
 import FormInput from '@/components/forms/enhanced/FormInput';
 import FormSelect from '@/components/forms/enhanced/FormSelect';
@@ -10,7 +12,7 @@ import UKUpload from '@/components/upload/country/UKUpload';
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const countryOptions = [
@@ -29,9 +31,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Nombre Completo"
         name="nombreCompleto"
-        value={formData.nombreCompleto}
+        value={formData.nombreCompleto || ''}
         onChange={handleChange}
-        error={errors.nombreCompleto}
+        error={errors?.nombreCompleto}
         placeholder="Ingrese su nombre completo"
         required
         autoComplete="name"
@@ -47,9 +49,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         label="Fecha de Nacimiento"
         name="fechaNacimiento"
         type="date"
-        value={formData.fechaNacimiento}
+        value={formData.fechaNacimiento || ''}
         onChange={handleChange}
-        error={errors.fechaNacimiento}
+        error={errors?.fechaNacimiento}
         required
         icon={
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -61,9 +63,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Lugar de Nacimiento"
         name="lugarNacimiento"
-        value={formData.lugarNacimiento}
+        value={formData.lugarNacimiento || ''}
         onChange={handleChange}
-        error={errors.lugarNacimiento}
+        error={errors?.lugarNacimiento}
         placeholder="Ingrese su lugar de nacimiento"
         required
         icon={
@@ -77,10 +79,10 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
       <FormSelect
         label="Nacionalidad"
         name="nacionalidad"
-        value={formData.nacionalidad}
+        value={formData.nacionalidad || ''}
         onChange={handleChange}
         options={countryOptions}
-        error={errors.nacionalidad}
+        error={errors?.nacionalidad}
         placeholder="Seleccione su nacionalidad"
         required
         searchable
@@ -96,9 +98,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         label="Correo Electrónico"
         name="email"
         type="email"
-        value={formData.email}
+        value={formData.email || ''}
         onChange={handleChange}
-        error={errors.email}
+        error={errors?.email}
         placeholder="su.email@ejemplo.com"
         required
         autoComplete="email"
@@ -113,9 +115,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         label="Teléfono"
         name="telefono"
         type="tel"
-        value={formData.telefono}
+        value={formData.telefono || ''}
         onChange={handleChange}
-        error={errors.telefono}
+        error={errors?.telefono}
         placeholder="+52 (555) 123-4567"
         required
         autoComplete="tel"
@@ -130,9 +132,9 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
         <FormInput
           label="Dirección de Residencia"
           name="direccionResidencia"
-          value={formData.direccionResidencia}
+          value={formData.direccionResidencia || ''}
           onChange={handleChange}
-          error={errors.direccionResidencia}
+          error={errors?.direccionResidencia}
           placeholder="Ingrese su dirección completa de residencia"
           required
           autoComplete="address-line1"
@@ -150,7 +152,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
 const PassportInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -158,9 +160,9 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
       <FormInput
         label="Número de Pasaporte"
         name="numeroPasaporte"
-        value={formData.numeroPasaporte}
+        value={formData.numeroPasaporte || ''}
         onChange={handleChange}
-        error={errors.numeroPasaporte}
+        error={errors?.numeroPasaporte}
         placeholder="Ingrese su número de pasaporte"
         required
         icon={
@@ -174,9 +176,9 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
         label="Fecha de Emisión del Pasaporte"
         name="fechaEmisionPasaporte"
         type="date"
-        value={formData.fechaEmisionPasaporte}
+        value={formData.fechaEmisionPasaporte || ''}
         onChange={handleChange}
-        error={errors.fechaEmisionPasaporte}
+        error={errors?.fechaEmisionPasaporte}
         required
         icon={
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -189,9 +191,9 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
         label="Fecha de Expiración del Pasaporte"
         name="fechaExpiracionPasaporte"
         type="date"
-        value={formData.fechaExpiracionPasaporte}
+        value={formData.fechaExpiracionPasaporte || ''}
         onChange={handleChange}
-        error={errors.fechaExpiracionPasaporte}
+        error={errors?.fechaExpiracionPasaporte}
         required
         helpText="Debe ser válido por al menos 6 meses desde la fecha de viaje"
         icon={
@@ -204,11 +206,10 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
   );
 };
 
-
 const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setFormData({ [name]: checked });
+    setFormData(prev => ({ ...prev, [name]: checked }));
   };
 
   return (
@@ -232,7 +233,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
           />
           <span className="label-text"><strong>¿Tiene antecedentes penales?</strong></span>
         </label>
-        {errors.antecedentesPenales && (
+        {errors?.antecedentesPenales && (
           <label className="label">
             <span className="label-text-alt text-error">{errors.antecedentesPenales}</span>
           </label>
@@ -250,7 +251,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
           />
           <span className="label-text"><strong>¿Ha sido rechazado previamente en una solicitud migratoria?</strong></span>
         </label>
-        {errors.rechazosMigratorios && (
+        {errors?.rechazosMigratorios && (
           <label className="label">
             <span className="label-text-alt text-error">{errors.rechazosMigratorios}</span>
           </label>
@@ -268,7 +269,7 @@ const SecurityQuestionsStep = ({ formData, setFormData, errors }) => {
           />
           <span className="label-text"><strong>Consentimiento para el uso de datos:</strong> Acepto el procesamiento de mis datos personales</span>
         </label>
-        {errors.consentimientoDatos && (
+        {errors?.consentimientoDatos && (
           <label className="label">
             <span className="label-text-alt text-error">{errors.consentimientoDatos}</span>
           </label>
@@ -284,7 +285,7 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
     setFormData(prev => ({
       ...prev,
       documentos: {
-        ...prev.documentos,
+        ...(prev?.documentos || {}),
         [documentType]: file
       }
     }));
@@ -316,8 +317,43 @@ const DocumentUploadStep = ({ formData, setFormData, errors }) => {
 };
 
 export default function UKFormPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [submissionResult, setSubmissionResult] = useState(null);
+  const [initialFormData, setInitialFormData] = useState(null);
+  const [formData, setFormData] = useState({});  // Initialize with empty object
+  const hasAutoSubmitted = useRef(false);
 
+  useEffect(() => {
+    const pendingSubmission = localStorage.getItem('uk_pending_submission');
+    
+    if (pendingSubmission && !hasAutoSubmitted.current) {
+      try {
+        const { formData, timestamp, returnUrl } = JSON.parse(pendingSubmission);
+        
+        const now = new Date().getTime();
+        const oneHour = 60 * 60 * 1000;
+        
+        if (now - timestamp < oneHour) {
+          setInitialFormData(formData);
+          
+          if (session && status === 'authenticated') {
+            console.log('User is now authenticated, auto-submitting pending UK visa form data');
+            hasAutoSubmitted.current = true; // Set flag to prevent resubmission
+            localStorage.removeItem('uk_pending_submission'); // Clear BEFORE submission
+            handleSubmit(formData);
+          }
+        } else {
+          console.log('Clearing stale pending UK submission data');
+          localStorage.removeItem('uk_pending_submission');
+        }
+      } catch (error) {
+        console.error('Error parsing pending UK submission:', error);
+        localStorage.removeItem('uk_pending_submission');
+      }
+    }
+  }, [session, status]);
+  
   // Form step configuration - Updated to match Notion requirements exactly
   const formSteps = [
     {
@@ -411,17 +447,105 @@ export default function UKFormPage() {
     }
   ];
 
-  const handleSubmit = async (formData) => {
-    // Simulate API submission
-    console.log('Submitting UK form data:', formData);
+  const handleSubmit = async (submitData) => {
+    // Check authentication before submission
+    const currentSession = await getSession();
+    if (!currentSession) {
+      // Get full URL with pathname and search params for more reliable redirect
+      const currentUrl = window.location.pathname + window.location.search;
+      console.log('User not authenticated, storing pending UK submission and redirecting to login');
+      
+      // Store the form data for later submission
+      localStorage.setItem('uk_pending_submission', JSON.stringify({
+        formData: submitData,
+        timestamp: new Date().getTime(),
+        returnUrl: currentUrl
+      }));
+      
+      // Use full path with callbackUrl parameter
+      router.push(`/login?callbackUrl=${encodeURIComponent(currentUrl)}`);
+      return;
+    }
+
+    console.log('Submitting UK visa form data with user ID:', currentSession.user.id);
     
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate delay
-    
-    setSubmissionResult({
-      success: true,
-      message: 'Su solicitud de ETA para Reino Unido ha sido enviada exitosamente!',
-      applicationId: 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
-    });
+    try {
+      // Process the document data properly
+      const processedDocuments = {
+        fotoCarnet: submitData.documentos?.fotoCarnet?.name || "",
+        pasaporteEscaneado: submitData.documentos?.pasaporteEscaneado?.name || ""
+      };
+
+      // Format data exactly like the API expects
+      const formattedData = {
+        // Required fields that the API validates
+        nombreCompleto: submitData.nombreCompleto || '',
+        fechaNacimiento: submitData.fechaNacimiento || '',
+        lugarNacimiento: submitData.lugarNacimiento || '',
+        nacionalidad: submitData.nacionalidad || '',
+        email: submitData.email || '',
+        telefono: submitData.telefono || '',
+        direccionResidencia: submitData.direccionResidencia || '',
+        numeroPasaporte: submitData.numeroPasaporte || '',
+        fechaEmisionPasaporte: submitData.fechaEmisionPasaporte || '',
+        fechaExpiracionPasaporte: submitData.fechaExpiracionPasaporte || '',
+        antecedentesPenales: submitData.antecedentesPenales === true,
+        rechazosMigratorios: submitData.rechazosMigratorios === true,
+        consentimientoDatos: submitData.consentimientoDatos === true,
+        
+        // Add user ID and timestamps
+        userId: currentSession.user.id,
+        fechaCreacion: new Date().toISOString(),
+        
+        // Document handling - use processed strings instead of objects
+        documentos: processedDocuments
+      };
+
+      // Log data before sending
+      console.log('Sending data to API:', formattedData);
+
+      // Submit to API
+      const response = await fetch('/api/uk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formattedData),
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch (e) {
+          console.error('Failed to parse error response:', errorText);
+          throw new Error(`Server error: ${response.status}`);
+        }
+        
+        console.error('API error response:', response.status, errorData);
+        throw new Error(errorData.error || `Error ${response.status}: Failed to submit form`);
+      }
+
+      const responseData = await response.json();
+      console.log('API success response:', responseData);
+      
+      // Clear localStorage BEFORE setting submission result (important!)
+      localStorage.removeItem('uk_pending_submission');
+
+      setSubmissionResult({
+        success: true,
+        message: 'Su solicitud de ETA para Reino Unido ha sido enviada exitosamente!',
+        applicationId: responseData.applicationId || responseData.data?._id || 'UK-ETA-' + Math.random().toString(36).substr(2, 9).toUpperCase()
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmissionResult({
+        success: false,
+        message: `Error: ${error.message || 'Ocurrió un error al enviar su solicitud. Por favor, intente nuevamente más tarde.'}`
+      });
+    }
   };
 
   const handleStepChange = (stepIndex, formData) => {
@@ -490,6 +614,7 @@ export default function UKFormPage() {
         autoSave={true}
         autoSaveKey="uk-eta-form"
         countryTheme="uk"
+        initialData={initialFormData || {}}  // Ensure initialData is never null
       />
     </div>
   );

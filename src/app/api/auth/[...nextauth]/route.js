@@ -28,7 +28,7 @@ const handler = NextAuth({
   
   // Switch to JWT sessions for better production reliability
   session: {
-    strategy: "jwt",              // Changed from "database" to "jwt"
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,    // 30 days
   },
   
@@ -48,11 +48,47 @@ const handler = NextAuth({
       return session
     },
     async redirect({ url, baseUrl }) {
+      // Log the incoming URL to help debug redirect issues
       console.log('🔄 REDIRECT CALLBACK:', { url, baseUrl })
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url
+      
+      // Extract the callbackUrl from the URL if present
+      const urlObj = new URL(url.startsWith('http') ? url : `${baseUrl}${url}`)
+      const callbackUrl = urlObj.searchParams.get('callbackUrl')
+      
+      // If we have a callbackUrl, use it
+      if (callbackUrl) {
+        console.log('🔄 Found callbackUrl:', callbackUrl)
+        // Make sure it's from the same origin or is a relative path
+        if (callbackUrl.startsWith('/')) {
+          const redirectUrl = `${baseUrl}${callbackUrl}`
+          console.log('🔄 Redirecting to:', redirectUrl)
+          return redirectUrl
+        }
+        
+        try {
+          const callbackUrlObj = new URL(callbackUrl)
+          if (callbackUrlObj.origin === baseUrl) {
+            console.log('🔄 Redirecting to same-origin URL:', callbackUrl)
+            return callbackUrl
+          }
+        } catch (error) {
+          console.error('🔄 Error parsing callbackUrl:', error)
+        }
+      }
+      
+      // Default cases from original function
+      if (url.startsWith("/")) {
+        const redirectUrl = `${baseUrl}${url}`
+        console.log('🔄 Redirecting to relative path:', redirectUrl)
+        return redirectUrl
+      }
+      
+      if (new URL(url).origin === baseUrl) {
+        console.log('🔄 Redirecting to same-origin URL:', url)
+        return url
+      }
+      
+      console.log('🔄 Defaulting to baseUrl:', baseUrl)
       return baseUrl
     }
   },

@@ -1,142 +1,174 @@
-import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import ThailandApplication from '@/lib/models/ThailandApplication';
-import { getServerSession } from 'next-auth';
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import connectDB from "@/lib/mongodb";
+import ThailandApplication from "@/lib/models/ThailandApplication";
 
-export const dynamic = 'force-static';
+// Make sure we use dynamic rendering for authentication
+export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
+  console.log("📥 Thailand API: Received POST request");
+
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+    console.log("🔐 Auth attempt result:", session ? "Session found" : "No session");
+
+    if (!session) {
+      console.log("❌ Authentication failed: No session");
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    console.log("✅ Authentication successful for user:", session.user.id);
+
     // Connect to MongoDB
+    console.log("🔄 Connecting to MongoDB...");
     await connectDB();
+    console.log("✅ MongoDB connection successful");
+    console.log("✅ Connected to MongoDB");
 
-    // Parse the request body
+    // Parse request body
     const data = await request.json();
+    console.log("📋 Received Thailand application data for:", data.nombreCompleto);
+    console.log("📄 Full application data:", JSON.stringify(data, null, 2));
 
-    // Get session for optional auth verification
-    const session = await getServerSession();
-    
-    // Validate userId if provided
-    if (session && data.userId && data.userId !== session.user.id) {
-      return NextResponse.json(
-        { error: 'Usuario no autorizado' },
-        { status: 403 }
-      );
+    // Check for recent duplicate submission (within the last 5 seconds)
+    const recentSubmission = await ThailandApplication.findOne({
+      userId: session.user.id,
+      fechaCreacion: { $gte: new Date(Date.now() - 5000) }, // Last 5 seconds
+    });
+
+    if (recentSubmission) {
+      console.log("⚠️ Potential duplicate submission detected, returning existing application");
+      return NextResponse.json({
+        success: true,
+        message: "Thailand visa application submitted successfully",
+        applicationId: recentSubmission._id.toString(),
+        data: recentSubmission,
+        isDuplicate: true,
+      });
     }
 
-    // Validate required fields
-    const requiredFields = [
-      'nombreCompleto',
-      'fechaNacimiento',
-      'nacionalidad',
-      'email',
-      'telefono',
-      'direccionResidencia',
-      'ocupacionActual',
-      'empresa',
-      'direccionEmpresa',
-      'telefonoEmpresa',
-      'numeroPasaporte',
-      'fechaEmisionPasaporte',
-      'fechaExpiracionPasaporte',
-      'consentimientoTerminos'
-    ];
-
-    const missingFields = requiredFields.filter(field => !data[field]);
-    if (missingFields.length > 0) {
+    // Ensure required fields are present
+    if (!data.nombreCompleto || !data.email || !data.numeroPasaporte) {
+      console.error("❌ Missing required fields in submission");
       return NextResponse.json(
-        { error: `Missing required fields: ${missingFields.join(', ')}` },
+        { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Validate passport expiration date
-    const passportExpiration = new Date(data.fechaExpiracionPasaporte);
-    const today = new Date();
-    if (passportExpiration <= today) {
-      return NextResponse.json(
-        { error: 'Passport must be valid (not expired)' },
-        { status: 400 }
-      );
-    }
-
-    // Validate passport issuance date
-    const passportIssuance = new Date(data.fechaEmisionPasaporte);
-    if (passportIssuance >= today) {
-      return NextResponse.json(
-        { error: 'Passport issuance date must be in the past' },
-        { status: 400 }
-      );
-    }
-
-    // Validate document uploads
-    if (!data.documentos) {
-      return NextResponse.json(
-        { error: 'Document uploads are required' },
-        { status: 400 }
-      );
-    }
-
-    const requiredDocuments = ['fotoCarnet', 'pasaporteEscaneado', 'billeteSalida', 'reservaHotel'];
-    const missingDocuments = requiredDocuments.filter(doc => !data.documentos[doc]);
-    if (missingDocuments.length > 0) {
-      return NextResponse.json(
-        { error: `Missing required documents: ${missingDocuments.join(', ')}` },
-        { status: 400 }
-      );
-    }
-
-    // Validate document URLs
-    const documentUrls = Object.values(data.documentos);
-    const invalidUrls = documentUrls.filter(url => !url || typeof url !== 'string');
-    if (invalidUrls.length > 0) {
-      return NextResponse.json(
-        { error: 'Invalid document URLs provided' },
-        { status: 400 }
-      );
-    }
-
-    // Handle userId for authenticated users
-    const applicationData = {
+    // Add default values for required fields not collected by the form
+    const dataWithDefaults = {
       ...data,
-      ...(data.userId && { userId: data.userId })
+      // Professional information defaults
+      ocupacionActual: data.ocupacionActual || "No proporcionado",
+      empresa: data.empresa || "No proporcionado",
+      direccionEmpresa: data.direccionEmpresa || "No proporcionado",
+      telefonoEmpresa: data.telefonoEmpresa || "No proporcionado",
+      
+      // Consent defaults
+      consentimientoTerminos: data.consentimientoTerminos !== undefined ? data.consentimientoTerminos : true
     };
 
-    // Create new Thailand application
-    const application = new ThailandApplication(applicationData);
+    // Prepare document data for MongoDB - ensure documents are strings
+    const processedData = {
+      ...dataWithDefaults,
+      documentos: {
+        fotoCarnet: typeof data.documentos?.fotoCarnet === 'string' 
+          ? data.documentos.fotoCarnet 
+          : JSON.stringify(data.documentos?.fotoCarnet || ''),
+        pasaporteEscaneado: typeof data.documentos?.pasaporteEscaneado === 'string'
+          ? data.documentos.pasaporteEscaneado
+          : JSON.stringify(data.documentos?.pasaporteEscaneado || ''),
+        billeteSalida: typeof data.documentos?.billeteSalida === 'string'
+          ? data.documentos.billeteSalida
+          : JSON.stringify(data.documentos?.billeteSalida || ''),
+        reservaHotel: typeof data.documentos?.reservaHotel === 'string'
+          ? data.documentos.reservaHotel
+          : JSON.stringify(data.documentos?.reservaHotel || '')
+      }
+    };
+
+    // Create new application with the processed data
+    console.log('💾 Creating new Thailand application document');
+    const application = new ThailandApplication(processedData);
     await application.save();
+    console.log('✅ Thailand application saved successfully with ID:', application._id);
 
     return NextResponse.json(
       { 
-        message: 'Thailand eVisa application submitted successfully',
+        success: true,
+        message: 'Thailand visa application submitted successfully',
+        applicationId: application._id.toString(),
         data: application 
       },
       { status: 201 }
     );
 
   } catch (error) {
-    console.error('Thailand eVisa application submission error:', error);
+    console.error('❌ Thailand visa application submission error:', error);
+    
+    // Detailed error handling for validation errors
+    if (error.name === 'ValidationError') {
+      const validationErrors = {};
+      
+      for (const field in error.errors) {
+        validationErrors[field] = error.errors[field].message;
+      }
+      
+      return NextResponse.json(
+        { 
+          error: 'Validation failed', 
+          details: validationErrors 
+        },
+        { status: 400 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to submit Thailand eVisa application' },
+      { error: 'Failed to submit Thailand visa application' },
       { status: 500 }
     );
   }
 }
 
-// GET method to retrieve Thailand applications
-export async function GET() {
+// Handler for GET requests - retrieve Thailand applications
+export async function GET(request) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    // Connect to MongoDB
     await connectDB();
-    const applications = await ThailandApplication.find({}).sort({ fechaCreacion: -1 });
-    
-    return NextResponse.json(
-      { data: applications },
-      { status: 200 }
-    );
+
+    // Get applications - admins see all, users see only their own
+    const isAdmin = session.user.role === "admin";
+    const query = isAdmin ? {} : { userId: session.user.id };
+
+    const applications = await ThailandApplication.find(query).sort({
+      fechaCreacion: -1,
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: applications,
+    });
   } catch (error) {
-    console.error('Error fetching Thailand eVisa applications:', error);
+    console.error("Error fetching Thailand applications:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch Thailand eVisa applications' },
+      { error: error.message || "Failed to fetch applications" },
       { status: 500 }
     );
   }
