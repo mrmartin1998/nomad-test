@@ -72,7 +72,7 @@ const ESTAVisaPage = () => {
               <h1 className="text-4xl md:text-5xl font-bold mb-6">Autorización Electrónica de Viaje a EE.UU.</h1>
               <p className="text-lg text-base-content/70 mb-8">Solicite su ESTA para viajar a Estados Unidos de forma rápida y segura</p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/esta/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
+                <Link href="esta/apply" className="btn btn-primary btn-lg w-full sm:w-auto">
                   Solicitar ESTA
                 </Link>
                 <Link href="/status" className="btn btn-outline btn-lg w-full sm:w-auto">

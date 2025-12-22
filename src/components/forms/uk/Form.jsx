@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 const PersonalInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   const countryOptions = [
@@ -152,7 +152,7 @@ const PersonalInfoStep = ({ formData, setFormData, errors }) => {
 const PassportInfoStep = ({ formData, setFormData, errors }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ [name]: value });
+    setFormData(prev => ({ ...prev || {}, [name]: value }));
   };
 
   return (
@@ -209,7 +209,10 @@ const PassportInfoStep = ({ formData, setFormData, errors }) => {
 const DocumentUploadStep = ({ formData, setFormData, errors }) => {
   const handleFileSelect = (file) => {
     console.log('File selected:', file);
-    setFormData({ passportDocument: file });
+    setFormData(prev => ({
+      ...prev || {},
+      passportDocument: file
+    }));
   };
 
   const handleUploadComplete = (file) => {

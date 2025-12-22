@@ -48,7 +48,7 @@ const Navbar = () => {
   }, []);
 
   const visaOptions = [
-    { icon: "🇺🇸", text: "ESTA Estados Unidos", href: "/pages/us-esta-visa-form" },
+    { icon: "🇺🇸", text: "ESTA Estados Unidos", href: "/pages/esta" },
     { icon: "🇨🇷", text: "Visa Costa Rica", href: "/pages/costa-rica-form" },
     { icon: "🇮🇳", text: "Visa de turista de India", href: "/pages/india" },
     { icon: "🇨🇺", text: "Visa para Cuba", href: "/pages/cuba" },

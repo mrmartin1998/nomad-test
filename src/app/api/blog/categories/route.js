@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import Category from '@/lib/models/Category';
+import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/mongodb';
+import Category from '@/lib/models/Category';
 
 // GET all categories
 export async function GET(request) {
@@ -35,29 +36,28 @@ export async function GET(request) {
 // POST new category
 export async function POST(request) {
   try {
+    const session = await getServerSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const data = await request.json();
     await connectDB();
     
-    const body = await request.json();
-    const category = new Category(body);
+    // Generate slug from name
+    const slug = data.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    
+    const category = new Category({
+      ...data,
+      slug
+    });
+    
     await category.save();
-
     return NextResponse.json(category, { status: 201 });
   } catch (error) {
-    if (error.name === 'ValidationError') {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 400 }
-      );
-    }
-    if (error.code === 11000) {
-      return NextResponse.json(
-        { error: 'Ya existe una categoría con ese nombre o slug' },
-        { status: 400 }
-      );
-    }
     return NextResponse.json(
-      { error: 'Error al crear la categoría' },
+      { error: 'Failed to create category' },
       { status: 500 }
     );
   }
-} 
+}

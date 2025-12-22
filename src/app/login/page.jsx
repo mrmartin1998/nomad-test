@@ -5,6 +5,7 @@ import { signIn, getSession } from 'next-auth/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import DevLogin from '@/components/DevLogin';
 
 // Separate component for the login content that uses useSearchParams
 function LoginContent() {
@@ -70,6 +71,9 @@ function LoginContent() {
           )}
         </button>
 
+        {/* Development Login Option */}
+        <DevLogin />
+        
         {/* Help text */}
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">

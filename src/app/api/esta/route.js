@@ -1,120 +1,188 @@
-import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import ESTAApplication from '@/lib/models/ESTAApplication';
+import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import connectDB from "@/lib/mongodb";
+import ESTAApplication from "@/lib/models/ESTAApplication";
 
-export const dynamic = 'force-static';
-
+// Handler for POST requests - create a new ESTA application
 export async function POST(request) {
+  console.log("📥 ESTA API: Received POST request");
+
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      console.log("❌ Authentication failed: No session");
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    console.log("✅ Authentication successful for user:", session.user.id);
+
     // Connect to MongoDB
     await connectDB();
+    console.log("✅ Connected to MongoDB");
 
-    // Parse the request body
+    // Parse request body
     const data = await request.json();
+    console.log("📋 Received ESTA application data for:", data.fullName);
 
-    // Validate required fields
-    const requiredFields = [
-      'nombreCompleto',
-      'fechaNacimiento',
-      'ciudadNacimiento',
-      'paisNacimiento',
-      'nacionalidad',
-      'nombrePadre',
-      'nombreMadre',
-      'email',
-      'telefono',
-      'direccionResidencia',
-      'numeroPasaporte',
-      'fechaEmisionPasaporte',
-      'fechaExpiracionPasaporte',
-      'paisEmisionPasaporte',
-      'viajeAnteriorUSA',
-      'direccionUSA',
-      'empresa',
-      'cargo',
-      'direccionLaboral',
-      'antecedentesPenales',
-      'aceptaTerminos'
-    ];
+    // Check for recent duplicate submission (within the last 5 seconds)
+    const recentSubmission = await ESTAApplication.findOne({
+      userId: session.user.id,
+      fechaCreacion: { $gte: new Date(Date.now() - 5000) }, // Last 5 seconds
+    });
 
-    const missingFields = requiredFields.filter(field => !data[field]);
-    if (missingFields.length > 0) {
+    if (recentSubmission) {
+      console.log(
+        "⚠️ Potential duplicate submission detected, returning existing application"
+      );
+      return NextResponse.json({
+        success: true,
+        message: "ESTA application submitted successfully",
+        applicationId: recentSubmission._id.toString(),
+        data: recentSubmission,
+        isDuplicate: true,
+      });
+    }
+
+    // Ensure required fields are present
+    if (!data.fullName || !data.email || !data.passportNumber) {
+      console.error("❌ Missing required fields in submission");
       return NextResponse.json(
-        { error: `Missing required fields: ${missingFields.join(', ')}` },
+        { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    // Validate passport expiration date
-    const passportExpiration = new Date(data.fechaExpiracionPasaporte);
-    const today = new Date();
-    if (passportExpiration <= today) {
-      return NextResponse.json(
-        { error: 'Passport must be valid (not expired)' },
-        { status: 400 }
-      );
-    }
-
-    // Validate passport issuance date
-    const passportIssuance = new Date(data.fechaEmisionPasaporte);
-    if (passportIssuance >= today) {
-      return NextResponse.json(
-        { error: 'Passport issuance date must be in the past' },
-        { status: 400 }
-      );
-    }
-
-    // Validate date of birth
-    const dateOfBirth = new Date(data.fechaNacimiento);
-    const age = today.getFullYear() - dateOfBirth.getFullYear();
-    if (age < 0 || age > 120) {
-      return NextResponse.json(
-        { error: 'Invalid date of birth' },
-        { status: 400 }
-      );
-    }
-
-    // Handle userId for authenticated users
+    // Create application data with proper fields
     const applicationData = {
-      ...data,
-      ...(data.userId && { userId: data.userId })
+      // User information
+      userId: session.user.id,
+      fullName: data.fullName,
+      nombreCompleto: data.fullName, // Spanish field name
+      dateOfBirth: data.dateOfBirth,
+      birthCity: data.birthCity,
+      birthCountry: data.birthCountry,
+      nationality: data.nationality,
+
+      // Contact information
+      email: data.email,
+      phone: data.phone,
+      telefono: data.phone, // Spanish field name
+
+      // Address information
+      address: data.address,
+      usAddress: data.usAddress,
+
+      // Family information
+      fatherName: data.fatherName,
+      motherName: data.motherName,
+
+      // Professional information
+      occupation: data.occupation,
+      companyName: data.companyName,
+      position: data.position,
+      annualIncome: data.annualIncome,
+      companyAddress: data.companyAddress,
+
+      // Passport information
+      passportNumber: data.passportNumber,
+      numeroPasaporte: data.passportNumber, // Spanish field name
+      passportIssueDate: data.passportIssueDate,
+      passportExpiryDate: data.passportExpiryDate,
+      passportIssuingCountry: data.passportIssuingCountry,
+
+      // Additional information
+      previousUsTravel: data.previousUsTravel || false,
+      hasCriminalRecord: data.hasCriminalRecord || false,
+      criminalRecordDetails: data.criminalRecordDetails || "",
+
+      // Document references - ensure it's a string
+      passportDocument:
+        typeof data.passportDocument === "string"
+          ? data.passportDocument
+          : data.passportDocument
+          ? JSON.stringify(data.passportDocument)
+          : "",
+
+      // Application status and timestamps
+      estado: "pendiente", // Default status is 'pending'
+      fechaCreacion: new Date(),
     };
 
-    // Create new ESTA application
-    const application = new ESTAApplication(applicationData);
-    await application.save();
+    // Save to database
+    console.log("💾 Creating new ESTA application document");
+    const newApplication = await ESTAApplication.create(applicationData);
 
-    return NextResponse.json(
-      { 
-        message: 'ESTA application submitted successfully',
-        data: application 
-      },
-      { status: 201 }
-    );
+    console.log("✅ ESTA Application saved successfully with ID:", newApplication._id);
 
+    // Return success response
+    return NextResponse.json({
+      success: true,
+      message: "ESTA application submitted successfully",
+      applicationId: newApplication._id.toString(),
+      data: newApplication,
+    });
   } catch (error) {
-    console.error('ESTA application submission error:', error);
+    console.error("❌ Error saving ESTA application:", error);
+
+    // Check for validation errors
+    if (error.name === "ValidationError") {
+      return NextResponse.json(
+        {
+          error: "Validation failed",
+          details: Object.keys(error.errors).reduce((acc, key) => {
+            acc[key] = error.errors[key].message;
+            return acc;
+          }, {}),
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
-      { error: 'Failed to submit ESTA application' },
+      { error: error.message || "Failed to submit application" },
       { status: 500 }
     );
   }
 }
 
-// GET method to retrieve ESTA applications
-export async function GET() {
+// Handler for GET requests - retrieve ESTA applications
+export async function GET(request) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
+    // Connect to MongoDB
     await connectDB();
-    const applications = await ESTAApplication.find({}).sort({ fechaCreacion: -1 });
-    
-    return NextResponse.json(
-      { data: applications },
-      { status: 200 }
-    );
+
+    // Get applications - admins see all, users see only their own
+    const isAdmin = session.user.role === "admin";
+    const query = isAdmin ? {} : { userId: session.user.id };
+
+    const applications = await ESTAApplication.find(query).sort({
+      fechaCreacion: -1,
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: applications,
+    });
   } catch (error) {
-    console.error('Error fetching ESTA applications:', error);
+    console.error("Error fetching ESTA applications:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch ESTA applications' },
+      { error: error.message || "Failed to fetch applications" },
       { status: 500 }
     );
   }
