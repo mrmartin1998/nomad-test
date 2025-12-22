@@ -1,11 +1,44 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import BaseUpload from '../BaseUpload';
 
 const IndiaUpload = ({ onFileSelect, onUploadComplete, error, documentType = "pasaporte" }) => {
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+
   const isPassport = documentType === "pasaporte";
   const isPhoto = documentType === "foto";
+
+  const handleFileChange = (file) => {
+    if (file) {
+      setIsUploading(true);
+      setUploadProgress(0);
+      
+      // Simulate upload progress
+      const interval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            setIsUploading(false);
+            onUploadComplete(file);
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 200);
+      
+      onFileSelect(file);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileChange(files[0]);
+    }
+  };
 
   return (
     <div className="w-full">
